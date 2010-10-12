@@ -28,7 +28,8 @@ public final class Client {
         HelloWorld hw = service.getPort(HelloWorld.class);
         System.out.println(hw.sayHi("World"));
 
-        User user = new UserImpl("World");
+        //This should be an interface (User user = new UserImpl("World")) but does not work
+        UserImpl user = new UserImpl("World");
         System.out.println(hw.sayHiToUser(user));
 
         //say hi to some more users to fill up the map a bit
@@ -38,6 +39,7 @@ public final class Client {
         user = new UserImpl("Universe");
         System.out.println(hw.sayHiToUser(user));
 
+        
         System.out.println();
         System.out.println("Users: ");
         Map<Integer, User> users = hw.getUsers();
