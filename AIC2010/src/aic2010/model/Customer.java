@@ -2,16 +2,24 @@ package aic2010.model;
 
 import java.math.BigDecimal;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlAccessorType(XmlAccessType.FIELD)   //serialize all fields by default
+@XmlRootElement(name="customer")         //name root element
 public class Customer {
 
+    //serialize this id as attribute
+    @XmlAttribute(required=true)
     private String id;
     
     private String name;
     private BigDecimal openBalance;
 
     private List<Order> orders;
-    private List<Addresses> addresses;
+    private List<Address> addresses;
 
     public String getId()
     {
@@ -53,12 +61,12 @@ public class Customer {
         this.orders = orders;
     }
 
-    public List<Addresses> getAddresses()
+    public List<Address> getAddresses()
     {
         return addresses;
     }
 
-    public void setAddresses(List<Addresses> addresses)
+    public void setAddresses(List<Address> addresses)
     {
         this.addresses = addresses;
     }
