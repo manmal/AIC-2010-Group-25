@@ -59,4 +59,16 @@ public class Product {
     {
         this.singleUnitPrice = singleUnitPrice;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!obj.getClass().equals(this.getClass()))
+            return false;
+        return ((Product)obj).getId().equals(this.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

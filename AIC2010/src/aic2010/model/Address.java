@@ -112,4 +112,17 @@ public class Address {
     {
         this.zipCode = zipCode;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!obj.getClass().equals(this.getClass()))
+            return false;
+        return ((Address)obj).getId().equals(this.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
+
 }

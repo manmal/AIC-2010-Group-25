@@ -70,4 +70,16 @@ public class Customer {
     {
         this.addresses = addresses;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!obj.getClass().equals(this.getClass()))
+            return false;
+        return ((Customer)obj).getId().equals(this.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getId().hashCode();
+    }
 }

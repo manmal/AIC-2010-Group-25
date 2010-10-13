@@ -42,4 +42,24 @@ public class Item {
     {
         this.quantity = quantity;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!obj.getClass().equals(this.getClass()))
+            return false;
+        Item otherItem = (Item)obj;
+        return (otherItem.getOrder().equals(this.getOrder()) &&
+                otherItem.getProduct().equals(this.getProduct()) &&
+                otherItem.getQuantity() == this.getQuantity());
+    }
+
+    /**
+     * We have no id available, so lets make a composite hashcode out of
+     * the order and the product, which are not supposed to change.
+     * @return
+     */
+    @Override
+    public int hashCode() {
+        return getOrder().hashCode() + getProduct().hashCode();
+    }
 }
