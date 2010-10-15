@@ -16,7 +16,7 @@ public class ShippingServiceImpl implements ShippingService {
     @Override
     public String shipItems(Item[] items, Address address) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
         System.out.println(sdf.format(new Date()));
 
         StringBuilder sb = new StringBuilder("Sending items ");
