@@ -67,13 +67,25 @@ public class Order {
 
     @Override
     public boolean equals(Object obj) {
-        if (!obj.getClass().equals(this.getClass()))
+        if (obj == null) {
             return false;
-        return ((Order)obj).getId().equals(this.getId());
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Order other = (Order) obj;
+        if ((this.id == null) ? (other.id != null) : !this.id.equals(other.id)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return getId().hashCode();
+        int hash = 7;
+        hash = 53 * hash + (this.id != null ? this.id.hashCode() : 0);
+        return hash;
     }
+
+    
 }

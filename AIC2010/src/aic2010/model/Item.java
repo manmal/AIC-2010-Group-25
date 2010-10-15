@@ -45,21 +45,33 @@ public class Item {
 
     @Override
     public boolean equals(Object obj) {
-        if (!obj.getClass().equals(this.getClass()))
+        if (obj == null) {
             return false;
-        Item otherItem = (Item)obj;
-        return (otherItem.getOrder().equals(this.getOrder()) &&
-                otherItem.getProduct().equals(this.getProduct()) &&
-                otherItem.getQuantity() == this.getQuantity());
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Item other = (Item) obj;
+        if (this.quantity != other.quantity) {
+            return false;
+        }
+        if (this.product != other.product && (this.product == null || !this.product.equals(other.product))) {
+            return false;
+        }
+        if (this.order != other.order && (this.order == null || !this.order.equals(other.order))) {
+            return false;
+        }
+        return true;
     }
 
-    /**
-     * We have no id available, so lets make a composite hashcode out of
-     * the order and the product, which are not supposed to change.
-     * @return
-     */
     @Override
     public int hashCode() {
-        return getOrder().hashCode() + getProduct().hashCode();
+        int hash = 7;
+        hash = 79 * hash + this.quantity;
+        hash = 79 * hash + (this.product != null ? this.product.hashCode() : 0);
+        hash = 79 * hash + (this.order != null ? this.order.hashCode() : 0);
+        return hash;
     }
+
+    
 }

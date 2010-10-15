@@ -73,13 +73,26 @@ public class Customer {
 
     @Override
     public boolean equals(Object obj) {
-        if (!obj.getClass().equals(this.getClass()))
+        if (obj == null) {
             return false;
-        return ((Customer)obj).getId().equals(this.getId());
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Customer other = (Customer) obj;
+        if ((this.id == null) ? (other.id != null) : !this.id.equals(other.id)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return getId().hashCode();
+        int hash = 3;
+        hash = 37 * hash + (this.id != null ? this.id.hashCode() : 0);
+        return hash;
     }
+
+    
+
 }
