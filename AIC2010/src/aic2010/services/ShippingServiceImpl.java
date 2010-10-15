@@ -2,8 +2,8 @@ package aic2010.services;
 
 import aic2010.model.Address;
 import aic2010.model.Item;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 import javax.jws.WebService;
 
@@ -15,7 +15,10 @@ public class ShippingServiceImpl implements ShippingService {
 
     @Override
     public String shipItems(Item[] items, Address address) {
-        System.out.println(new Date());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+        System.out.println(sdf.format(new Date()));
+
         StringBuilder sb = new StringBuilder("Sending items ");
         for(int i=0; i<items.length; i++) {
             Item curItem = items[i];
