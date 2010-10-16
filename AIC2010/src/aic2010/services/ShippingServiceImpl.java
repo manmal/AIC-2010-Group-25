@@ -5,6 +5,7 @@ import aic2010.model.Item;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 @WebService(endpointInterface = "aic2010.services.ShippingService",
@@ -14,7 +15,7 @@ import javax.jws.WebService;
 public class ShippingServiceImpl implements ShippingService {
 
     @Override
-    public String shipItems(Item[] items, Address address) {
+    public String shipItems(@WebParam(name="items")Item[] items, @WebParam(name="address")Address address) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
         System.out.println(sdf.format(new Date()));
