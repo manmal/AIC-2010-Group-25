@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)   //serialize all fields by default
@@ -21,6 +22,7 @@ public class Order {
     @XmlJavaTypeAdapter(DateAdapter.class)
     private Date orderDate;
 
+    @XmlTransient
     private List<Item> items;
    
     private Customer customer;

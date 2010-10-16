@@ -113,6 +113,30 @@ public class Address {
         this.zipCode = zipCode;
     }
 
+    /**
+     * Special format for the ShippingService - correct reference in ShippingServiceImpl
+     * if you extract this to a dedicated method!
+     */
+    @Override
+    public String toString() {
+        String addressString = getStreet() + " ";
+        if(getHouse() > 0 && getDoor() > 0)
+            addressString += getHouse() + "/" + getDoor() + ", ";
+        else if (getHouse() > 0)
+            addressString += getHouse() + ", ";
+        else if (getDoor() > 0) {
+            addressString += "Door " + getDoor() + ", ";
+        }
+        else
+            addressString += ", ";
+
+        addressString += getZipCode() + " ";
+        addressString += getCity();
+        return addressString;
+    }
+
+
+
     @Override
     public boolean equals(Object obj) {
         if (!obj.getClass().equals(this.getClass()))
