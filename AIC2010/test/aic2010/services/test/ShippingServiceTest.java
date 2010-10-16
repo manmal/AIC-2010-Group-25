@@ -60,5 +60,7 @@ public class ShippingServiceTest {
         order.setItems(items);
         
         shippingService.shipItems(items.toArray(new Item[0]), address);
+
+        Main.stopAllServices();
     }
 }
