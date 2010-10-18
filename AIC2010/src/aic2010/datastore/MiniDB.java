@@ -122,7 +122,7 @@ public class MiniDB {
     }
 
 
-    public static MiniDB getInstance() {
+    public static MiniDB mdb() {
         return MiniDBHolder.INSTANCE;
     }
 

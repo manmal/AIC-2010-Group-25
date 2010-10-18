@@ -64,8 +64,8 @@ public class ShippingServiceTest {
 
     @Before
     public void buildTestData() {
-        MiniDB.getInstance().resetRunningDB();
-        EmbeddedObjectContainer db = MiniDB.getInstance().getDB();
+        MiniDB.mdb().resetRunningDB();
+        EmbeddedObjectContainer db = MiniDB.mdb().getDB();
 
         AddressOK = Factory.createAddress("Test City", "2890", "Test Street", 4, 10, false, false, false);
         AddressOK.setId(UUID.randomUUID().toString());

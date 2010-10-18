@@ -22,7 +22,7 @@ public class ShippingServiceImpl implements ShippingService {
 
     @Override
     public String shipItems(@WebParam(name="items")Item[] items, @WebParam(name="address")Address address)  throws UnknownAddressException, UnknownProductException {
-        EmbeddedObjectContainer db = MiniDB.getInstance().getDB();
+        EmbeddedObjectContainer db = MiniDB.mdb().getDB();
         
         //check availability:
         if(db.queryByExample(address).size() == 0)

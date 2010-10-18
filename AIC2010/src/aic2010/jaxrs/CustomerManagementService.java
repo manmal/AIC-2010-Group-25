@@ -25,7 +25,7 @@ public class CustomerManagementService {
     @Path("/customers/{id}/")
     public Customer getCustomer(@PathParam("id") String id)
     {
-        MiniDB db = MiniDB.getInstance();
+        MiniDB db = MiniDB.mdb();
         return db.getCustomer(id);
     }
 
@@ -33,7 +33,7 @@ public class CustomerManagementService {
     @Path("/customers/")
     public Response addCustomer(Customer customer)
     {
-        MiniDB db = MiniDB.getInstance();
+        MiniDB db = MiniDB.mdb();
         db.createCustomer(customer);
         return Response.ok().build();
     }
@@ -42,7 +42,7 @@ public class CustomerManagementService {
     @Path("/customers/")
     public Response updateCustomer(Customer customer)
     {
-        MiniDB db = MiniDB.getInstance();
+        MiniDB db = MiniDB.mdb();
         boolean updated = db.updateCustomer(customer);
 
         if (updated)
@@ -57,7 +57,7 @@ public class CustomerManagementService {
     @Path("/customers/{id}/")
     public Response deleteCustomer(@PathParam("id") String id)
     {
-        MiniDB db = MiniDB.getInstance();
+        MiniDB db = MiniDB.mdb();
         boolean deleted = db.deleteCustomer(id);
 
         if (deleted)
@@ -78,7 +78,7 @@ public class CustomerManagementService {
     @Path("/customers/update_account")
     public Response update_account(Customer customer, BigDecimal changedValue)
     {
-        MiniDB db = MiniDB.getInstance();
+        MiniDB db = MiniDB.mdb();
         Customer actCustomer = db.getCustomer(customer.getId());
         BigDecimal ob = actCustomer.getOpenBalance();
         ob.add(changedValue);
