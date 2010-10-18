@@ -1,3 +1,4 @@
+
 <wsdl:definitions name="ShippingService" targetNamespace="http://services.aic2010/" xmlns:ns1="http://services.aic2010/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <wsdl:types>
         <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://services.aic2010/" xmlns:tns="http://services.aic2010/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
@@ -24,7 +25,6 @@
             <xs:complexType name="order">
                 <xs:sequence>
                     <xs:element minOccurs="0" name="orderDate" type="xs:long" />
-                    <xs:element maxOccurs="unbounded" minOccurs="0" name="items" nillable="true" type="tns:item" />
                     <xs:element minOccurs="0" name="customer" type="tns:customer" />
                 </xs:sequence>
                 <xs:attribute name="id" type="xs:string" use="required" />
@@ -51,6 +51,8 @@
                 </xs:sequence>
                 <xs:attribute name="id" type="xs:string" use="required" />
             </xs:complexType>
+            <xs:element name="UnknownAddressFault" nillable="true" type="xs:string" />
+            <xs:element name="UnknownProductFault" nillable="true" type="xs:string" />
             <xs:element name="ship_items" type="tns:ship_items" />
             <xs:complexType name="ship_items">
                 <xs:sequence>
@@ -66,6 +68,10 @@
             </xs:complexType>
         </xs:schema>
     </wsdl:types>
+    <wsdl:message name="UnknownProductException">
+        <wsdl:part element="ns1:UnknownProductFault" name="UnknownProductException">
+        </wsdl:part>
+    </wsdl:message>
     <wsdl:message name="ship_itemsResponse">
         <wsdl:part element="ns1:ship_itemsResponse" name="parameters">
         </wsdl:part>
@@ -74,12 +80,20 @@
         <wsdl:part element="ns1:ship_items" name="parameters">
         </wsdl:part>
     </wsdl:message>
+    <wsdl:message name="UnknownAddressException"> 
+        <wsdl:part element="ns1:UnknownAddressFault" name="UnknownAddressException">
+        </wsdl:part>
+    </wsdl:message>
     <wsdl:portType name="ShippingService">
         <wsdl:operation name="ship_items">
             <wsdl:input message="ns1:ship_items" name="ship_items">
             </wsdl:input>
             <wsdl:output message="ns1:ship_itemsResponse" name="ship_itemsResponse">
             </wsdl:output>
+            <wsdl:fault message="ns1:UnknownAddressException" name="UnknownAddressException">
+            </wsdl:fault>
+            <wsdl:fault message="ns1:UnknownProductException" name="UnknownProductException">
+            </wsdl:fault>
         </wsdl:operation>
     </wsdl:portType>
 </wsdl:definitions>

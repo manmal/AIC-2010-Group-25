@@ -1,7 +1,12 @@
 package aic2010.services;
 
+import aic2010.datastore.MiniDB;
+import aic2010.exception.UnknownAddressException;
+import aic2010.exception.UnknownProductException;
 import aic2010.model.Address;
 import aic2010.model.Item;
+import com.db4o.EmbeddedObjectContainer;
+import com.db4o.ObjectContainer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -16,7 +21,16 @@ import javax.jws.WebService;
 public class ShippingServiceImpl implements ShippingService {
 
     @Override
-    public String shipItems(@WebParam(name="items")Item[] items, @WebParam(name="address")Address address) {
+    public String shipItems(@WebParam(name="items")Item[] items, @WebParam(name="address")Address address)  throws UnknownAddressException, UnknownProductException {
+        EmbeddedObjectContainer db = MiniDB.getInstance().getDB();
+        
+        //check availability:
+        if(db.queryByExample(address).size() == 0)
+            throw new UnknownAddressException("", address.toString());
+        for (Item item : items) {
+            if(db.queryByExample(item.getProduct()).size() == 0)
+                throw new UnknownProductException("", item.getProduct().getName());
+        }
 
         // English locale is used to match the assignment:
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);

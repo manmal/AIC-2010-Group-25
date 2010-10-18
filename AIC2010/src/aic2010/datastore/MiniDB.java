@@ -115,6 +115,12 @@ public class MiniDB {
         db = Db4oEmbedded.openFile(dbFile);
     }
 
+    public void resetRunningDB() {
+        db.close();
+        clearDB();
+        createDB();
+    }
+
 
     public static MiniDB getInstance() {
         return MiniDBHolder.INSTANCE;
