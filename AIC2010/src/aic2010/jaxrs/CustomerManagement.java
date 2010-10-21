@@ -69,7 +69,7 @@ public class CustomerManagement {
         customer.setId(UUID.randomUUID().toString());
         db.store(customer);
 
-        //Log.println("Added Customer with id " + customer.getId() + " and name " + customer.getName());
+        log.info("Added Customer with id " + customer.getId() + " and name " + customer.getName());
         return Response.ok().build();
     }
 
@@ -89,7 +89,7 @@ public class CustomerManagement {
             storedCustomer.setOrders(customer.getOrders());
             db.store(storedCustomer);
 
-            //Log.println("Updated Customer with id " + storedCustomer.getId() + " and name " + storedCustomer.getName());
+            log.info("Updated Customer with id " + storedCustomer.getId() + " and name " + storedCustomer.getName());
             return Response.ok().build();
         }
 
@@ -108,7 +108,7 @@ public class CustomerManagement {
         if (customer != null)
         {
             db.delete(customer);
-            //Log.println("Deleted Customer with id " + customer.getId() + " and name " + customer.getName());
+            log.info("Deleted Customer with id " + customer.getId() + " and name " + customer.getName());
             return Response.ok().build();
         }
 

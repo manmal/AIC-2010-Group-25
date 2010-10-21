@@ -22,6 +22,7 @@ import org.apache.cxf.jaxws.EndpointImpl;
 public class Main {
 
     public static final String BASE_URL = "http://localhost:8088/";
+    public static final String BASE_REST_URL = "http://localhost:9000/";
     public static final String SHIPPING_SERVICE_URL = BASE_URL + "shippingservice";
     public static final String CUSTOMER_SERVICE_URL = BASE_URL + "customerservice";
 
@@ -34,13 +35,12 @@ public class Main {
 
     public static void startCustomerManagementService() {
 
-        /*
         //create rest server bean
         JAXRSServerFactoryBean sf = new JAXRSServerFactoryBean();
         sf.setResourceClasses(CustomerManagement.class);
         sf.setResourceProvider(CustomerManagement.class,
             new SingletonResourceProvider(new CustomerManagement()));
-        sf.setAddress(BASE_URL);
+        sf.setAddress(BASE_REST_URL);
 
         //create binding factory for rest server
         BindingFactoryManager manager = sf.getBus().getExtension(BindingFactoryManager.class);
@@ -50,8 +50,6 @@ public class Main {
 
         //create server
         sf.create();
-        */
-
         
         //create soap service
         CustomerService customerService = new CustomerServiceImpl();
