@@ -1,20 +1,17 @@
 package aic2010.datastore;
 
 import aic2010.model.Customer;
-import aic2010.utils.Log;
 import com.db4o.Db4oEmbedded;
 import com.db4o.EmbeddedObjectContainer;
-import com.db4o.ObjectSet;
 import java.io.File;
 import java.util.List;
-import java.util.UUID;
 
 /**
  *
  * @author Alex
  */
 public class MiniDB {
-    private static String dbFile = "resources" + File.pathSeparator + "testdb";
+    private static String dbFile = "resources" + File.separator + "testdb";
 
     private EmbeddedObjectContainer db;
 

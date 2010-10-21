@@ -2,7 +2,6 @@ package aic2010.jaxrs;
 
 import aic2010.datastore.MiniDB;
 import aic2010.model.Customer;
-import aic2010.utils.Log;
 import com.db4o.EmbeddedObjectContainer;
 import com.db4o.ObjectSet;
 import java.math.BigDecimal;
@@ -16,12 +15,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import org.apache.log4j.Logger;
 
 @Path("/customerservice/")
 @Produces("application/json")
 @Consumes("application/json")
 public class CustomerManagement {
-  
+
+    private static Logger log = Logger.getLogger(CustomerManagement.class);
+
     public CustomerManagement() {
     }
 
@@ -43,14 +45,14 @@ public class CustomerManagement {
 
             if (resultSet.hasNext())
             {
-                Log.println("Warning, more than one customer with id=" + id + " found.");
+                log.warn("Warning, more than one customer with id=" + id + " found.");
             }
 
             return customer;
         }
         else
         {
-            Log.println("Warning, no customer with id=" + id + " found.");
+            log.warn("Warning, no customer with id=" + id + " found.");
         }
 
         return null;
@@ -67,7 +69,7 @@ public class CustomerManagement {
         customer.setId(UUID.randomUUID().toString());
         db.store(customer);
 
-        Log.println("Added Customer with id " + customer.getId() + " and name " + customer.getName());
+        //Log.println("Added Customer with id " + customer.getId() + " and name " + customer.getName());
         return Response.ok().build();
     }
 
@@ -87,7 +89,7 @@ public class CustomerManagement {
             storedCustomer.setOrders(customer.getOrders());
             db.store(storedCustomer);
 
-            Log.println("Updated Customer with id " + storedCustomer.getId() + " and name " + storedCustomer.getName());
+            //Log.println("Updated Customer with id " + storedCustomer.getId() + " and name " + storedCustomer.getName());
             return Response.ok().build();
         }
 
@@ -106,7 +108,7 @@ public class CustomerManagement {
         if (customer != null)
         {
             db.delete(customer);
-            Log.println("Deleted Customer with id " + customer.getId() + " and name " + customer.getName());
+            //Log.println("Deleted Customer with id " + customer.getId() + " and name " + customer.getName());
             return Response.ok().build();
         }
 

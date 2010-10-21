@@ -1,9 +1,9 @@
 package aic2010.services;
 
 import aic2010.model.Customer;
-import aic2010.utils.Log;
 import java.math.BigDecimal;
 import javax.jws.WebService;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -15,23 +15,25 @@ import javax.jws.WebService;
             portName="CustomerPT")
 public class CustomerServiceImpl implements CustomerService {
 
+    private static Logger log = Logger.getLogger(CustomerService.class);
+
     @Override
     public Customer getCustomer()
     {
-        Log.println("GetCustomer");
+        log.debug("GetCustomer");
         return null;
     }
 
     @Override
     public void addCustomer(Customer customer)
     {
-        Log.println("AddCustomer");
+        log.debug("AddCustomer");
     }
 
     @Override
     public void updateCustomer(Customer customer)
     {
-        Log.println("UpdateCustomer");
+        log.debug("UpdateCustomer");
     }
 
     @Override
