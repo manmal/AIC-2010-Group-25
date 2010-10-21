@@ -1,7 +1,8 @@
 package aic2010.services.test;
 
+import java.util.Collection;
+import aic2010.utils.Factory;
 import at.ac.tuwien.infosys.aic10.ass1.dto.customerservice.CustomerServiceClient;
-import aic2010.services.CustomerServiceImpl;
 import aic2010.Main;
 import aic2010.model.Customer;
 import aic2010.services.CustomerService;
@@ -39,11 +40,30 @@ public class CustomerServiceTest {
         CustomerServiceClient client = new CustomerServiceClient();
         CustomerService cs = client.getCustomerPT();
 
-        try {
-            assertNull(cs.getCustomer());
-        } catch (Exception ex) {
-            assertTrue(false);
-        }
+        Customer customer = Factory.createCustomer("Customer1", BigDecimal.valueOf(17.3), null, null);
+        cs.addCustomer(customer);
+
+        Customer newCustomer = cs.getCustomer("1");
+
+        assertEquals("Customer1", newCustomer.getName());
+        assertEquals(BigDecimal.valueOf(17.3), newCustomer.getOpenBalance());
+    }
+
+    @Test
+    public void testGetCustomers()
+    {
+        CustomerServiceClient client = new CustomerServiceClient();
+        CustomerService cs = client.getCustomerPT();
+
+        Customer c1 = Factory.createCustomer("Customer1", BigDecimal.valueOf(1), null, null);
+        Customer c2 = Factory.createCustomer("Customer2", BigDecimal.valueOf(17.3), null, null);
+        Customer c3 = Factory.createCustomer("Customer3", BigDecimal.valueOf(-25.7), null, null);
+        cs.addCustomer(c1);
+        cs.addCustomer(c2);
+        cs.addCustomer(c3);
+
+        Collection<Customer> customers = cs.getCustomers();
+        assertEquals(3, customers.size());
     }
 
 }
