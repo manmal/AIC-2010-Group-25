@@ -2,10 +2,10 @@ package aic2010.jaxrs;
 
 import aic2010.datastore.MiniDB;
 import aic2010.model.Customer;
+import aic2010.model.Customers;
 import com.db4o.EmbeddedObjectContainer;
 import com.db4o.ObjectSet;
 import java.math.BigDecimal;
-import java.util.Collection;
 import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
@@ -51,14 +51,18 @@ public class CustomerManagementImpl implements CustomerManagement {
     }
 
     @Override
-    public Collection<Customer>getCustomers()
+    public Customers getCustomers()
     {
         MiniDB mdb = MiniDB.mdb();
         EmbeddedObjectContainer db = mdb.getDB();
 
         ObjectSet<Customer> resultSet = db.query(Customer.class);
-        log.info("Returning " + resultSet.size() + " customers");        
-        return resultSet;
+        log.info("Returning " + resultSet.size() + " customers");
+
+        Customers customers = new Customers();
+        customers.setCustomers(resultSet);
+
+        return customers;
     }
 
     @Override

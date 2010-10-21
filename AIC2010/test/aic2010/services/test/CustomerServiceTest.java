@@ -1,6 +1,7 @@
 package aic2010.services.test;
 
-import java.util.Collection;
+import aic2010.datastore.MiniDB;
+import java.util.List;
 import aic2010.utils.Factory;
 import at.ac.tuwien.infosys.aic10.ass1.dto.customerservice.CustomerServiceClient;
 import aic2010.Main;
@@ -23,6 +24,7 @@ public class CustomerServiceTest {
 
     @Before
     public void setUp() {
+        MiniDB.mdb().resetRunningDB();
         Main.startCustomerManagementService();
     }
 
@@ -50,6 +52,24 @@ public class CustomerServiceTest {
     }
 
     @Test
+    public void testGetCustomersWithOneCustomer()
+    {
+        //We have to test this since json seems to have problems with lists containing only one element
+        CustomerServiceClient client = new CustomerServiceClient();
+        CustomerService cs = client.getCustomerPT();
+
+        Customer c1 = Factory.createCustomer("Customer1", BigDecimal.valueOf(1), null, null);
+        cs.addCustomer(c1);
+
+        List<Customer> customers = cs.getCustomers();
+        c1 = customers.get(0);
+        assertEquals(1, customers.size());
+        assertEquals("Customer1", c1.getName());
+        assertEquals(BigDecimal.valueOf(1), c1.getOpenBalance());
+    }
+
+
+    @Test
     public void testGetCustomers()
     {
         CustomerServiceClient client = new CustomerServiceClient();
@@ -62,7 +82,7 @@ public class CustomerServiceTest {
         cs.addCustomer(c2);
         cs.addCustomer(c3);
 
-        Collection<Customer> customers = cs.getCustomers();
+        List<Customer> customers = cs.getCustomers();
         assertEquals(3, customers.size());
     }
 

@@ -1,8 +1,8 @@
 package aic2010.jaxrs;
 
 import aic2010.model.Customer;
+import aic2010.model.Customers;
 import java.math.BigDecimal;
-import java.util.Collection;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -29,7 +29,7 @@ public interface CustomerManagement
 
     @GET
     @Path("/customers/")
-    public Collection<Customer> getCustomers();
+    public Customers getCustomers();
 
     @POST
     @Path("/customers/")

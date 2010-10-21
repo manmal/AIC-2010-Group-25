@@ -2,7 +2,7 @@ package aic2010.services;
 
 import aic2010.model.Customer;
 import java.math.BigDecimal;
-import java.util.Collection;
+import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -15,7 +15,7 @@ public interface CustomerService {
     public Customer getCustomer(@WebParam(name="id") String id);
 
     @WebMethod(operationName="get_all_customers")
-    public Collection<Customer> getCustomers();
+    public List<Customer> getCustomers();
 
     @WebMethod(operationName="add_customer")
     public void addCustomer(@WebParam(name="customer") Customer customer);

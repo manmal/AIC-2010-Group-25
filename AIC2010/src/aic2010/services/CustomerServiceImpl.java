@@ -3,10 +3,8 @@ package aic2010.services;
 import aic2010.Main;
 import aic2010.jaxrs.CustomerManagement;
 import aic2010.model.Customer;
-import aic2010.utils.Factory;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import javax.jws.WebService;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.apache.log4j.Logger;
@@ -39,10 +37,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Collection<Customer> getCustomers()
+    public List<Customer> getCustomers()
     {
         log.info("Forward get all customers request to CustomerManagement service");
-        return cm.getCustomers();
+        return cm.getCustomers().getCustomers();
     }
 
     @Override
