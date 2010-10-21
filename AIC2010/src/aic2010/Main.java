@@ -1,6 +1,6 @@
 package aic2010;
 
-import aic2010.jaxrs.CustomerManagement;
+import aic2010.jaxrs.CustomerManagementImpl;
 import aic2010.services.CustomerService;
 import aic2010.services.CustomerServiceImpl;
 import aic2010.services.ShippingService;
@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.ws.Endpoint;
 import org.apache.cxf.binding.BindingFactoryManager;
+import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxrs.JAXRSBindingFactory;
@@ -22,6 +23,8 @@ import org.apache.cxf.jaxws.EndpointImpl;
 public class Main {
 
     public static final String BASE_URL = "http://localhost:8088/";
+    public static final String REST_BASE_URL = "http://localhost:9000/";
+    public static final String REST_CUSTOMER_SERVICE_URL = REST_BASE_URL + "customermanagement";
     public static final String SHIPPING_SERVICE_URL = BASE_URL + "shippingservice";
     public static final String CUSTOMER_SERVICE_URL = BASE_URL + "customerservice";
 
@@ -36,10 +39,10 @@ public class Main {
 
         //create rest server bean
         JAXRSServerFactoryBean sf = new JAXRSServerFactoryBean();
-        sf.setResourceClasses(CustomerManagement.class);
-        sf.setResourceProvider(CustomerManagement.class,
-            new SingletonResourceProvider(new CustomerManagement()));
-        sf.setAddress(BASE_URL);
+        sf.setResourceClasses(CustomerManagementImpl.class);
+        sf.setResourceProvider(CustomerManagementImpl.class,
+            new SingletonResourceProvider(new CustomerManagementImpl()));
+        sf.setAddress(REST_BASE_URL);
 
         //create binding factory for rest server
         BindingFactoryManager manager = sf.getBus().getExtension(BindingFactoryManager.class);
@@ -48,7 +51,9 @@ public class Main {
         manager.registerBindingFactory(JAXRSBindingFactory.JAXRS_BINDING_ID, factory);
 
         //create server
-        sf.create();
+        Server server = sf.create();
+        server.getEndpoint().getOutInterceptors().add(new LoggingOutInterceptor());
+        server.getEndpoint().getInInterceptors().add(new LoggingInInterceptor());
         
         //create soap service
         CustomerService customerService = new CustomerServiceImpl();
