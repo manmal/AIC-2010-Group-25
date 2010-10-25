@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package aic2010.services.test;
 
 import aic2010.Main;
@@ -28,10 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- *
- * @author manuelmaly
- */
 public class ShippingServiceTest {
 
     private Address AddressOK;
@@ -47,7 +38,6 @@ public class ShippingServiceTest {
 
     private Order OrderOK;
     private Order OrderWithFaultyProduct;
-    private Order OrderWithFaultyAddress;
 
     private Customer CustomerOK;
 
@@ -70,20 +60,16 @@ public class ShippingServiceTest {
         AddressOK = Factory.createAddress("Test City", "2890", "Test Street", 4, 10, false, false, false);
         AddressOK.setId(UUID.randomUUID().toString());
 
-        CustomerOK = new Customer();
-        OrderOK = new Order();
-        OrderOK.setCustomer(CustomerOK);
-        OrderOK.setOrderDate(new Date());
+        CustomerOK = Factory.createCustomer("Any Andy", BigDecimal.ZERO, null, null);
+        CustomerOK.setId(UUID.randomUUID().toString());
 
-        ProductOK = new Product();
+        OrderOK = Factory.createOrder(CustomerOK, null, new Date());
+        OrderOK.setId(UUID.randomUUID().toString());
+
+        ProductOK = Factory.createProduct(null, "Test Product", BigDecimal.ZERO);
         ProductOK.setId(UUID.randomUUID().toString());
-        ProductOK.setName("Test Product");
-        ProductOK.setSingleUnitPrice(BigDecimal.ZERO);
 
-        ItemOK = new Item();
-        ItemOK.setOrder(OrderOK);
-        ItemOK.setProduct(ProductOK);
-        ItemOK.setQuantity(2);
+        ItemOK = Factory.createItem(OrderOK, ProductOK, 2);
 
         ItemsOK = new ArrayList<Item>();
         ItemsOK.add(ItemOK);
@@ -92,21 +78,19 @@ public class ShippingServiceTest {
         db.store(OrderOK);
         db.store(AddressOK);
 
+        /////// FAULTY ENTITIES ///////
 
-        OrderWithFaultyProduct = new Order();
-        OrderWithFaultyProduct.setCustomer(CustomerOK);
-        OrderWithFaultyProduct.setOrderDate(new Date());
+        // Note that the faulty entities are not stored into the DB,
+        // and will thus not be available to the WS (which is what we want)!
+
+        OrderWithFaultyProduct = Factory.createOrder(CustomerOK, null, new Date());
+        OrderWithFaultyProduct.setId(UUID.randomUUID().toString());
 
         // Product is faulty, which means it will not be stored in the DB
-        ProductMissing = new Product();
+        ProductMissing = Factory.createProduct(null, "Faulty Test Product", BigDecimal.ZERO);
         ProductMissing.setId(UUID.randomUUID().toString());
-        ProductMissing.setName("Faulty Test Product");
-        ProductMissing.setSingleUnitPrice(BigDecimal.ZERO);
 
-        ItemWithFaultyProduct = new Item();
-        ItemWithFaultyProduct.setOrder(OrderWithFaultyProduct);
-        ItemWithFaultyProduct.setProduct(null);
-        ItemWithFaultyProduct.setQuantity(2);
+        ItemWithFaultyProduct = Factory.createItem(OrderWithFaultyProduct, null, 2);
 
         ItemsWithMissingProduct = new ArrayList<Item>();
         ItemsWithMissingProduct.add(ItemWithFaultyProduct);
@@ -120,6 +104,9 @@ public class ShippingServiceTest {
         // to generate an error:
 
         ItemWithFaultyProduct.setProduct(ProductMissing);
+
+        AddressFaulty = Factory.createAddress("Missing Test City", "Missing ZIP", "Missing Street", -1, -1, false, false, false);
+        AddressFaulty.setId(UUID.randomUUID().toString());
 
         db.rollback();
     }
@@ -138,11 +125,7 @@ public class ShippingServiceTest {
     }
 
     @Test
-    public void testShipMissingProduct() {
-        
-
-        buildTestData();
-
+    public void testShipMissingProduct() { 
         ShippingServiceClient client = new ShippingServiceClient();
         ShippingService shippingService = client.getShippingPT();
         try {
@@ -154,8 +137,23 @@ public class ShippingServiceTest {
              // we expect the unknown product exception!
              Assert.assertTrue(true);
         }
-        Main.stopAllServices();
     }
 
+    @Test
+    public void testShipMissingAddress() {
+        buildTestData();
+
+        ShippingServiceClient client = new ShippingServiceClient();
+        ShippingService shippingService = client.getShippingPT();
+        try {
+            shippingService.shipItems(ItemsOK.toArray(new Item[0]), AddressFaulty);
+            Assert.assertTrue(false);
+        } catch (UnknownAddressException ex) {
+            // we expect the unknown address exception!
+             Assert.assertTrue(true);
+        } catch (UnknownProductException ex) {             
+             Assert.assertTrue(false);
+        }
+    }
 
 }
