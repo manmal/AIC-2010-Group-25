@@ -135,18 +135,73 @@ public class Address {
         return addressString;
     }
 
-
-
     @Override
-    public boolean equals(Object obj) {
-        if (!obj.getClass().equals(this.getClass()))
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+        {
             return false;
-        return ((Address)obj).getId().equals(this.getId());
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final Address other = (Address) obj;
+        if ((this.id == null) ? (other.id != null) : !this.id.equals(other.id))
+        {
+            return false;
+        }
+        if ((this.street == null) ? (other.street != null) : !this.street.equals(other.street))
+        {
+            return false;
+        }
+        if ((this.city == null) ? (other.city != null) : !this.city.equals(other.city))
+        {
+            return false;
+        }
+        if (this.house != other.house)
+        {
+            return false;
+        }
+        if (this.door != other.door)
+        {
+            return false;
+        }
+        if ((this.zipCode == null) ? (other.zipCode != null) : !this.zipCode.equals(other.zipCode))
+        {
+            return false;
+        }
+        if (this.shipping != other.shipping)
+        {
+            return false;
+        }
+        if (this.billing != other.billing)
+        {
+            return false;
+        }
+        if (this.other != other.other)
+        {
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public int hashCode() {
-        return getId().hashCode();
+    public int hashCode()
+    {
+        int hash = 5;
+        hash = 67 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 67 * hash + (this.street != null ? this.street.hashCode() : 0);
+        hash = 67 * hash + (this.city != null ? this.city.hashCode() : 0);
+        hash = 67 * hash + this.house;
+        hash = 67 * hash + this.door;
+        hash = 67 * hash + (this.zipCode != null ? this.zipCode.hashCode() : 0);
+        hash = 67 * hash + (this.shipping ? 1 : 0);
+        hash = 67 * hash + (this.billing ? 1 : 0);
+        hash = 67 * hash + (this.other ? 1 : 0);
+        return hash;
     }
+
+
 
 }

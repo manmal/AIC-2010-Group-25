@@ -6,11 +6,13 @@ import java.math.BigDecimal;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.MatrixParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 /**
@@ -44,6 +46,10 @@ public interface CustomerManagement
     public Response deleteCustomer(@PathParam("id") String id);
 
     @PUT
-    @Path("/customers/update_account")
-    public Response update_account(Customer customer, BigDecimal changedValue);
+    @Path("/notify")
+    public Response notify(@QueryParam("customer") String customer, @QueryParam("message") String message);
+
+    @PUT
+    @Path("/customers/update_account/")
+    public Response update_account(Customer customer, @QueryParam("changedValue") BigDecimal changedValue);
 }

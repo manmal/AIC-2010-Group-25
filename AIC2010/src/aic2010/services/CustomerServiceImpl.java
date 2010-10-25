@@ -4,6 +4,7 @@ import aic2010.Main;
 import aic2010.jaxrs.CustomerManagement;
 import aic2010.model.Customer;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.jws.WebService;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
@@ -40,7 +41,8 @@ public class CustomerServiceImpl implements CustomerService {
     public List<Customer> getCustomers()
     {
         log.info("Forward get all customers request to CustomerManagement service");
-        return cm.getCustomers().getCustomers();
+        //note that json returns an empty list as null
+       return cm.getCustomers().getCustomers();
     }
 
     @Override
@@ -65,10 +67,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void notify(Customer customer, String message)
+    public void notify(String customer, String message)
     {
-        //still not sure what this method should do...?!?
-        throw new UnsupportedOperationException("Not supported yet.");
+        log.info("Forward notify request to CustomerManagement service");
+        cm.notify(customer, message);
     }
 
     @Override

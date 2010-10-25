@@ -25,9 +25,9 @@ public class MiniDB {
         return db.query(Customer.class);
     }
 
-    public EmbeddedObjectContainer getDB()
+    public static EmbeddedObjectContainer getDB()
     {
-        return db;
+        return MiniDB.mdb().db;
     }
 
     public void closeTestDB(EmbeddedObjectContainer db) {

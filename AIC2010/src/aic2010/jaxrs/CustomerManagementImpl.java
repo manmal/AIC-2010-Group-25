@@ -1,18 +1,18 @@
 package aic2010.jaxrs;
 
 import aic2010.datastore.MiniDB;
+import aic2010.model.Address;
 import aic2010.model.Customer;
 import aic2010.model.Customers;
+import aic2010.model.Order;
 import com.db4o.EmbeddedObjectContainer;
 import com.db4o.ObjectSet;
 import java.math.BigDecimal;
+import java.util.UUID;
 import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
 public class CustomerManagementImpl implements CustomerManagement {
-
-    //TODO Remove this
-    private static long userID = 0;
 
     private static Logger log = Logger.getLogger(CustomerManagementImpl.class);
 
@@ -22,8 +22,7 @@ public class CustomerManagementImpl implements CustomerManagement {
     @Override
     public Customer getCustomer(String id)
     {
-        MiniDB mdb = MiniDB.mdb();
-        EmbeddedObjectContainer db = mdb.getDB();
+        EmbeddedObjectContainer db = MiniDB.getDB();
 
         Customer example = new Customer();
         example.setId(id);
@@ -53,8 +52,7 @@ public class CustomerManagementImpl implements CustomerManagement {
     @Override
     public Customers getCustomers()
     {
-        MiniDB mdb = MiniDB.mdb();
-        EmbeddedObjectContainer db = mdb.getDB();
+        EmbeddedObjectContainer db = MiniDB.getDB();
 
         ObjectSet<Customer> resultSet = db.query(Customer.class);
         log.info("Returning " + resultSet.size() + " customers");
@@ -68,11 +66,10 @@ public class CustomerManagementImpl implements CustomerManagement {
     @Override
     public Response addCustomer(Customer customer)
     {
-        MiniDB mdb = MiniDB.mdb();
-        EmbeddedObjectContainer db = mdb.getDB();
+        EmbeddedObjectContainer db = MiniDB.getDB();
 
-        //customer.setId(UUID.randomUUID().toString());
-        customer.setId(Long.toString(++userID));
+        //set customer id
+        customer.setId(UUID.randomUUID().toString());
         db.store(customer);
 
         log.info("Added Customer with id " + customer.getId() + " and name " + customer.getName());
@@ -82,8 +79,7 @@ public class CustomerManagementImpl implements CustomerManagement {
     @Override
     public Response updateCustomer(Customer customer)
     {
-        MiniDB mdb = MiniDB.mdb();
-        EmbeddedObjectContainer db = mdb.getDB();
+        EmbeddedObjectContainer db = MiniDB.getDB();
 
         Customer storedCustomer = getCustomer(customer.getId());
         if (storedCustomer != null)
@@ -104,8 +100,7 @@ public class CustomerManagementImpl implements CustomerManagement {
     @Override
     public Response deleteCustomer(String id)
     {
-        MiniDB mdb = MiniDB.mdb();
-        EmbeddedObjectContainer db = mdb.getDB();
+        EmbeddedObjectContainer db = MiniDB.getDB();
 
         Customer customer = getCustomer(id);
 
@@ -118,26 +113,23 @@ public class CustomerManagementImpl implements CustomerManagement {
 
         return Response.notModified().build();
     }
-   
-    /*
-    public Response notify(Customer customer, String message)
+
+    @Override
+    public Response notify(String customer, String message)
     {
         //nothing in the assignment says what to do with that...
         return Response.ok().build();
-    }*/
+    }
 
     @Override
     public Response update_account(Customer customer, BigDecimal changedValue)
     {
-        MiniDB mdb = MiniDB.mdb();
-        EmbeddedObjectContainer db = mdb.getDB();
-
-        //TODO_ check if this is a good idea to use methods registered as WebService
+        log.debug("Changed value is " + changedValue.toString());
         Customer actCustomer = getCustomer(customer.getId());
         BigDecimal ob = actCustomer.getOpenBalance();
-        ob.add(changedValue);
-        log.info("Changed the balance to " + ob.toString());
 
+        actCustomer.setOpenBalance(ob.add(changedValue));
+        log.info("Changed the balance to " + ob.toString());
         updateCustomer(actCustomer);
 
         return Response.ok().build();

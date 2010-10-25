@@ -72,27 +72,49 @@ public class Customer {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean equals(Object obj)
+    {
+        if (obj == null)
+        {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
+        {
             return false;
         }
         final Customer other = (Customer) obj;
-        if ((this.id == null) ? (other.id != null) : !this.id.equals(other.id)) {
+        if ((this.id == null) ? (other.id != null) : !this.id.equals(other.id))
+        {
+            return false;
+        }
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name))
+        {
+            return false;
+        }
+        if (this.openBalance != other.openBalance && (this.openBalance == null || !this.openBalance.equals(other.openBalance)))
+        {
+            return false;
+        }
+        if (this.orders != other.orders && (this.orders == null || !this.orders.equals(other.orders)))
+        {
+            return false;
+        }
+        if (this.addresses != other.addresses && (this.addresses == null || !this.addresses.equals(other.addresses)))
+        {
             return false;
         }
         return true;
     }
 
     @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 37 * hash + (this.id != null ? this.id.hashCode() : 0);
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 97 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 97 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 97 * hash + (this.openBalance != null ? this.openBalance.hashCode() : 0);
+        hash = 97 * hash + (this.orders != null ? this.orders.hashCode() : 0);
+        hash = 97 * hash + (this.addresses != null ? this.addresses.hashCode() : 0);
         return hash;
     }
-
-    
-
 }
