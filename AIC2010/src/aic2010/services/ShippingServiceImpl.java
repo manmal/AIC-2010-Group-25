@@ -13,12 +13,15 @@ import java.util.Locale;
 import java.util.UUID;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import org.apache.log4j.Logger;
 
 @WebService(endpointInterface = "aic2010.services.ShippingService",
             serviceName = "ShippingService",
             targetNamespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping",
             portName="ShippingPT")
 public class ShippingServiceImpl implements ShippingService {
+
+    private static Logger log = Logger.getLogger(CustomerService.class);
 
     @Override
     public String shipItems(@WebParam(name="items")Item[] items, @WebParam(name="address")Address address)  throws UnknownAddressException, UnknownProductException {
@@ -34,7 +37,8 @@ public class ShippingServiceImpl implements ShippingService {
 
         // English locale is used to match the assignment:
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        System.out.println(sdf.format(new Date()));
+
+        log.info(sdf.format(new Date()));
 
         StringBuilder sb = new StringBuilder("Sending item");
         sb.append(items.length > 1 ? "s " : " ");
@@ -44,8 +48,8 @@ public class ShippingServiceImpl implements ShippingService {
             sb.append(items.length == i+1 ? " to" : ", ");
         }
 
-        System.out.println(sb.toString());
-        System.out.println(address.toString());
+        log.info(sb.toString());
+        log.info(address.toString());
         
         return UUID.randomUUID().toString();
     }
