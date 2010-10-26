@@ -7,6 +7,8 @@ package aic2010.services;
 
 import aic2010.model.Product;
 import java.math.BigDecimal;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 /**
@@ -15,5 +17,8 @@ import javax.jws.WebService;
  */
 @WebService
 public interface SupplierService {
-    public BigDecimal order(Product product, int amount);
+
+    @WebMethod(operationName="order")
+    public BigDecimal order(@WebParam(name="product") Product product,
+                            @WebParam(name="amount") int amount);
 }

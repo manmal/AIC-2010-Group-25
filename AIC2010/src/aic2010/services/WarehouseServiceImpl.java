@@ -26,6 +26,11 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     public WarehouseServiceImpl(){
             products = new HashMap<String, Product>();
+            addProducts();
+    }
+
+    private void addProducts(){
+        
     }
 
     @Override
