@@ -68,8 +68,6 @@ public class CustomerManagementImpl implements CustomerManagement {
     {
         EmbeddedObjectContainer db = MiniDB.getDB();
 
-        //set customer id
-        customer.setId(UUID.randomUUID().toString());
         db.store(customer);
 
         log.info("Added Customer with id " + customer.getId() + " and name " + customer.getName());
