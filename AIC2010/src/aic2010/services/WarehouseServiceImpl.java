@@ -31,7 +31,10 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     private void addProducts(){
-        
+        WarehouseAnswer answer = new WarehouseAnswer();
+        answer.setIsAvailable(true);
+        answer.setDeliveryTime(2);
+//        products.put(, answer);
     }
 
     @Override
