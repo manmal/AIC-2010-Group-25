@@ -1,2 +1,4 @@
 AIC2010/build/**/*
+AIC2010/dist/**/*
+AIC2010/resources/testdb
 /**/.DS_Store

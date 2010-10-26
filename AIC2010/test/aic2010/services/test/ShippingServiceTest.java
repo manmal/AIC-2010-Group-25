@@ -54,7 +54,7 @@ public class ShippingServiceTest {
     @Before
     public void buildTestData() {
         MiniDB.mdb().resetRunningDB();
-        EmbeddedObjectContainer db = MiniDB.mdb().getDB();
+        EmbeddedObjectContainer db = MiniDB.getDB();
 
         AddressOK = Factory.createAddress("Test City", "2890", "Test Street", 4, 10, false, false, false);
         CustomerOK = Factory.createCustomer("Any Andy", BigDecimal.ZERO, null, null);
