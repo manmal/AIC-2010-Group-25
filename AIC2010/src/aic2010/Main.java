@@ -42,6 +42,7 @@ public class Main {
         startCustomerManagementService();
         startSupplierServices();
         startWarehouseService();
+        startRegistryService();
     }
 
     public static void startCustomerManagementService() {
@@ -97,7 +98,15 @@ public class Main {
 
     public static void startWarehouseService(){
         WarehouseService warehouse = new WarehouseServiceImpl();
-        endpoints.add(Endpoint.publish(WAREHOUSE_SERVICE_URL, warehouse));
+        
+        EndpointImpl ep = (EndpointImpl) Endpoint.publish(SUPPLIER_SERVICE1_URL, warehouse);
+        ep.getServer().getEndpoint().getInInterceptors().add(new LoggingInInterceptor());
+        ep.getServer().getEndpoint().getOutInterceptors().add(new LoggingOutInterceptor());
+        endpoints.add(ep);
+    }
+
+    public static void startRegistryService(){
+        
     }
 
     public static void stopAllServices() {
