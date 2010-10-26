@@ -5,8 +5,8 @@ import aic2010.model.Customers;
 import java.math.BigDecimal;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
-import javax.ws.rs.MatrixParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -24,7 +24,6 @@ import javax.ws.rs.core.Response;
 @Consumes("application/json")
 public interface CustomerManagement
 {
-
     @GET
     @Path("/customers/{id}/")
     public Customer getCustomer(@PathParam("id") String id);
@@ -46,7 +45,7 @@ public interface CustomerManagement
     public Response deleteCustomer(@PathParam("id") String id);
 
     @PUT
-    @Path("/notify")
+    @Path("/customers/notify")
     public Response notify(@QueryParam("customer") String customer, @QueryParam("message") String message);
 
     @PUT
