@@ -5,6 +5,10 @@ import aic2010.services.CustomerService;
 import aic2010.services.CustomerServiceImpl;
 import aic2010.services.ShippingService;
 import aic2010.services.ShippingServiceImpl;
+import aic2010.services.SupplierService;
+import aic2010.services.SupplierServiceImpl;
+import aic2010.services.WarehouseService;
+import aic2010.services.WarehouseServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.ws.Endpoint;
@@ -27,12 +31,17 @@ public class Main {
     public static final String REST_CUSTOMER_SERVICE_URL = REST_BASE_URL + "customermanagement";
     public static final String SHIPPING_SERVICE_URL = BASE_URL + "shippingservice";
     public static final String CUSTOMER_SERVICE_URL = BASE_URL + "customerservice";
+    public static final String SUPPLIER_SERVICE1_URL = BASE_URL + "supplier1";
+    public static final String SUPPLIER_SERVICE2_URL = BASE_URL + "supplier2";
+    public static final String WAREHOUSE_SERVICE_URL = BASE_URL + "warehouse";
 
     public static List<Endpoint> endpoints = new ArrayList<Endpoint>();
 
     public static void main(String[] args) {
         startShippingService();
         startCustomerManagementService();
+        startSupplierServices();
+        startWarehouseService();
     }
 
     public static void startCustomerManagementService() {
@@ -69,6 +78,18 @@ public class Main {
     public static void startShippingService() {
         ShippingService shippingService = new ShippingServiceImpl();
         endpoints.add(Endpoint.publish(SHIPPING_SERVICE_URL, shippingService));
+    }
+
+    public static void startSupplierServices(){
+        SupplierService supplier1 = new SupplierServiceImpl();
+        SupplierService supplier2 = new SupplierServiceImpl();
+        endpoints.add(Endpoint.publish(SUPPLIER_SERVICE1_URL, supplier1));
+        endpoints.add(Endpoint.publish(SUPPLIER_SERVICE2_URL, supplier2));
+    }
+
+    public static void startWarehouseService(){
+        WarehouseService warehouse = new WarehouseServiceImpl();
+        endpoints.add(Endpoint.publish(WAREHOUSE_SERVICE_URL, warehouse));
     }
 
     public static void stopAllServices() {
