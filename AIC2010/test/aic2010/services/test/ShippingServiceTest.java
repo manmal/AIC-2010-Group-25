@@ -16,7 +16,6 @@ import com.db4o.EmbeddedObjectContainer;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 import junit.framework.Assert;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -58,16 +57,9 @@ public class ShippingServiceTest {
         EmbeddedObjectContainer db = MiniDB.mdb().getDB();
 
         AddressOK = Factory.createAddress("Test City", "2890", "Test Street", 4, 10, false, false, false);
-        AddressOK.setId(UUID.randomUUID().toString());
-
         CustomerOK = Factory.createCustomer("Any Andy", BigDecimal.ZERO, null, null);
-        CustomerOK.setId(UUID.randomUUID().toString());
-
         OrderOK = Factory.createOrder(CustomerOK, null, new Date());
-        OrderOK.setId(UUID.randomUUID().toString());
-
         ProductOK = Factory.createProduct(null, "Test Product", BigDecimal.ZERO);
-        ProductOK.setId(UUID.randomUUID().toString());
 
         ItemOK = Factory.createItem(OrderOK, ProductOK, 2);
 
@@ -84,11 +76,9 @@ public class ShippingServiceTest {
         // and will thus not be available to the WS (which is what we want)!
 
         OrderWithFaultyProduct = Factory.createOrder(CustomerOK, null, new Date());
-        OrderWithFaultyProduct.setId(UUID.randomUUID().toString());
 
         // Product is faulty, which means it will not be stored in the DB
         ProductMissing = Factory.createProduct(null, "Faulty Test Product", BigDecimal.ZERO);
-        ProductMissing.setId(UUID.randomUUID().toString());
 
         ItemWithFaultyProduct = Factory.createItem(OrderWithFaultyProduct, null, 2);
 
@@ -106,7 +96,6 @@ public class ShippingServiceTest {
         ItemWithFaultyProduct.setProduct(ProductMissing);
 
         AddressFaulty = Factory.createAddress("Missing Test City", "Missing ZIP", "Missing Street", -1, -1, false, false, false);
-        AddressFaulty.setId(UUID.randomUUID().toString());
 
         db.rollback();
     }
