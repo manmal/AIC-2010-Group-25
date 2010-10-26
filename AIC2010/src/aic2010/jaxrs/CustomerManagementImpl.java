@@ -68,10 +68,17 @@ public class CustomerManagementImpl implements CustomerManagement {
     {
         EmbeddedObjectContainer db = MiniDB.getDB();
 
-        db.store(customer);
+        Customer exists = getCustomer(customer.getId());
 
-        log.info("Added Customer with id " + customer.getId() + " and name " + customer.getName());
-        return Response.ok().build();
+        if (exists == null)
+        {
+            db.store(customer);
+            log.info("Added Customer with id " + customer.getId() + " and name " + customer.getName());
+            return Response.ok().build();
+        }
+        
+        log.info("Customer with id " + customer.getId() + " already exists. Did not store anything.");
+        return Response.notModified().build();
     }
 
     @Override
