@@ -6,6 +6,7 @@
 package aic2010.services;
 
 import aic2010.model.Product;
+import aic2010.model.WarehouseAnswer;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -19,6 +20,6 @@ import javax.jws.WebService;
 public interface WarehouseService extends SupplierService {
 
     @WebMethod(operationName="check_availability")
-    public boolean check_availability(@WebParam(name="product") Product product,
-                                      @WebParam(name="amount") int amount);
+    public WarehouseAnswer check_availability(@WebParam(name="product") Product product,
+                                              @WebParam(name="amount") int amount);
 }

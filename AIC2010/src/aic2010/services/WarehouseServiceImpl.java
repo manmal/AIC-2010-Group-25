@@ -6,6 +6,7 @@
 package aic2010.services;
 
 import aic2010.model.Product;
+import aic2010.model.WarehouseAnswer;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,10 +23,10 @@ import javax.jws.WebService;
             portName="WarehousePT")
 public class WarehouseServiceImpl implements WarehouseService {
 
-    private Map<String, Product> products;
+    private Map<String, WarehouseAnswer> products;
 
     public WarehouseServiceImpl(){
-            products = new HashMap<String, Product>();
+            products = new HashMap<String, WarehouseAnswer>();
             addProducts();
     }
 
@@ -34,8 +35,8 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public boolean check_availability(Product product, int amount) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public WarehouseAnswer check_availability(Product product, int amount) {
+        return products.get(product.getId());
     }
 
     @Override
