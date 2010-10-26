@@ -83,8 +83,16 @@ public class Main {
     public static void startSupplierServices(){
         SupplierService supplier1 = new SupplierServiceImpl();
         SupplierService supplier2 = new SupplierServiceImpl();
-        endpoints.add(Endpoint.publish(SUPPLIER_SERVICE1_URL, supplier1));
-        endpoints.add(Endpoint.publish(SUPPLIER_SERVICE2_URL, supplier2));
+
+        EndpointImpl ep = (EndpointImpl) Endpoint.publish(SUPPLIER_SERVICE1_URL, supplier1);
+        ep.getServer().getEndpoint().getInInterceptors().add(new LoggingInInterceptor());
+        ep.getServer().getEndpoint().getOutInterceptors().add(new LoggingOutInterceptor());
+        endpoints.add(ep);
+
+        ep = (EndpointImpl) Endpoint.publish(SUPPLIER_SERVICE2_URL, supplier2);
+        ep.getServer().getEndpoint().getInInterceptors().add(new LoggingInInterceptor());
+        ep.getServer().getEndpoint().getOutInterceptors().add(new LoggingOutInterceptor());
+        endpoints.add(ep);
     }
 
     public static void startWarehouseService(){
