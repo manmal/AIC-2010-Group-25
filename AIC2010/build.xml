@@ -10,7 +10,39 @@
 <project name="AIC2010" default="default" basedir=".">
     <description>Builds, tests, and runs the project AIC2010.</description>
     <import file="nbproject/build-impl.xml"/>
-    <!--
+
+    <target name="run-services" depends="init,compile">
+        <java fork="true" classname="aic2010.Main">
+            <classpath>
+                <pathelement path="${build.classes.dir}"/>
+                <fileset dir="${libraries.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="run-client" depends="init,compile-test,-pre-test-run,-do-test-run,test-report,-post-test-run,-test-browse">
+        <property name="collector.dir" value="${build.dir}/failingTests"/>
+        <junit fork="true">
+            <classpath>
+                <pathelement path="${build.classes.dir}"/>
+                <fileset dir="${libraries.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+            <batchtest todir="${collector.dir}">
+                <fileset dir="${build.test.classes.dir}" includes="**/*.*"/>
+                <formatter type="plain" usefile="false"/>
+            </batchtest>
+        </junit>
+    </target>
+
+<!--
+    <target depends="init,compile" name="run-services">
+        <j2seproject1:java classname="aic2010.Main" fork="true"/>
+    </target>
+    
 
     There exist several targets which are by default empty and which can be 
     used for execution of your tasks. These targets are usually executed 

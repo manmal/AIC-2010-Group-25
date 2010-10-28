@@ -6,7 +6,6 @@ import aic2010.exception.UnknownProductException;
 import aic2010.model.Address;
 import aic2010.model.Item;
 import com.db4o.EmbeddedObjectContainer;
-import com.db4o.ObjectContainer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -25,7 +24,7 @@ public class ShippingServiceImpl implements ShippingService {
 
     @Override
     public String shipItems(@WebParam(name="items")Item[] items, @WebParam(name="address")Address address)  throws UnknownAddressException, UnknownProductException {
-        EmbeddedObjectContainer db = MiniDB.mdb().getDB();
+        EmbeddedObjectContainer db = MiniDB.getDB();
         
         //check availability:
         if(db.queryByExample(address).size() == 0)
