@@ -27,7 +27,7 @@ public interface CustomerService {
     public void deleteCustomer(@WebParam(name="id") String id);
 
     @WebMethod(operationName="notify")
-    public void notify(@WebParam(name="customer") String customer, @WebParam(name="message") String message);
+    public void notify(@WebParam(name="customer") Customer customer, @WebParam(name="message") String message);
 
     @WebMethod(operationName="update_account")
     public void updateAccount(@WebParam(name="customer") Customer customer, @WebParam(name="changed_value") BigDecimal changedValue);

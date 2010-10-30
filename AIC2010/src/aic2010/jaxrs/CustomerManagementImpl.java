@@ -120,10 +120,22 @@ public class CustomerManagementImpl implements CustomerManagement {
     }
 
     @Override
-    public Response notify(String customer, String message)
+    public Response notify(Customer customer, String message)
     {
-        //nothing in the assignment says what to do with that...
-        return Response.ok().build();
+        EmbeddedObjectContainer db = MiniDB.getDB();
+        Customer found = getCustomer(customer.getId());
+
+        if (found != null)
+        {
+            String out = "Sending message to " + customer.getName() + ": " + message;
+            System.out.println(out);
+            log.info(out);
+
+            return Response.ok().build();
+        }
+
+        log.debug("Customer not found, doing nothing");
+        return Response.serverError().build();
     }
 
     @Override

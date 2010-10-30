@@ -67,7 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void notify(String customer, String message)
+    public void notify(Customer customer, String message)
     {
         log.info("Forward notify request to CustomerManagement service");
         cm.notify(customer, message);

@@ -198,7 +198,8 @@ public class CustomerServiceTest {
     @Test
     public void testNotify()
     {
-        cs.notify("Customer1", "Not sure what this should do since there is no info in the manual...");
+        populateDB();
+        cs.notify(cs.getCustomers().get(0), "Your credit card has been expired");
     }
 
 }

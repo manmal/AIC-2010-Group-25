@@ -45,8 +45,8 @@ public interface CustomerManagement
     public Response deleteCustomer(@PathParam("id") String id);
 
     @PUT
-    @Path("/customers/notify")
-    public Response notify(@QueryParam("customer") String customer, @QueryParam("message") String message);
+    @Path("/customers/notify/")
+    public Response notify(Customer customer, @QueryParam("message") String message);
 
     @PUT
     @Path("/customers/update_account/")
