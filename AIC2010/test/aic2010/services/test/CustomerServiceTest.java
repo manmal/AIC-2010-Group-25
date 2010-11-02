@@ -2,16 +2,15 @@ package aic2010.services.test;
 
 import java.util.ArrayList;
 import aic2010.model.Address;
-import aic2010.datastore.MiniDB;
+//import aic2010.datastore.MiniDB;
 import java.util.List;
 import aic2010.utils.Factory;
 import at.ac.tuwien.infosys.aic10.ass1.dto.customerservice.CustomerServiceClient;
-import aic2010.Main;
 import aic2010.model.Customer;
 import aic2010.services.CustomerService;
 import java.math.BigDecimal;
-import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -21,30 +20,23 @@ import static org.junit.Assert.*;
  */
 public class CustomerServiceTest {
 
-    private CustomerService cs;
+    private static CustomerService cs;
 
     public CustomerServiceTest() {
     }
 
-    @Before
-    public void setUp() {
-        MiniDB.mdb().resetRunningDB();
-        Main.startCustomerManagementService();
-
+    @BeforeClass
+    public static void setUp() {
         CustomerServiceClient client = new CustomerServiceClient();
         cs = client.getCustomerPT();
-    }
-
-    @After
-    public void tearDown() {
-        Main.stopAllServices();
     }
 
     /**
      * Populate the db with some customers and their addresses. Note that, for simplicity, orders will not be added.
      * 
      */
-    private void populateDB()
+    @Before
+    public void populateDB()
     {
         List<Address> list;
 
@@ -75,8 +67,6 @@ public class CustomerServiceTest {
     @Test
     public void testGetCustomers()
     {
-        populateDB();
-
         List<Customer> customers = cs.getCustomers();
         assertEquals(3, customers.size());
     }
@@ -104,8 +94,6 @@ public class CustomerServiceTest {
     @Test
     public void testUpdateCustomer()
     {
-        populateDB();
-
         //pick second customer and remember id
         Customer customer = cs.getCustomers().get(1);
         String id = customer.getId();
@@ -126,8 +114,6 @@ public class CustomerServiceTest {
     @Test
     public void testDeleteCustomer()
     {
-        populateDB();
-
         List<Customer> original = cs.getCustomers();
         List<Customer> persisted;
         String id;
@@ -166,8 +152,6 @@ public class CustomerServiceTest {
     @Test
     public void testGetCustomer()
     {
-        populateDB();
-
         for (Customer customer: cs.getCustomers())
         {
             Customer result = cs.getCustomer(customer.getId());
@@ -178,8 +162,6 @@ public class CustomerServiceTest {
     @Test
     public void testUpdateAccount()
     {
-        populateDB();
-
         //pick second customer and remember id
         Customer customer = cs.getCustomers().get(1);
         String id = customer.getId();
@@ -198,7 +180,6 @@ public class CustomerServiceTest {
     @Test
     public void testNotify()
     {
-        populateDB();
         cs.notify(cs.getCustomers().get(0), "Your credit card has been expired");
     }
 

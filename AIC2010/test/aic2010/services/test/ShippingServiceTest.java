@@ -45,7 +45,7 @@ public class ShippingServiceTest {
         try {
             shippingService.shipItems(OrderOK.getItems().toArray(new Item[0]), AddressOK);
             Assert.assertTrue(true);
-        } catch (Exception ex) {
+    } catch (Exception ex) {
             Assert.assertTrue(false);
         }
     }
