@@ -5,6 +5,7 @@
 
 package aic2010.services;
 
+import aic2010.exception.UnknownProductException;
 import aic2010.model.Product;
 import java.math.BigDecimal;
 import javax.jws.WebMethod;
@@ -20,5 +21,6 @@ public interface SupplierService {
 
     @WebMethod(operationName="order")
     public BigDecimal order(@WebParam(name="product") Product product,
-                            @WebParam(name="amount") int amount);
+                            @WebParam(name="amount") int amount)
+    throws UnknownProductException;
 }

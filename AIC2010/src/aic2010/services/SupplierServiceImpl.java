@@ -5,8 +5,12 @@
 
 package aic2010.services;
 
+import aic2010.TestDataManager;
+import aic2010.exception.UnknownProductException;
 import aic2010.model.Product;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import javax.jws.WebService;
 
 /**
@@ -20,11 +24,32 @@ import javax.jws.WebService;
             portName="SupplierPT")
 public class SupplierServiceImpl implements SupplierService {
 
-    @Override
-    public BigDecimal order(Product product, int amount) {
-        BigDecimal overallAmount = product.getSingleUnitPrice().multiply(new BigDecimal(amount));
+    private Map<Product, Integer> products;
 
-        return overallAmount;
+
+    public SupplierServiceImpl(){
+        products = new HashMap<Product, Integer>();
+        addProducts();
+    }
+
+    @Override
+    public BigDecimal order(Product product, int amount)
+    throws UnknownProductException{
+        if(products.containsKey(product)){
+            BigDecimal overallAmount = product.getSingleUnitPrice().multiply(new BigDecimal(amount));
+            return overallAmount;
+        }
+        else{
+            throw new UnknownProductException("Could not find product", product.getName());
+        }
+    }
+
+    private void addProducts(){
+        Product product1 = TestDataManager.getProduct(false, true);
+        Product product2 = TestDataManager.getProduct2();
+
+        products.put(product1, 23);
+        products.put(product2, 33);
     }
 
 }

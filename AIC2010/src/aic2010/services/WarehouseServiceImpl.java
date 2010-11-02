@@ -5,6 +5,7 @@
 
 package aic2010.services;
 
+import aic2010.exception.UnknownProductException;
 import aic2010.model.Product;
 import aic2010.model.WarehouseAnswer;
 import java.math.BigDecimal;
@@ -43,10 +44,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public BigDecimal order(Product product, int amount) {
-        BigDecimal overallAmount = product.getSingleUnitPrice().multiply(new BigDecimal(amount));
-
-        return overallAmount;
+    public BigDecimal order(Product product, int amount) throws UnknownProductException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }
