@@ -67,7 +67,7 @@ public class ServiceRegistryImpl implements ServiceRegistry {
         Product product1 = TestDataManager.getProduct(false, true);
         suppliers.put(product1, service1);
 
-        Product product2 = TestDataManager.getProduct2(true);
+        Product product2 = TestDataManager.getProduct2();
         suppliers.put(product2, service2);
     }
 

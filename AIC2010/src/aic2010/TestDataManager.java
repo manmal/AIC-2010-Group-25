@@ -45,11 +45,8 @@ public class TestDataManager {
         return product;
     }
 
-    public static Product getProduct2(boolean nullifyID){
+    public static Product getProduct2(){
         Product product = Factory.createProduct(null, "Test Product 2", BigDecimal.ZERO);
-
-        if(nullifyID)
-            product.setId(null);
 
         return product;
     }
