@@ -41,15 +41,18 @@ public class Main {
         generateTestdata();
 
         startShippingService();
-        /*startCustomerManagementService();
-        startSupplierServices();
+        startCustomerManagementService();
+        /*startSupplierServices();
         startWarehouseService();
         startRegistryService();*/
     }
 
+    /**
+     * Generate testdata where needed; Some test do not need
+     * any testdata, since it can be inserted during the tests.
+     */
     public static void generateTestdata() {
         TestDataManager.saveTestDataShippingService();
-        //TODO: insert more test data inits
     }
 
     public static void startCustomerManagementService() {
