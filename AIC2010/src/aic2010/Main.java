@@ -34,6 +34,7 @@ public class Main {
     public static final String SUPPLIER_SERVICE1_URL = BASE_URL + "supplier1";
     public static final String SUPPLIER_SERVICE2_URL = BASE_URL + "supplier2";
     public static final String WAREHOUSE_SERVICE_URL = BASE_URL + "warehouse";
+    public static final String REGISTRY_SERVICE_URL = BASE_URL + "registry";
 
     public static List<Endpoint> endpoints = new ArrayList<Endpoint>();
 
