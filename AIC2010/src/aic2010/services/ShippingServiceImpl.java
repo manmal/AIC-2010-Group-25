@@ -25,7 +25,6 @@ public class ShippingServiceImpl implements ShippingService {
     @Override
     public String shipItems(@WebParam(name="items")Item[] items, @WebParam(name="address")Address address)  throws UnknownAddressException, UnknownProductException {
         EmbeddedObjectContainer db = MiniDB.getDB();
-        
         //check availability:
         if(db.queryByExample(address).size() == 0)
             throw new UnknownAddressException("", address.toString());

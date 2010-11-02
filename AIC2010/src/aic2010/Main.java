@@ -38,11 +38,18 @@ public class Main {
     public static List<Endpoint> endpoints = new ArrayList<Endpoint>();
 
     public static void main(String[] args) {
+        generateTestdata();
+
         startShippingService();
-        startCustomerManagementService();
+        /*startCustomerManagementService();
         startSupplierServices();
         startWarehouseService();
-        startRegistryService();
+        startRegistryService();*/
+    }
+
+    public static void generateTestdata() {
+        TestDataManager.saveTestDataShippingService();
+        //TODO: insert more test data inits
     }
 
     public static void startCustomerManagementService() {

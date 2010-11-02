@@ -1,6 +1,7 @@
 package aic2010.services.test;
 
 import aic2010.Main;
+import aic2010.TestDataManager;
 import aic2010.datastore.MiniDB;
 import aic2010.exception.UnknownAddressException;
 import aic2010.exception.UnknownProductException;
@@ -25,78 +26,34 @@ import org.junit.Test;
 public class ShippingServiceTest {
 
     private Address AddressOK;
-    private Address AddressFaulty;
-
-    private Product ProductOK;
+    private Address AddressMissing;
     private Product ProductMissing;
-
-    private Item ItemOK;
-    private ArrayList<Item> ItemsOK;
-    private Item ItemWithFaultyProduct;
-    private ArrayList<Item> ItemsWithMissingProduct;
-
-    private Order OrderOK;
-    private Order OrderWithFaultyProduct;
-
     private Customer CustomerOK;
-
-
-    @BeforeClass
-    public static void bootstrapAllTests() {
-        Main.startShippingService();
-    }
-
-    @AfterClass
-    public static void teardownAllTests() {
-        Main.stopAllServices();
-    }
+    private Order OrderOK;
+    private Order OrderWithMissingProduct;
 
     @Before
     public void buildTestData() {
         MiniDB.mdb().resetRunningDB();
         EmbeddedObjectContainer db = MiniDB.getDB();
 
-        AddressOK = Factory.createAddress("Test City", "2890", "Test Street", 4, 10, false, false, false);
-        CustomerOK = Factory.createCustomer("Any Andy", BigDecimal.ZERO, null, null);
-        OrderOK = Factory.createOrder(CustomerOK, null, new Date());
-        ProductOK = Factory.createProduct(null, "Test Product", BigDecimal.ZERO);
-
-        ItemOK = Factory.createItem(OrderOK, ProductOK, 2);
-
-        ItemsOK = new ArrayList<Item>();
-        ItemsOK.add(ItemOK);
-        OrderOK.setItems(ItemsOK);
+        AddressOK = TestDataManager.getAddress(false, true);
+        CustomerOK = TestDataManager.getCustomer(true);
+        OrderOK = TestDataManager.getOrder(false, false, true, true);
+        OrderWithMissingProduct = TestDataManager.getOrder(true, false, true, true);
 
         db.store(OrderOK);
         db.store(AddressOK);
-
-        /////// FAULTY ENTITIES ///////
-
-        // Note that the faulty entities are not stored into the DB,
-        // and will thus not be available to the WS (which is what we want)!
-
-        OrderWithFaultyProduct = Factory.createOrder(CustomerOK, null, new Date());
-
-        // Product is faulty, which means it will not be stored in the DB
-        ProductMissing = Factory.createProduct(null, "Faulty Test Product", BigDecimal.ZERO);
-
-        ItemWithFaultyProduct = Factory.createItem(OrderWithFaultyProduct, null, 2);
-
-        ItemsWithMissingProduct = new ArrayList<Item>();
-        ItemsWithMissingProduct.add(ItemWithFaultyProduct);
-        OrderWithFaultyProduct.setItems(ItemsWithMissingProduct);
-
-        db.store(OrderWithFaultyProduct);
+        db.store(OrderWithMissingProduct);
         db.commit();
 
-        // After we have stored the object graph for the faulty product order,
-        // lets connect the faulty product so it is available to the test case
-        // to generate an error:
+        // set wrong relationships for tests which shall fail:
 
-        ItemWithFaultyProduct.setProduct(ProductMissing);
+        AddressMissing = TestDataManager.getAddress(true, true);
+        ProductMissing = TestDataManager.getProduct(true, true);
+        OrderWithMissingProduct.getItems().get(0).setProduct(ProductMissing);
 
-        AddressFaulty = Factory.createAddress("Missing Test City", "Missing ZIP", "Missing Street", -1, -1, false, false, false);
-
+        // rollback db to avoid changes on wrong relationships being saved:
         db.rollback();
     }
 
@@ -106,7 +63,7 @@ public class ShippingServiceTest {
         ShippingService shippingService = client.getShippingPT();
 
         try {
-            shippingService.shipItems(ItemsOK.toArray(new Item[0]), AddressOK);
+            shippingService.shipItems(OrderOK.getItems().toArray(new Item[0]), AddressOK);
             Assert.assertTrue(true);
         } catch (Exception ex) {
             Assert.assertTrue(false);
@@ -118,7 +75,7 @@ public class ShippingServiceTest {
         ShippingServiceClient client = new ShippingServiceClient();
         ShippingService shippingService = client.getShippingPT();
         try {
-            shippingService.shipItems(ItemsWithMissingProduct.toArray(new Item[0]), AddressOK);
+            shippingService.shipItems(OrderWithMissingProduct.getItems().toArray(new Item[0]), AddressOK);
             Assert.assertTrue(false);
         } catch (UnknownAddressException ex) {
              Assert.assertTrue(false);
@@ -135,7 +92,7 @@ public class ShippingServiceTest {
         ShippingServiceClient client = new ShippingServiceClient();
         ShippingService shippingService = client.getShippingPT();
         try {
-            shippingService.shipItems(ItemsOK.toArray(new Item[0]), AddressFaulty);
+            shippingService.shipItems(OrderOK.getItems().toArray(new Item[0]), AddressMissing);
             Assert.assertTrue(false);
         } catch (UnknownAddressException ex) {
             // we expect the unknown address exception!
