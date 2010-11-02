@@ -1,8 +1,6 @@
 package aic2010.services.test;
 
-import aic2010.Main;
 import aic2010.TestDataManager;
-import aic2010.datastore.MiniDB;
 import aic2010.exception.UnknownAddressException;
 import aic2010.exception.UnknownProductException;
 import aic2010.model.Address;
@@ -11,15 +9,8 @@ import aic2010.model.Item;
 import aic2010.model.Order;
 import aic2010.model.Product;
 import aic2010.services.ShippingService;
-import aic2010.utils.Factory;
 import at.ac.tuwien.infosys.aic10.ass1.dto.shipping.ShippingServiceClient;
-import com.db4o.EmbeddedObjectContainer;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
 import junit.framework.Assert;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,27 +25,16 @@ public class ShippingServiceTest {
 
     @Before
     public void buildTestData() {
-        MiniDB.mdb().resetRunningDB();
-        EmbeddedObjectContainer db = MiniDB.getDB();
-
         AddressOK = TestDataManager.getAddress(false, true);
         CustomerOK = TestDataManager.getCustomer(true);
         OrderOK = TestDataManager.getOrder(false, false, true, true);
         OrderWithMissingProduct = TestDataManager.getOrder(true, false, true, true);
-
-        db.store(OrderOK);
-        db.store(AddressOK);
-        db.store(OrderWithMissingProduct);
-        db.commit();
 
         // set wrong relationships for tests which shall fail:
 
         AddressMissing = TestDataManager.getAddress(true, true);
         ProductMissing = TestDataManager.getProduct(true, true);
         OrderWithMissingProduct.getItems().get(0).setProduct(ProductMissing);
-
-        // rollback db to avoid changes on wrong relationships being saved:
-        db.rollback();
     }
 
     @Test
