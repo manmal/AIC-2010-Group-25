@@ -39,9 +39,18 @@ public class TestDataManager {
         if(missing)
             product = Factory.createProduct(null, "Faulty Test Product", BigDecimal.ZERO);
         else
-            product =  Factory.createProduct(null, "Test Product", BigDecimal.ZERO);
+            product =  Factory.createProduct(null, "Test Product 1", BigDecimal.ZERO);
         if(nullifyID)
             product.setId(null);
+        return product;
+    }
+
+    public static Product getProduct2(boolean nullifyID){
+        Product product = Factory.createProduct(null, "Test Product 2", BigDecimal.ZERO);
+
+        if(nullifyID)
+            product.setId(null);
+
         return product;
     }
     
