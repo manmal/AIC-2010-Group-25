@@ -19,8 +19,11 @@ import javax.jws.WebService;
 @WebService
 public interface SupplierService {
 
-    @WebMethod(operationName="order")
-    public BigDecimal order(@WebParam(name="product") Product product,
-                            @WebParam(name="amount") int amount)
-    throws UnknownProductException;
+//    @WebMethod(operationName="order")
+//    public BigDecimal order(@WebParam(name="product")Product product,
+//                            @WebParam(name="amount")Integer amount)
+//    throws UnknownProductException;
+
+    @WebMethod(operationName="test")
+    public String test(@WebParam(name="foo")String foo) throws UnknownProductException;
 }

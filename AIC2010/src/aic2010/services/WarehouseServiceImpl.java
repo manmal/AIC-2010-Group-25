@@ -5,12 +5,11 @@
 
 package aic2010.services;
 
-import aic2010.exception.UnknownProductException;
 import aic2010.model.Product;
 import aic2010.model.WarehouseAnswer;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 /**
@@ -44,7 +43,12 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public BigDecimal order(Product product, int amount) throws UnknownProductException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public String test(@WebParam(name="foo")String foo){
+        return "";
     }
+
+//    @Override
+//    public BigDecimal order(Product product, Integer amount) throws UnknownProductException {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
 }

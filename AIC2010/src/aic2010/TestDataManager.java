@@ -46,7 +46,7 @@ public class TestDataManager {
     }
 
     public static Product getProduct2(){
-        Product product = Factory.createProduct(null, "Test Product 2", BigDecimal.ZERO);
+        Product product = Factory.createProduct(null, "Test Product 2", new BigDecimal(99));
 
         return product;
     }

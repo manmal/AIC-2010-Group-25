@@ -15,7 +15,18 @@
         <java fork="true" classname="aic2010.Main">
             <classpath>
                 <pathelement path="${build.classes.dir}"/>
-                <fileset dir="${libraries.1.dir}">
+                <fileset dir="${libraries.dir}">
+                    <include name="**/*.jar"/>
+                </fileset>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="stop-services" depends="init,compile">
+        <java fork="true" classname="aic2010.Main" args="stop">
+            <classpath>
+                <pathelement path="${build.classes.dir}"/>
+                <fileset dir="${libraries.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
             </classpath>
@@ -27,7 +38,7 @@
         <junit fork="true">
             <classpath>
                 <pathelement path="${build.classes.dir}"/>
-                <fileset dir="${libraries.1.dir}">
+                <fileset dir="${libraries.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
             </classpath>

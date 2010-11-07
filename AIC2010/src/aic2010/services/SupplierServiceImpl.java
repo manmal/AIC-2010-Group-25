@@ -11,6 +11,8 @@ import aic2010.model.Product;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebService;
 
 /**
@@ -32,16 +34,23 @@ public class SupplierServiceImpl implements SupplierService {
         addProducts();
     }
 
+//    @Override
+//    public BigDecimal order(@WebParam(name="product")Product product,
+//                            @WebParam(name="amount")Integer amount)
+//    throws UnknownProductException{
+//        if(products.containsKey(product)){
+//            BigDecimal overallAmount = product.getSingleUnitPrice().multiply(new BigDecimal(amount));
+//            return overallAmount;
+//        }
+//        else{
+//            throw new UnknownProductException("Could not find product", product.getName());
+//        }
+//    }
+
     @Override
-    public BigDecimal order(Product product, int amount)
+    public String test(@WebParam(name="foo")String foo)
     throws UnknownProductException{
-        if(products.containsKey(product)){
-            BigDecimal overallAmount = product.getSingleUnitPrice().multiply(new BigDecimal(amount));
-            return overallAmount;
-        }
-        else{
-            throw new UnknownProductException("Could not find product", product.getName());
-        }
+        return "";
     }
 
     private void addProducts(){

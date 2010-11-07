@@ -11,6 +11,8 @@ import aic2010.services.WarehouseService;
 import aic2010.services.WarehouseServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import javax.xml.ws.Endpoint;
 import org.apache.cxf.binding.BindingFactoryManager;
 import org.apache.cxf.endpoint.Server;
@@ -38,14 +40,22 @@ public class Main {
 
     public static List<Endpoint> endpoints = new ArrayList<Endpoint>();
 
-    public static void main(String[] args) {
-        generateTestdata();
 
-        startShippingService();
-        startCustomerManagementService();
-        /*startSupplierServices();
-        startWarehouseService();
-        startRegistryService();*/
+    public static void main(String[] args) {
+        //if argument 1 is "stop" then stop services
+        if ((args.length > 0) && (args[0].equals("stop"))){
+
+        }
+        //in any other case start the services
+        else{
+            generateTestdata();
+
+            startShippingService();
+            startCustomerManagementService();
+            startSupplierServices();
+    //        startWarehouseService();
+            startRegistryService();
+        }
     }
 
     /**
