@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
  */
 public class CustomerServiceTest
 {
+
     private static Logger log = Logger.getLogger(CustomerServiceTest.class);
     private static CustomerService cs;
 
@@ -44,8 +45,7 @@ public class CustomerServiceTest
 
         for (Customer customer: customers)
         {
-            log.info("Received Customer: " + customer.getName());
-            log.info("\twith id: " + customer.getId());
+            log.info("Customer: " + customer.getName() + " with id " + customer.getId());
             if (customer.getAddresses() != null)
             {
                 for (Address a: customer.getAddresses())
@@ -109,49 +109,37 @@ public class CustomerServiceTest
         assertEquals(customer, updatedCustomer);
     }
 
-    /*
     @Test
     public void testDeleteCustomer()
     {
-    List<Customer> original = cs.getCustomers();
-    List<Customer> persisted;
-    String id;
+        log.info("Test deleteCustomer");
+        List<Customer> original = cs.getCustomers();
 
-    //delete second element from list
-    id = original.get(1).getId();
-    cs.deleteCustomer(id);
-    persisted = cs.getCustomers();
+        log.info("Customers BEFORE delete");
+        for (Customer customer: original) {
+            log.info("Customer: " + customer.getName() + " with id " + customer.getId());
+        }
 
-    original.remove(1);
+        Customer delete = original.get(3); //make sure that this customer has an id!
 
-    assertEquals(original, persisted);
-    assertEquals(2, persisted.size());
+        cs.deleteCustomer(delete.getId());
+        List<Customer> deleted = cs.getCustomers();
 
-    //delete first element in list
-    id = original.get(0).getId();
-    cs.deleteCustomer(id);
-    persisted = cs.getCustomers();
+        log.info("Remove customer " + delete.getName() + " with id " + delete.getId());
+        original.remove(delete);
 
-    original.remove(0);
+        log.info("Customers AFTER delete");
+        for (Customer customer: deleted) {
+            log.info("Customer: " + customer.getName() + " with id " + customer.getId());
+        }
 
-    assertEquals(original, persisted);
-    assertEquals(1, persisted.size());
+        assertEquals(original, deleted);
+    }
 
-    //delete last element in list (list is empty afterwards)
-    id = original.get(0).getId();
-    cs.deleteCustomer(id);
-    persisted = cs.getCustomers();
-
-    original.remove(0);
-
-    //note that json returns an empty list as null
-    assertNull(persisted);
-    }*/
     @Test
     public void testGetCustomer()
     {
         log.info("Test getCustomer");
-
         log.info("Get each customer");
         for (Customer customer: cs.getCustomers())
         {
@@ -199,8 +187,8 @@ public class CustomerServiceTest
 
         log.info("Request customer again by id");
         Customer updatedCustomer = cs.getCustomer(id);
-        log.info("Select customer " + customer.getName());
-        log.info("Open balance is " + customer.getOpenBalance());
+        log.info("Select customer " + updatedCustomer.getName());
+        log.info("Open balance is " + updatedCustomer.getOpenBalance());
 
         assertEquals(oldBalance.add(addBalance), updatedCustomer.getOpenBalance());
     }
