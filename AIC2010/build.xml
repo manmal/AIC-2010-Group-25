@@ -34,6 +34,7 @@
     </target>
 
     <target name="run-client" depends="init,compile-test,-pre-test-run,-do-test-run,test-report,-post-test-run,-test-browse">
+        <!--
         <property name="collector.dir" value="${build.dir}/failingTests"/>
         <junit fork="true">
             <classpath>
@@ -46,7 +47,7 @@
                 <fileset dir="${build.test.classes.dir}" includes="**/*.*"/>
                 <formatter type="plain" usefile="false"/>
             </batchtest>
-        </junit>
+        </junit> -->
     </target>
 
 <!--
