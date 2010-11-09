@@ -17,7 +17,7 @@ import javax.jws.WebService;
  */
 
 @WebService
-public interface WarehouseService extends SupplierService {
+public interface WarehouseService extends SupplierService{
 
     @WebMethod(operationName="check_availability")
     public WarehouseAnswer check_availability(@WebParam(name="product") Product product,
