@@ -48,6 +48,7 @@ public class TestDataManager {
 
     public static Product getProduct2(){
         Product product = Factory.createProduct(null, "Test Product 2", new BigDecimal(99));
+        product.setId(null);
 
         return product;
     }

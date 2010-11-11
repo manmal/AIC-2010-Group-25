@@ -41,9 +41,9 @@ public class SupplierTest {
         Product knownProduct = TestDataManager.getProduct2();
 
         BigDecimal expectedPrice = knownProduct.getSingleUnitPrice();
-//        BigDecimal supplierPrice = supplier.order(knownProduct, 1);
+        BigDecimal supplierPrice = supplier.order(knownProduct, 1);
 
-//        Assert.assertEquals("Returned price was not correct", expectedPrice, supplierPrice);
+        Assert.assertEquals("Returned price was not correct", expectedPrice, supplierPrice);
     }
 
     @Test
