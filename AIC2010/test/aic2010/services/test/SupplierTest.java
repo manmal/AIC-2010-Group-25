@@ -26,7 +26,7 @@ public class SupplierTest {
 
     @Before
     public void setUp() {
-//        cs = new SupplierServiceClient();
+    //        cs = new SupplierServiceClient();
 //        supplier = cs.getSupplierPT();
 //        ShippingServiceClient client = new ShippingServiceClient();
 //        ShippingService shippingService = client.getShippingPT();

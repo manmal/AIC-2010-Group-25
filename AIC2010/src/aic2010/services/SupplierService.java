@@ -21,7 +21,7 @@ import javax.jws.WebService;
 public interface SupplierService {
 
     @WebMethod(operationName="order")
-    public BigDecimal order(@WebParam(name="product")Product product,
+    public Double order(
                         @WebParam(name="amount")Integer amount)
     throws UnknownProductException;
 }

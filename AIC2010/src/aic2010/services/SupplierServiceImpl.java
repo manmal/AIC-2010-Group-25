@@ -34,16 +34,17 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public BigDecimal order(@WebParam(name="product")Product product,
+    public Double order(
                             @WebParam(name="amount")Integer amount)
     throws UnknownProductException{
-        if(products.containsKey(product)){
-            BigDecimal overallAmount = product.getSingleUnitPrice().multiply(new BigDecimal(amount));
-            return overallAmount;
-        }
-        else{
-            throw new UnknownProductException("Could not find product", product.getName());
-        }
+//        if(products.containsKey(product)){
+//            BigDecimal overallAmount = product.getSingleUnitPrice().multiply(new BigDecimal(amount));
+//            return overallAmount.doubleValue();
+//        }
+//        else{
+//            throw new UnknownProductException("Could not find product", product.getName());
+//        }
+        return new Double(0);
     }
 
     private void addProducts(){
