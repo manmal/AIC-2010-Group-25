@@ -63,7 +63,9 @@ public class Main {
      * any testdata, since it can be inserted during the tests.
      */
     public static void generateTestdata() {
+        TestDataManager.resetRunningDB();
         TestDataManager.saveTestDataShippingService();
+        TestDataManager.saveTestDataCustomerService();
     }
 
     public static void startCustomerManagementService() {
