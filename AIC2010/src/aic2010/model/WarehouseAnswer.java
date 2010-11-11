@@ -5,15 +5,21 @@
 
 package aic2010.model;
 
-import javax.xml.bind.annotation.XmlAttribute;
+import java.io.Serializable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author rudolf
  */
-@XmlRootElement(name="WarehouseAnswer")
-public class WarehouseAnswer {
+@XmlAccessorType(XmlAccessType.FIELD)   //serialize all fields by default
+@XmlRootElement(name="warehouse_answer")         //name root element
+public class WarehouseAnswer implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+    
 
     private boolean isAvailable;
 

@@ -12,6 +12,7 @@ import aic2010.model.ProductEntry;
 import aic2010.model.WarehouseAnswer;
 import java.util.HashMap;
 import java.util.Map;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
@@ -24,7 +25,6 @@ import javax.jws.soap.SOAPBinding;
             serviceName = "WarehouseService",
             targetNamespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse",
             portName="WarehousePT")
-@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class WarehouseServiceImpl extends SupplierServiceImpl implements WarehouseService{
 
     private Map<Product, ProductEntry> products;
@@ -35,15 +35,15 @@ public class WarehouseServiceImpl extends SupplierServiceImpl implements Warehou
     }
 
     private void addProducts(){
-        Product product1 = TestDataManager.getProduct(false, false);
+        Product product1 = TestDataManager.getProduct(false, true);
         
         ProductEntry entry1 = new ProductEntry();
-        entry1.setDeliveryTime(2);
+        entry1.setDeliveryTime(3);
         entry1.setAvailableAmount(3);
 
         Product product2 = TestDataManager.getProduct2();
         ProductEntry entry2 = new ProductEntry();
-        entry2.setDeliveryTime(3);
+        entry2.setDeliveryTime(2);
         entry2.setAvailableAmount(1);
 
         products.put(product1, entry1);
@@ -54,9 +54,11 @@ public class WarehouseServiceImpl extends SupplierServiceImpl implements Warehou
     public WarehouseAnswer check_availability(Product product, int amount)
     throws UnknownProductException{
         if(products.containsKey(product)){
+
             ProductEntry entry = products.get(product);
             WarehouseAnswer answer = new WarehouseAnswer();
             answer.setDeliveryTime(entry.getDeliveryTime());
+
             if(amount<=entry.getAvailableAmount())
                 answer.setIsAvailable(true);
             else

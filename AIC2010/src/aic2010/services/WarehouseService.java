@@ -10,6 +10,7 @@ import aic2010.model.Product;
 import aic2010.model.WarehouseAnswer;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
@@ -19,7 +20,7 @@ import javax.jws.soap.SOAPBinding;
  */
 
 @WebService
-@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
+@SOAPBinding(style=SOAPBinding.Style.RPC, parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public interface WarehouseService extends SupplierService{
 
     @WebMethod(operationName="check_availability")

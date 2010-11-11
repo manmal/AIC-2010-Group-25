@@ -19,7 +19,7 @@ import javax.jws.soap.SOAPBinding;
  */
 
 @WebService
-@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
+@SOAPBinding(style=SOAPBinding.Style.RPC, parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public interface SupplierService {
 
     @WebMethod(operationName="order")

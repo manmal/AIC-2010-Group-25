@@ -23,7 +23,6 @@ import javax.jws.soap.SOAPBinding;
             serviceName = "SupplierService",
             targetNamespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier",
             portName="SupplierPT")
-@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class SupplierServiceImpl implements SupplierService {
 
     private Map<Product, Integer> products;
