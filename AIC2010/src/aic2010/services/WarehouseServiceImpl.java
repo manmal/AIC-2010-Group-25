@@ -45,7 +45,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public Double order(Integer amount) throws UnknownProductException {
+    public Double order(Product product, Integer amount) throws UnknownProductException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

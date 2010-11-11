@@ -34,7 +34,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public Double order(
+    public Double order(Product product, 
                             @WebParam(name="amount")Integer amount)
     throws UnknownProductException{
 //        if(products.containsKey(product)){
