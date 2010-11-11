@@ -15,10 +15,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="WarehouseAnswer")
 public class WarehouseAnswer {
 
-//    @XmlAttribute(required = true)
     private boolean isAvailable;
 
-//    @XmlAttribute(required=true)
     private int deliveryTime;
 
     public int getDeliveryTime() {
