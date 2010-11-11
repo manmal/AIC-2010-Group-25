@@ -11,8 +11,8 @@ import aic2010.model.Product;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 
 /**
  *
@@ -23,6 +23,7 @@ import javax.jws.WebService;
             serviceName = "SupplierService",
             targetNamespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier",
             portName="SupplierPT")
+@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class SupplierServiceImpl implements SupplierService {
 
     private Map<Product, Integer> products;
@@ -34,17 +35,16 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public Double order(Product product, 
-                            @WebParam(name="amount")Integer amount)
+    public BigDecimal order(Product product,
+                        Integer amount)
     throws UnknownProductException{
-//        if(products.containsKey(product)){
-//            BigDecimal overallAmount = product.getSingleUnitPrice().multiply(new BigDecimal(amount));
-//            return overallAmount.doubleValue();
-//        }
-//        else{
-//            throw new UnknownProductException("Could not find product", product.getName());
-//        }
-        return new Double(0);
+        if(products.containsKey(product)){
+            BigDecimal overallAmount = product.getSingleUnitPrice().multiply(new BigDecimal(amount));
+            return overallAmount;
+        }
+        else{
+            throw new UnknownProductException("Could not find product", product.getName());
+        }
     }
 
     private void addProducts(){

@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 
 /**
  *
@@ -18,10 +19,11 @@ import javax.jws.WebService;
  */
 
 @WebService
+@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public interface SupplierService {
 
     @WebMethod(operationName="order")
-    public Double order(@WebParam(name="product") Product product,
+    public BigDecimal order(@WebParam(name="product") Product product,
                         @WebParam(name="amount")Integer amount)
     throws UnknownProductException;
 }

@@ -11,8 +11,8 @@ import aic2010.model.WarehouseAnswer;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import javax.jws.WebParam;
 import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 
 /**
  *
@@ -23,6 +23,7 @@ import javax.jws.WebService;
             serviceName = "WarehouseService",
             targetNamespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse",
             portName="WarehousePT")
+@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public class WarehouseServiceImpl implements WarehouseService {
 
     private Map<String, WarehouseAnswer> products;
@@ -45,7 +46,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public Double order(Product product, Integer amount) throws UnknownProductException {
+    public BigDecimal order(Product product, Integer amount) throws UnknownProductException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

@@ -53,7 +53,7 @@ public class Main {
             startShippingService();
             startCustomerManagementService();
             startSupplierServices();
-    //        startWarehouseService();
+            startWarehouseService();
             startRegistryService();
         }
     }
@@ -122,7 +122,7 @@ public class Main {
     public static void startWarehouseService(){
         WarehouseService warehouse = new WarehouseServiceImpl();
         
-        EndpointImpl ep = (EndpointImpl) Endpoint.publish(SUPPLIER_SERVICE1_URL, warehouse);
+        EndpointImpl ep = (EndpointImpl) Endpoint.publish(WAREHOUSE_SERVICE_URL, warehouse);
         ep.getServer().getEndpoint().getInInterceptors().add(new LoggingInInterceptor());
         ep.getServer().getEndpoint().getOutInterceptors().add(new LoggingOutInterceptor());
         endpoints.add(ep);
