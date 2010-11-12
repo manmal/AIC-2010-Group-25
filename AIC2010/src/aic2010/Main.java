@@ -3,6 +3,8 @@ package aic2010;
 import aic2010.jaxrs.CustomerManagementImpl;
 import aic2010.services.CustomerService;
 import aic2010.services.CustomerServiceImpl;
+import aic2010.services.RegistryService;
+import aic2010.services.RegistryServiceImpl;
 import aic2010.services.ShippingService;
 import aic2010.services.ShippingServiceImpl;
 import aic2010.services.SupplierService;
@@ -11,8 +13,6 @@ import aic2010.services.WarehouseService;
 import aic2010.services.WarehouseServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import javax.xml.ws.Endpoint;
 import org.apache.cxf.binding.BindingFactoryManager;
 import org.apache.cxf.endpoint.Server;
@@ -129,7 +129,12 @@ public class Main {
     }
 
     public static void startRegistryService(){
-        
+        RegistryService registry = new RegistryServiceImpl();
+
+        EndpointImpl ep = (EndpointImpl) Endpoint.publish(REGISTRY_SERVICE_URL, registry);
+        ep.getServer().getEndpoint().getInInterceptors().add(new LoggingInInterceptor());
+        ep.getServer().getEndpoint().getOutInterceptors().add(new LoggingOutInterceptor());
+        endpoints.add(ep);
     }
 
     public static void stopAllServices() {

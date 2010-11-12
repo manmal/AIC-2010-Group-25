@@ -7,7 +7,7 @@ package at.ac.tuwien.infosys.aic10.ass1.dto.registry;
 
 import aic2010.Main;
 import aic2010.services.CustomerService;
-import aic2010.services.ServiceRegistry;
+import aic2010.services.RegistryService;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.xml.ws.Service;
@@ -25,15 +25,15 @@ import javax.xml.ws.WebServiceFeature;
                   targetNamespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/registry")
 public class RegistryClient extends Service{
     public final static URL WSDL_LOCATION;
-    public final static QName SERVICE = new QName("http://infosys.tuwien.ac.at/aic10/ass1/dto/customer", "CustomerService");
-    public final static QName RegistryPT = new QName("http://infosys.tuwien.ac.at/aic10/ass1/dto/customer", "CustomerPT");
+    public final static QName SERVICE = new QName("http://infosys.tuwien.ac.at/aic10/ass1/dto/registry", "RegistryService");
+    public final static QName RegistryPT = new QName("http://infosys.tuwien.ac.at/aic10/ass1/dto/registry", "RegistryPT");
 
     static {
         URL url = null;
         try {
-            url = new URL(Main.CUSTOMER_SERVICE_URL + "?wsdl");
+            url = new URL(Main.REGISTRY_SERVICE_URL + "?wsdl");
         } catch (MalformedURLException e) {
-            System.err.println("Can not initialize the default wsdl from " + Main.CUSTOMER_SERVICE_URL + "?wsdl");
+            System.err.println("Can not initialize the default wsdl from " + Main.REGISTRY_SERVICE_URL + "?wsdl");
             // e.printStackTrace();
         }
         WSDL_LOCATION = url;
@@ -56,8 +56,8 @@ public class RegistryClient extends Service{
      *     returns CustomerService
      */
     @WebEndpoint(name = "RegistryPT")
-    public ServiceRegistry getRegistryPT() {
-        return super.getPort(RegistryPT, ServiceRegistry.class);
+    public RegistryService getRegistryPT() {
+        return super.getPort(RegistryPT, RegistryService.class);
     }
 
     /**
@@ -67,7 +67,7 @@ public class RegistryClient extends Service{
      * @return
      *     returns CustomerService
      */
-    @WebEndpoint(name = "CustomerPT")
+    @WebEndpoint(name = "RegistryPT")
     public CustomerService getRegistryPT(WebServiceFeature... features) {
         return super.getPort(RegistryPT, CustomerService.class, features);
     }
