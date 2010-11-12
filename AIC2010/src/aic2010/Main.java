@@ -23,9 +23,6 @@ import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
 import org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider;
 import org.apache.cxf.jaxws.EndpointImpl;
 
-/**
- * @author manuelmaly
- */
 public class Main {
 
     public static final String BASE_URL = "http://localhost:8088/";
