@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="WarehouseService" targetNamespace="http://services.aic2010/" xmlns:ns1="http://services.aic2010/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://services.aic2010/" xmlns:tns="http://services.aic2010/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="address" type="tns:address" />
+<xs:element name="customer" type="tns:customer" />
+<xs:element name="item" type="tns:item" />
+<xs:element name="order" type="tns:order" />
+<xs:element name="product" type="tns:product" />
+<xs:element name="warehouse_answer" type="tns:warehouseAnswer" />
+<xs:complexType name="product">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" type="xs:string" />
+<xs:element minOccurs="0" name="singleUnitPrice" type="xs:decimal" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="items" nillable="true" type="tns:item" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" use="required" />
+</xs:complexType>
+<xs:complexType name="item">
+<xs:sequence>
+<xs:element name="quantity" type="xs:int" />
+<xs:element minOccurs="0" name="product" type="tns:product" />
+<xs:element minOccurs="0" name="order" type="tns:order" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="order">
+<xs:sequence>
+<xs:element minOccurs="0" name="orderDate" type="xs:long" />
+<xs:element minOccurs="0" name="customer" type="tns:customer" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" use="required" />
+</xs:complexType>
+<xs:complexType name="customer">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" type="xs:string" />
+<xs:element minOccurs="0" name="openBalance" type="xs:decimal" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="orders" nillable="true" type="tns:order" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="addresses" nillable="true" type="tns:address" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" use="required" />
+</xs:complexType>
+<xs:complexType name="address">
+<xs:sequence>
+<xs:element minOccurs="0" name="street" type="xs:string" />
+<xs:element minOccurs="0" name="city" type="xs:string" />
+<xs:element name="house" type="xs:int" />
+<xs:element name="door" type="xs:int" />
+<xs:element minOccurs="0" name="zipCode" type="xs:string" />
+<xs:element name="shipping" type="xs:boolean" />
+<xs:element name="billing" type="xs:boolean" />
+<xs:element name="other" type="xs:boolean" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" use="required" />
+</xs:complexType>
+<xs:complexType name="warehouseAnswer">
+<xs:sequence>
+<xs:element name="isAvailable" type="xs:boolean" />
+<xs:element name="deliveryTime" type="xs:int" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="UnknownProductFault" nillable="true" type="xs:string" />
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="check_availabilityResponse">
+    <wsdl:part name="return" type="ns1:warehouseAnswer">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="UnknownProductException">
+    <wsdl:part element="ns1:UnknownProductFault" name="UnknownProductException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="check_availability">
+    <wsdl:part name="product" type="ns1:product">
+    </wsdl:part>
+    <wsdl:part name="amount" type="xsd:int">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="order">
+    <wsdl:part name="product" type="ns1:product">
+    </wsdl:part>
+    <wsdl:part name="amount" type="xsd:int">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="orderResponse">
+    <wsdl:part name="return" type="xsd:decimal">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="WarehouseService">
+    <wsdl:operation name="order">
+      <wsdl:input message="ns1:order" name="order">
+    </wsdl:input>
+      <wsdl:output message="ns1:orderResponse" name="orderResponse">
+    </wsdl:output>
+      <wsdl:fault message="ns1:UnknownProductException" name="UnknownProductException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="check_availability">
+      <wsdl:input message="ns1:check_availability" name="check_availability">
+    </wsdl:input>
+      <wsdl:output message="ns1:check_availabilityResponse" name="check_availabilityResponse">
+    </wsdl:output>
+      <wsdl:fault message="ns1:UnknownProductException" name="UnknownProductException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

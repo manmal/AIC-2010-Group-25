@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="CustomerService" targetNamespace="http://services.aic2010/" xmlns:ns1="http://services.aic2010/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://services.aic2010/" xmlns:tns="http://services.aic2010/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="address" type="tns:address" />
+<xs:element name="customer" type="tns:customer" />
+<xs:element name="order" type="tns:order" />
+<xs:complexType name="customer">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" type="xs:string" />
+<xs:element minOccurs="0" name="openBalance" type="xs:decimal" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="orders" nillable="true" type="tns:order" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="addresses" nillable="true" type="tns:address" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" use="required" />
+</xs:complexType>
+<xs:complexType name="order">
+<xs:sequence>
+<xs:element minOccurs="0" name="orderDate" type="xs:long" />
+<xs:element minOccurs="0" name="customer" type="tns:customer" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" use="required" />
+</xs:complexType>
+<xs:complexType name="address">
+<xs:sequence>
+<xs:element minOccurs="0" name="street" type="xs:string" />
+<xs:element minOccurs="0" name="city" type="xs:string" />
+<xs:element name="house" type="xs:int" />
+<xs:element name="door" type="xs:int" />
+<xs:element minOccurs="0" name="zipCode" type="xs:string" />
+<xs:element name="shipping" type="xs:boolean" />
+<xs:element name="billing" type="xs:boolean" />
+<xs:element name="other" type="xs:boolean" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" use="required" />
+</xs:complexType>
+<xs:element name="get_customer" type="tns:get_customer" />
+<xs:complexType name="get_customer">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="get_customerResponse" type="tns:get_customerResponse" />
+<xs:complexType name="get_customerResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:customer" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="update_customer" type="tns:update_customer" />
+<xs:complexType name="update_customer">
+<xs:sequence>
+<xs:element minOccurs="0" name="customer" type="tns:customer" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="update_customerResponse" type="tns:update_customerResponse" />
+<xs:complexType name="update_customerResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:element name="add_customer" type="tns:add_customer" />
+<xs:complexType name="add_customer">
+<xs:sequence>
+<xs:element minOccurs="0" name="customer" type="tns:customer" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="add_customerResponse" type="tns:add_customerResponse" />
+<xs:complexType name="add_customerResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:element name="notify" type="tns:notify" />
+<xs:complexType name="notify">
+<xs:sequence>
+<xs:element minOccurs="0" name="customer" type="tns:customer" />
+<xs:element minOccurs="0" name="message" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="notifyResponse" type="tns:notifyResponse" />
+<xs:complexType name="notifyResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:element name="update_account" type="tns:update_account" />
+<xs:complexType name="update_account">
+<xs:sequence>
+<xs:element minOccurs="0" name="customer" type="tns:customer" />
+<xs:element minOccurs="0" name="changed_value" type="xs:decimal" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="update_accountResponse" type="tns:update_accountResponse" />
+<xs:complexType name="update_accountResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:element name="delete_customer" type="tns:delete_customer" />
+<xs:complexType name="delete_customer">
+<xs:sequence>
+<xs:element minOccurs="0" name="id" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:element name="delete_customerResponse" type="tns:delete_customerResponse" />
+<xs:complexType name="delete_customerResponse">
+<xs:sequence />
+</xs:complexType>
+<xs:element name="get_all_customers" type="tns:get_all_customers" />
+<xs:complexType name="get_all_customers">
+<xs:sequence />
+</xs:complexType>
+<xs:element name="get_all_customersResponse" type="tns:get_all_customersResponse" />
+<xs:complexType name="get_all_customersResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="tns:customer" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="add_customer">
+    <wsdl:part element="ns1:add_customer" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="update_accountResponse">
+    <wsdl:part element="ns1:update_accountResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="delete_customerResponse">
+    <wsdl:part element="ns1:delete_customerResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notifyResponse">
+    <wsdl:part element="ns1:notifyResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="get_all_customersResponse">
+    <wsdl:part element="ns1:get_all_customersResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="get_customerResponse">
+    <wsdl:part element="ns1:get_customerResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notify">
+    <wsdl:part element="ns1:notify" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="update_customer">
+    <wsdl:part element="ns1:update_customer" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="delete_customer">
+    <wsdl:part element="ns1:delete_customer" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="get_customer">
+    <wsdl:part element="ns1:get_customer" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="add_customerResponse">
+    <wsdl:part element="ns1:add_customerResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="update_customerResponse">
+    <wsdl:part element="ns1:update_customerResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="update_account">
+    <wsdl:part element="ns1:update_account" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="get_all_customers">
+    <wsdl:part element="ns1:get_all_customers" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="CustomerService">
+    <wsdl:operation name="get_customer">
+      <wsdl:input message="ns1:get_customer" name="get_customer">
+    </wsdl:input>
+      <wsdl:output message="ns1:get_customerResponse" name="get_customerResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="update_customer">
+      <wsdl:input message="ns1:update_customer" name="update_customer">
+    </wsdl:input>
+      <wsdl:output message="ns1:update_customerResponse" name="update_customerResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="add_customer">
+      <wsdl:input message="ns1:add_customer" name="add_customer">
+    </wsdl:input>
+      <wsdl:output message="ns1:add_customerResponse" name="add_customerResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="notify">
+      <wsdl:input message="ns1:notify" name="notify">
+    </wsdl:input>
+      <wsdl:output message="ns1:notifyResponse" name="notifyResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="update_account">
+      <wsdl:input message="ns1:update_account" name="update_account">
+    </wsdl:input>
+      <wsdl:output message="ns1:update_accountResponse" name="update_accountResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="delete_customer">
+      <wsdl:input message="ns1:delete_customer" name="delete_customer">
+    </wsdl:input>
+      <wsdl:output message="ns1:delete_customerResponse" name="delete_customerResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_all_customers">
+      <wsdl:input message="ns1:get_all_customers" name="get_all_customers">
+    </wsdl:input>
+      <wsdl:output message="ns1:get_all_customersResponse" name="get_all_customersResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>
