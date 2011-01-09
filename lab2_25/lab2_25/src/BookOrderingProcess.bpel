@@ -18,61 +18,96 @@
     <import namespace="http://services.aic2010/" location="http://localhost:8088/supplier2?wsdl=SupplierService.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://enterprise.netbeans.org/bpel/supplier1Wrapper" location="supplier1Wrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://services.aic2010/" location="http://localhost:8088/supplier1?wsdl=SupplierService.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://enterprise.netbeans.org/bpel/registryWrapper" location="registryWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://services.aic2010/" location="http://localhost:8088/registry?wsdl=RegistryService.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://enterprise.netbeans.org/bpel/shippingserviceWrapper" location="shippingserviceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://services.aic2010/" location="http://localhost:8088/shippingservice?wsdl=ShippingService.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="OrderProcess" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" partnerLinkType="tns:OrderProcessLinkType" myRole="OrderProcessProvider"/>
         <partnerLink name="CustomerService" xmlns:tns="http://enterprise.netbeans.org/bpel/customerserviceWrapper" partnerLinkType="tns:CustomerServiceLinkType" partnerRole="CustomerServiceRole"/>
         <partnerLink name="WarehouseService" xmlns:tns="http://enterprise.netbeans.org/bpel/warehouseWrapper" partnerLinkType="tns:WarehouseServiceLinkType" partnerRole="WarehouseServiceRole"/>
         <partnerLink name="Supplier1" xmlns:tns="http://enterprise.netbeans.org/bpel/supplier1Wrapper" partnerLinkType="tns:SupplierServiceLinkType" partnerRole="SupplierServiceRole"/>
         <partnerLink name="Supplier2" xmlns:tns="http://enterprise.netbeans.org/bpel/supplier2Wrapper" partnerLinkType="tns:SupplierServiceLinkType" partnerRole="SupplierServiceRole"/>
+        <partnerLink name="RegistryService" xmlns:tns="http://enterprise.netbeans.org/bpel/registryWrapper" partnerLinkType="tns:RegistryServiceLinkType" partnerRole="RegistryServiceRole"/>
     </partnerLinks>
     <variables>
-        <variable name="customerOut" messageType="ns4:get_customerResponse"/>
-        <variable name="customerIn" messageType="ns4:get_customer"/>
-        <variable name="processIn" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" messageType="tns:start_process_request"/>
+        <variable name="getCustomerOutput" messageType="ns4:get_customerResponse"/>
+        <variable name="getCustomerInput" messageType="ns4:get_customer"/>
+        <variable name="processIn" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" messageType="tns:start_process_request">
+            <sxed2:editor>
+                <sxed2:predicate path="$processIn.part1/ns5:orderParts[$ForEach1Counter]" source="from"/>
+            </sxed2:editor>
+        </variable>
     </variables>
     <sequence name="Sequence1">
         <receive name="ReceiveStartEvent" createInstance="yes" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="processIn"/>
         <assign name="AssignCustomerID">
             <copy>
                 <from>$processIn.part1/ns5:customer</from>
-                <to>$customerIn.parameters/id</to>
+                <to>$getCustomerInput.parameters/id</to>
             </copy>
         </assign>
-        <invoke name="getCustomer" partnerLink="CustomerService" operation="get_customer" portType="ns4:CustomerService" inputVariable="customerIn" outputVariable="customerOut"/>
-        <forEach name="ForEachOrderPart" parallel="no" counterName="ForEachPartCounter">
+        <invoke name="getCustomer" partnerLink="CustomerService" operation="get_customer" portType="ns4:CustomerService" inputVariable="getCustomerInput" outputVariable="getCustomerOutput"/>
+        <forEach name="ForEachOrder" parallel="no" counterName="ForEach1Counter">
             <startCounterValue>1</startCounterValue>
             <finalCounterValue>count($processIn.part1/ns5:orderParts)</finalCounterValue>
-            <scope name="OrderPart">
+            <scope name="OrderScope">
                 <variables>
-                    <variable name="OrderOut" messageType="ns4:orderResponse"/>
-                    <variable name="OrderIn" messageType="ns4:order"/>
-                    <variable name="warehouseOut" messageType="ns4:check_availabilityResponse"/>
-                    <variable name="warehouseIn" messageType="ns4:check_availability"/>
+                    <variable name="WarehouseOrderOutput" messageType="ns4:orderResponse"/>
+                    <variable name="WarehouseOrderInput" messageType="ns4:order"/>
+                    <variable name="CheckAvailabilityOut" messageType="ns4:check_availabilityResponse"/>
+                    <variable name="CheckAvailabilityIn" messageType="ns4:check_availability"/>
                 </variables>
                 <sequence name="Sequence2">
-                    <assign name="AssignProductIDAndAmount">
+                    <assign name="AssignPartTocheck">
                         <copy>
-                            <from>$processIn.part1/ns5:orderParts/ns5:product_id</from>
-                            <to>$warehouseIn.product/@id</to>
+                            <from>$processIn.part1/ns5:orderParts[$ForEach1Counter]/ns5:product_id
+                                <sxed2:editor>
+                                    <sxed2:predicate path="$processIn.part1/ns5:orderParts[$ForEach1Counter]" source="from"/>
+                                </sxed2:editor>
+                            </from>
+                            <to>$CheckAvailabilityIn.product/@id</to>
                         </copy>
                         <copy>
-                            <from>$processIn.part1/ns5:orderParts/ns5:amount</from>
-                            <to variable="warehouseIn" part="amount"/>
+                            <from>$processIn.part1/ns5:orderParts[$ForEach1Counter]/ns5:amount
+                                <sxed2:editor>
+                                    <sxed2:predicate path="$processIn.part1/ns5:orderParts[$ForEach1Counter]" source="from"/>
+                                </sxed2:editor>
+                            </from>
+                            <to variable="CheckAvailabilityIn" part="amount"/>
                         </copy>
                     </assign>
-                    <invoke name="CheckAvailability" partnerLink="WarehouseService" operation="check_availability" portType="ns4:WarehouseService" inputVariable="warehouseIn" outputVariable="warehouseOut"/>
-                    <if name="IfAvailableinWarehouse">
-                        <condition>$warehouseOut.return/isAvailable</condition>
-                        <invoke name="OrderInWarehouse" partnerLink="WarehouseService" operation="order" portType="ns4:WarehouseService" inputVariable="OrderIn" outputVariable="OrderOut"/>
-                        <else>
-                            <invoke name="OrderInSupplier"/>
-                        </else>
+                    <invoke name="CheckAvailability" partnerLink="WarehouseService" operation="check_availability" portType="ns4:WarehouseService" inputVariable="CheckAvailabilityIn" outputVariable="CheckAvailabilityOut"/>
+                    <if name="IfAvailable">
+                        <condition>$CheckAvailabilityOut.return/isAvailable</condition>
+                        <sequence name="Sequence3">
+                            <assign name="Assign1">
+                                <copy>
+                                    <from>$processIn.part1/ns5:orderParts[$ForEach1Counter]/ns5:product_id
+                                        <sxed2:editor>
+                                            <sxed2:predicate path="$processIn.part1/ns5:orderParts[$ForEach1Counter]" source="from"/>
+                                        </sxed2:editor>
+                                    </from>
+                                    <to>$WarehouseOrderInput.product/@id</to>
+                                </copy>
+                                <copy>
+                                    <from>$processIn.part1/ns5:orderParts[$ForEach1Counter]/ns5:amount
+                                        <sxed2:editor>
+                                            <sxed2:predicate path="$processIn.part1/ns5:orderParts[$ForEach1Counter]" source="from"/>
+                                        </sxed2:editor>
+                                    </from>
+                                    <to variable="WarehouseOrderInput" part="amount"/>
+                                </copy>
+                            </assign>
+                            <invoke name="OrderAtWarehouse" partnerLink="WarehouseService" operation="order" portType="ns4:WarehouseService" inputVariable="WarehouseOrderInput" outputVariable="WarehouseOrderOutput"/>
+                        </sequence>
                     </if>
                 </sequence>
             </scope>
         </forEach>
     </sequence>
 </process>
+
 
 
 
