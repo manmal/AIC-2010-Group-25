@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="customerserviceWrapper6" targetNamespace="http://enterprise.netbeans.org/bpel/customerserviceWrapper6" xmlns:tns="http://enterprise.netbeans.org/bpel/customerserviceWrapper6" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:ns="http://services.aic2010/">
+    <import location="http://localhost:8088/customerservice?wsdl=CustomerService.wsdl" namespace="http://services.aic2010/"/>
+    <plnk:partnerLinkType name="CustomerServiceLinkType6">
+        <plnk:role name="CustomerServiceRole6" portType="ns:CustomerService"/>
+    </plnk:partnerLinkType>
+</definitions>
+

@@ -8,7 +8,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 
 
-@WebService
+@WebService(targetNamespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer")
 public interface CustomerService {
 
     @WebMethod(operationName="get_customer")

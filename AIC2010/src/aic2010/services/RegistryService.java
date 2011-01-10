@@ -17,7 +17,7 @@ import org.xmlsoap.schemas.ws._2004._08.addressing.EndpointReferenceType;
  *
  * @author rudolf
  */
-@WebService
+@WebService(targetNamespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/registry")
 @SOAPBinding(style=SOAPBinding.Style.RPC, parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public interface RegistryService {
 

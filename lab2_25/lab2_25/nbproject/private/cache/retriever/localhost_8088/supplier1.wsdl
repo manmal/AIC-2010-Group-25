@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="SupplierService" targetNamespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" xmlns:ns1="http://services.aic2010/" xmlns:ns2="http://schemas.xmlsoap.org/wsdl/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:import location="http://localhost:8088/supplier1?wsdl=SupplierService.wsdl" namespace="http://services.aic2010/">
+    </wsdl:import>
+  <wsdl:binding name="SupplierServiceSoapBinding" type="ns1:SupplierService">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="order">
+      <soap:operation soapAction="" style="rpc" />
+      <wsdl:input name="order">
+        <soap:body namespace="http://services.aic2010/" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="orderResponse">
+        <soap:body namespace="http://services.aic2010/" use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="UnknownProductException">
+        <soap:fault name="UnknownProductException" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SupplierService">
+    <wsdl:port binding="tns:SupplierServiceSoapBinding" name="SupplierPT">
+      <soap:address location="http://localhost:8088/supplier1" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

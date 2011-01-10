@@ -18,7 +18,7 @@ import javax.jws.soap.SOAPBinding;
  * @author rudolf
  */
 
-@WebService
+@WebService(targetNamespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier")
 @SOAPBinding(style=SOAPBinding.Style.RPC, parameterStyle=SOAPBinding.ParameterStyle.BARE)
 public interface SupplierService {
 
