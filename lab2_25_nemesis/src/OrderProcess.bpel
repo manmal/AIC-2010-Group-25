@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process
+    name="lab2_25_nemesis"
+    targetNamespace="http://enterprise.netbeans.org/bpel/lab2_25_nemesis/lab2_25_nemesis"
+    xmlns:tns="http://enterprise.netbeans.org/bpel/lab2_25_nemesis/lab2_25_nemesis"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
+    xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor"
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling">
+
+   <sequence>
+   </sequence>
+</process>
