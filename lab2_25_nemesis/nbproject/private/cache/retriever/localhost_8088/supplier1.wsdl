@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="SupplierService" targetNamespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" xmlns:ns1="http://schemas.xmlsoap.org/wsdl/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="address" type="tns:address" />
+<xs:element name="customer" type="tns:customer" />
+<xs:element name="item" type="tns:item" />
+<xs:element name="order" type="tns:order" />
+<xs:element name="product" type="tns:product" />
+<xs:complexType name="product">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" type="xs:string" />
+<xs:element minOccurs="0" name="singleUnitPrice" type="xs:decimal" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="items" nillable="true" type="tns:item" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" use="required" />
+</xs:complexType>
+<xs:complexType name="item">
+<xs:sequence>
+<xs:element name="quantity" type="xs:int" />
+<xs:element minOccurs="0" name="product" type="tns:product" />
+<xs:element minOccurs="0" name="order" type="tns:order" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="order">
+<xs:sequence>
+<xs:element minOccurs="0" name="orderDate" type="xs:long" />
+<xs:element minOccurs="0" name="customer" type="tns:customer" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" use="required" />
+</xs:complexType>
+<xs:complexType name="customer">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" type="xs:string" />
+<xs:element minOccurs="0" name="openBalance" type="xs:decimal" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="orders" nillable="true" type="tns:order" />
+<xs:element maxOccurs="unbounded" minOccurs="0" name="addresses" nillable="true" type="tns:address" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" use="required" />
+</xs:complexType>
+<xs:complexType name="address">
+<xs:sequence>
+<xs:element minOccurs="0" name="street" type="xs:string" />
+<xs:element minOccurs="0" name="city" type="xs:string" />
+<xs:element name="house" type="xs:int" />
+<xs:element name="door" type="xs:int" />
+<xs:element minOccurs="0" name="zipCode" type="xs:string" />
+<xs:element name="shipping" type="xs:boolean" />
+<xs:element name="billing" type="xs:boolean" />
+<xs:element name="other" type="xs:boolean" />
+</xs:sequence>
+<xs:attribute name="id" type="xs:string" use="required" />
+</xs:complexType>
+<xs:element name="UnknownProductFault" nillable="true" type="xs:string" />
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="orderResponse">
+    <wsdl:part name="return" type="xsd:decimal">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="order">
+    <wsdl:part name="product" type="tns:product">
+    </wsdl:part>
+    <wsdl:part name="amount" type="xsd:int">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="UnknownProductException">
+    <wsdl:part element="tns:UnknownProductFault" name="UnknownProductException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="SupplierService">
+    <wsdl:operation name="order">
+      <wsdl:input message="tns:order" name="order">
+    </wsdl:input>
+      <wsdl:output message="tns:orderResponse" name="orderResponse">
+    </wsdl:output>
+      <wsdl:fault message="tns:UnknownProductException" name="UnknownProductException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SupplierServiceSoapBinding" type="tns:SupplierService">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="order">
+      <soap:operation soapAction="" style="rpc" />
+      <wsdl:input name="order">
+        <soap:body namespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" use="literal" />
+      </wsdl:input>
+      <wsdl:output name="orderResponse">
+        <soap:body namespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="UnknownProductException">
+        <soap:fault name="UnknownProductException" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SupplierService">
+    <wsdl:port binding="tns:SupplierServiceSoapBinding" name="SupplierPT">
+      <soap:address location="http://localhost:8088/supplier1" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

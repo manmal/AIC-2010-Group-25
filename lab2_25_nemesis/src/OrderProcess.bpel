@@ -17,8 +17,6 @@
     <import namespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/registry" location="http://localhost:8088/registry?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://enterprise.netbeans.org/bpel/shippingserviceWrapper" location="shippingserviceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping" location="http://localhost:8088/shippingservice?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
-    <import namespace="http://enterprise.netbeans.org/bpel/supplier1Wrapper" location="supplier1Wrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
-    <import namespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" location="http://localhost:8088/supplier1?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://enterprise.netbeans.org/bpel/supplier2Wrapper" location="supplier2Wrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" location="http://localhost:8088/supplier2?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://infosys.tuwien.ac.at/aic10/ass2/process" location="OrderProcess.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
@@ -61,6 +59,8 @@
         </forEach>
     </sequence>
 </process>
+
+
 
 
 
