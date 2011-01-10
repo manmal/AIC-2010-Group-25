@@ -47,7 +47,7 @@ made subject to such option by the copyright holder.
 <casa xmlns="http://java.sun.com/xml/ns/casa" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/casa ./casa.xsd">
     <endpoints/>
     <service-units>
-        <service-engine-service-unit artifacts-zip="lab2_25_nemesis.jar" component-name="sun-bpel-engine" defined="false" description="some description" internal="true" name="lab2_25_nemesis" unit-name="lab2_25_nemesis" unknown="false" x="-1" y="-1"/>
+        <service-engine-service-unit artifacts-zip="lab2_25_nemesis.jar" component-name="sun-bpel-engine" defined="false" description="some description" internal="true" name="lab2_25_nemesis" unit-name="lab2_25_nemesis" unknown="false" x="133" y="99"/>
     </service-units>
     <connections/>
     <porttypes/>
@@ -57,5 +57,6 @@ made subject to such option by the copyright holder.
         <region name="WSDL Endpoints" width="150"/>
         <region name="JBI Modules" width="500"/>
         <region name="External Modules" width="200"/>
-    </regions>        
+    </regions>
 </casa>
+

@@ -4,8 +4,8 @@
       <ord:customer>?string?</ord:customer>
       <!--1 or more repetitions:-->
       <ord:orderParts>
-        <ord:product_id>?string?</ord:product_id>
-        <ord:amount>?100?</ord:amount>
+        <ord:product_id>1</ord:product_id>
+        <ord:amount>1</ord:amount>
       </ord:orderParts>
     </ord:parameters>
   </soapenv:Body>
