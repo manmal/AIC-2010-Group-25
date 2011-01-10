@@ -47,7 +47,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     private void addProducts(){
-        Product product1 = TestDataManager.getProduct(false, true);
+        Product product1 = TestDataManager.getProduct(false, false);
         Product product2 = TestDataManager.getProduct2();
 
         products.put(product1, 23);

@@ -34,7 +34,7 @@ public class WarehouseTest {
     @Test
     public void checkKnownAvailableProduct()
     throws UnknownProductException{
-        Product product1 = TestDataManager.getProduct(false, true);
+        Product product1 = TestDataManager.getProduct(false, false);
 
         WarehouseAnswer answer = warehouse.check_availability(product1, 1);
 
@@ -45,7 +45,7 @@ public class WarehouseTest {
     @Test
     public void checkProductTooHighQuantity()
     throws UnknownProductException{
-        Product product1 = TestDataManager.getProduct(false, true);
+        Product product1 = TestDataManager.getProduct(false, false);
 
         WarehouseAnswer answer = warehouse.check_availability(product1, 4);
 
