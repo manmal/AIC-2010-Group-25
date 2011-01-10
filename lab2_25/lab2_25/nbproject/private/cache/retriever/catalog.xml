@@ -3,9 +3,18 @@
     <system systemId="http://localhost:8088/customerservice?wsdl=CustomerService.wsdl" uri="localhost_8088/customerservice.wsdl_CustomerService.wsdl"/>
     <system systemId="http://localhost:8088/registry?wsdl=RegistryService.wsdl" uri="localhost_8088/registry.wsdl_RegistryService.wsdl"/>
     <system systemId="http://localhost:8088/shippingservice?wsdl=ShippingService.wsdl" uri="localhost_8088/shippingservice.wsdl_ShippingService.wsdl"/>
-    <system systemId="http://localhost:8088/supplier1?wsdl=SupplierService.wsdl" uri="localhost_8088/supplier1.wsdl_SupplierService.wsdl"/>
+    <system systemId="http://localhost:8088/supplier2?wsdl" uri="localhost:8088/supplier2/wsdl"/>
     <system systemId="http://localhost:8088/supplier2?wsdl=SupplierService.wsdl" uri="localhost_8088/supplier2.wsdl_SupplierService.wsdl"/>
-    <system systemId="http://localhost:8088/warehouse?wsdl=WarehouseService.wsdl" uri="localhost_8088/warehouse.wsdl_WarehouseService.wsdl"/>
+    <system systemId="http://localhost:8088/supplier1?wsdl=SupplierService.wsdl" uri="localhost_8088/supplier1.wsdl_SupplierService.wsdl"/>
+    <system systemId="http://localhost:8088/warehouse?wsdl" uri="localhost:8088/warehouse/wsdl"/>
+    <system systemId="http://localhost:8088/warehouse?wsdl=WarehouseService.wsdl" uri="localhost:8088/warehouse/wsdl=WarehouseService.wsdl"/>
 </catalog>
+
+
+
+
+
+
+
 
 
