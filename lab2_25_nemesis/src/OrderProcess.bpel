@@ -27,7 +27,6 @@
         <partnerLink name="CustomerService" xmlns:tns="http://enterprise.netbeans.org/bpel/customerserviceWrapper" partnerLinkType="tns:CustomerServiceLinkType" partnerRole="CustomerServiceRole"/>
         <partnerLink name="Registry" xmlns:tns="http://enterprise.netbeans.org/bpel/registryWrapper" partnerLinkType="tns:RegistryServiceLinkType" partnerRole="RegistryServiceRole"/>
         <partnerLink name="ShippingService" xmlns:tns="http://enterprise.netbeans.org/bpel/shippingserviceWrapper" partnerLinkType="tns:ShippingServiceLinkType" partnerRole="ShippingServiceRole"/>
-        <partnerLink name="Supplier1" xmlns:tns="http://enterprise.netbeans.org/bpel/supplier1Wrapper" partnerLinkType="tns:SupplierServiceLinkType" partnerRole="SupplierServiceRole"/>
         <partnerLink name="Supplier2" xmlns:tns="http://enterprise.netbeans.org/bpel/supplier2Wrapper" partnerLinkType="tns:SupplierServiceLinkType" partnerRole="SupplierServiceRole"/>
         <partnerLink name="Warehouse" xmlns:tns="http://enterprise.netbeans.org/bpel/warehouseWrapper" partnerLinkType="tns:WarehouseServiceLinkType" partnerRole="WarehouseServiceRole"/>
     </partnerLinks>
@@ -47,9 +46,22 @@
                     <sxed2:predicate path="$parts.part1/ns0:orderParts[$ForEach1Counter]" source="from"/>
                 </sxed2:editor>
             </finalCounterValue>
-            <scope name="Scope1"></scope>
+            <scope name="Scope1">
+                <variables>
+                    <variable name="OrderOutSupplier2" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" messageType="tns:orderResponse"/>
+                    <variable name="OrderInSupplier2" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" messageType="tns:order"/>
+                    <variable name="OrderOutWarehouse" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" messageType="tns:orderResponse"/>
+                    <variable name="OrderInWarehouse" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" messageType="tns:order"/>
+                </variables>
+                <sequence name="Sequence1">
+                    <invoke name="Invoke1" partnerLink="Warehouse" operation="order" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" portType="tns:WarehouseService" inputVariable="OrderInWarehouse" outputVariable="OrderOutWarehouse"/>
+                    <invoke name="Invoke2" partnerLink="Supplier2" operation="order" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" portType="tns:SupplierService" inputVariable="OrderInSupplier2" outputVariable="OrderOutSupplier2"/>
+                </sequence>
+            </scope>
         </forEach>
     </sequence>
 </process>
+
+
 
 
