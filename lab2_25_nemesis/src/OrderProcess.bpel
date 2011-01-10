@@ -126,7 +126,7 @@
                             <invoke name="OrderAtWarehouse" partnerLink="Warehouse" operation="order" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" portType="tns:WarehouseService" inputVariable="OrderInWarehouse" outputVariable="OrderOutWarehouse"/>
                             <assign name="Assign3">
                                 <copy>
-                                    <from>stub() + $OverallPrice + $OrderOutWarehouse.return</from>
+                                    <from>$OverallPrice + $OrderOutWarehouse.return</from>
                                     <to variable="OverallPrice"/>
                                 </copy>
                             </assign>
@@ -202,7 +202,7 @@
                             <to>$NotifyIn.parameters/customer</to>
                         </copy>
                         <copy>
-                            <from>;'This order has been shipped!'</from>
+                            <from>'This order has been shipped!'</from>
                             <to>$NotifyIn.parameters/message</to>
                         </copy>
                     </assign>
