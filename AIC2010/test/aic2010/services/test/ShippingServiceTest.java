@@ -25,15 +25,15 @@ public class ShippingServiceTest {
 
     @Before
     public void buildTestData() {
-        AddressOK = TestDataManager.getAddress(false, true);
-        CustomerOK = TestDataManager.getCustomer(true);
-        OrderOK = TestDataManager.getOrder(false, false, true, true);
-        OrderWithMissingProduct = TestDataManager.getOrder(true, false, true, true);
+        AddressOK = TestDataManager.getAddress(false, false);
+        CustomerOK = TestDataManager.getCustomer(false);
+        OrderOK = TestDataManager.getOrder(false, false, false, false);
+        OrderWithMissingProduct = TestDataManager.getOrder(true, false, false, false);
 
         // set wrong relationships for tests which shall fail:
 
-        AddressMissing = TestDataManager.getAddress(true, true);
-        ProductMissing = TestDataManager.getProduct(true, true);
+        AddressMissing = TestDataManager.getAddress(true, false);
+        ProductMissing = TestDataManager.getProduct(true, false);
         OrderWithMissingProduct.getItems().get(0).setProduct(ProductMissing);
     }
 

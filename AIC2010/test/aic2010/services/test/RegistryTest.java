@@ -35,7 +35,7 @@ public class RegistryTest {
     @Test
     public void testFindProduct1Supplier1()
     throws UnknownProductException{
-        Product product = TestDataManager.getProduct(false, true);
+        Product product = TestDataManager.getProduct(false, false);
 
         EndpointReferenceType endpoint = registry.findSupplier(product);
 

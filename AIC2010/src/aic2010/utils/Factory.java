@@ -12,6 +12,10 @@ import java.util.UUID;
 
 public class Factory {
 
+    static Integer product_id = 0;
+    static Integer address_id = 0;
+    static Integer order_id = 0;
+
     public static Customer createCustomer(String name, BigDecimal openBalance, List<Address> addresses, List<Order> orders)
     {
         Customer customer = new Customer();
@@ -26,7 +30,9 @@ public class Factory {
 
     public static Order createOrder(Customer customer, List<Item> items, Date orderDate) {
         Order order = new Order();
-        order.setId(UUID.randomUUID().toString());
+        //order.setId(UUID.randomUUID().toString());
+        order_id +=1;
+        order.setId(order_id.toString());
         order.setCustomer(customer);
         order.setItems(items);
         order.setOrderDate(orderDate);
@@ -43,7 +49,9 @@ public class Factory {
 
     public static Product createProduct(List<Item> items, String name, BigDecimal unitPrice) {
         Product product = new Product();
-        product.setId(UUID.randomUUID().toString());
+        product_id+=1;
+        //product.setId(UUID.randomUUID().toString());
+        product.setId(product_id.toString());
         product.setItems(items);
         product.setName(name);
         product.setSingleUnitPrice(unitPrice);
@@ -53,7 +61,10 @@ public class Factory {
     public static Address createAddress(String city, String zipCode, String street, int door, int house, boolean billing, boolean shipping, boolean other)
     {
         Address address = new Address();
-        address.setId(UUID.randomUUID().toString());
+        address_id+=1;
+
+        //address.setId(UUID.randomUUID().toString());
+        address.setId(address_id.toString());
 
         address.setCity(city);
         address.setZipCode(zipCode);

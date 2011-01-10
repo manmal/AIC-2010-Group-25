@@ -35,7 +35,7 @@ public class WarehouseServiceImpl extends SupplierServiceImpl implements Warehou
     }
 
     private void addProducts(){
-        Product product1 = TestDataManager.getProduct(false, true);
+        Product product1 = TestDataManager.getProduct(false, false);
         
         ProductEntry entry1 = new ProductEntry();
         entry1.setDeliveryTime(3);

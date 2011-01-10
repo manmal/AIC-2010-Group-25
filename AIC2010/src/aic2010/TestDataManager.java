@@ -66,7 +66,7 @@ public class TestDataManager {
         items.add(item);
         Customer customer = null;
         if(!missingCustomer)
-            customer = getCustomer(true);
+            customer = getCustomer(false);
         Order order = Factory.createOrder(customer, items, new Date());
         if(nullifyOrderID)
             order.setId(null);
