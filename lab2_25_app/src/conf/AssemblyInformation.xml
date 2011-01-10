@@ -7,6 +7,16 @@
         </identification>
         <service-unit>
             <identification>
+                <name>lab2_25_app-lab2_25_nemesis</name>
+                <description>Represents this Service Unit</description>
+            </identification>
+            <target>
+                <artifacts-zip>lab2_25_nemesis.jar</artifacts-zip>
+                <component-name>sun-bpel-engine</component-name>
+            </target>
+        </service-unit>
+        <service-unit>
+            <identification>
                 <name>lab2_25_app-sun-database-binding</name>
                 <description>Represents this Service Unit</description>
             </identification>

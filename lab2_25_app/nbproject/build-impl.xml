@@ -99,7 +99,25 @@
     <!--
         COMPILATION SECTION
     -->
-    <target name="deps-jar" depends="init" unless="${no.dependencies}"/>
+    <target name="deps-jar" depends="init" unless="${no.dependencies}">
+        <ant target="dist_se" inheritall="false" antfile="${project.lab2_25_nemesis}/build.xml"/>
+        <property name="lab2_25_nemesis.su.name" value="lab2_25_nemesis"/>
+        <unzip src="${reference.lab2_25_nemesis.dist_se}" dest="${src.dir}/../jbiServiceUnits/${lab2_25_nemesis.su.name}">
+            <patternset>
+                <include name="**/*.wsdl"/>
+                <include name="**/*.WSDL"/>
+                <include name="**/*.xsd"/>
+                <include name="**/*.XSD"/>
+                <include name="META-INF/jbi.xml"/>
+                <include name="META-INF/catalog.xml"/>
+            </patternset>
+        </unzip>
+        <property name="lab2_25_nemesis.su.dir" value="${src.dir}/../jbiServiceUnits/${lab2_25_nemesis.su.name}"/>
+        <move file="${lab2_25_nemesis.su.dir}/META-INF/jbi.xml" todir="${lab2_25_nemesis.su.dir}"/>
+        <move todir="${src.dir}/../jbiServiceUnits/META-INF/${lab2_25_nemesis.su.name}">
+            <fileset dir="${lab2_25_nemesis.su.dir}/META-INF"/>
+        </move>
+    </target>
     <target name="deps-javaee-jar" depends="init" unless="${no.dependencies}"/>
     <target name="pre-pre-compile" depends="init,deps-jar">
         <mkdir dir="${build.classes.dir}"/>
@@ -108,10 +126,14 @@
         <!-- Empty placeholder for easier customization. -->
         <!-- You can override this target in the ../build.xml file. -->
     </target>
-    <target name="library-inclusion-in-archive" depends="compile"/>
+    <target name="library-inclusion-in-archive" depends="compile">
+        <unjar dest="${build.classes.dir}" src="${reference.lab2_25_nemesis.dist_se}"/>
+    </target>
     <target name="library-inclusion-in-manifest" depends="compile">
+        <basename property="included.lib.reference.lab2_25_nemesis.dist_se" file="${reference.lab2_25_nemesis.dist_se}"/>
+        <copy todir="${build.classes.dir}" file="${reference.lab2_25_nemesis.dist_se}"/>
         <manifest file="${build.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Class-Path" value=""/>
+            <attribute name="Class-Path" value="${included.lib.reference.lab2_25_nemesis.dist_se}"/>
         </manifest>
     </target>
     <target name="do-compile" depends="init,deps-jar,pre-pre-compile,pre-compile"/>
@@ -202,7 +224,9 @@
     <!--
         CLEANUP SECTION
     -->
-    <target name="deps-clean" depends="init" unless="${no.dependencies}"/>
+    <target name="deps-clean" depends="init" unless="${no.dependencies}">
+        <ant target="clean" inheritall="false" antfile="${project.lab2_25_nemesis}/build.xml"/>
+    </target>
     <target name="do-clean" depends="init">
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
