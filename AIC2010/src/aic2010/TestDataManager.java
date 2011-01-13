@@ -24,6 +24,52 @@ import java.util.List;
  */
 public class TestDataManager {
 
+    public static void populate()
+    {
+        EmbeddedObjectContainer db = MiniDB.getDB();
+
+        List<Customer> customers = new ArrayList<Customer>();
+        List<Address> list;
+
+        Customer c1 = Factory.createCustomer("Customer1", BigDecimal.valueOf(1), null, null);
+        Address a1 = Factory.createAddress("Vienna1", "1234", "Googlegasse", 20, 8, true, true, false);
+        list = new ArrayList<Address>();
+        list.add(a1);
+        c1.setAddresses(list);
+        customers.add(c1);
+
+        Customer c2 = Factory.createCustomer("Customer2", BigDecimal.valueOf(17.3), null, null);
+        Address a2 = Factory.createAddress("Vienna2", "1010", "Stephansdomplatzl", 1, 1, true, false, false);
+        Address a3 = Factory.createAddress("Vienna3", "1230", "Karlsteich", 3, 0, false, true, false);
+        list = new ArrayList<Address>();
+        list.add(a2);
+        list.add(a3);
+        c2.setAddresses(list);
+        customers.add(c2);
+
+        Customer c3 = Factory.createCustomer("Customer3", BigDecimal.valueOf(-25.7), null, null);
+        Address a4 = Factory.createAddress("Vienna4", "1110", "Googlegasse", 20, 8, false, false, true);
+        list = new ArrayList<Address>();
+        list.add(a4);
+        c3.setAddresses(list);
+        customers.add(c3);
+
+        db.store(c1);
+        db.store(c2);
+        db.store(c3);
+
+        Product p1 = Factory.createProduct(null, "Product1", BigDecimal.valueOf(17.3));
+        Product p2 = Factory.createProduct(null, "Product2", BigDecimal.valueOf(42));
+        Product p3 = Factory.createProduct(null, "Product3", BigDecimal.valueOf(Math.PI));
+
+        db.store(p1);
+        db.store(p2);
+        db.store(p3);
+
+        db.commit();
+    }
+
+    /*
     public static Address getAddress(boolean missing, boolean nullifyID) {
         Address address = null;
         if(missing)
@@ -145,18 +191,19 @@ public class TestDataManager {
     public static void saveTestDataShippingService() {
         EmbeddedObjectContainer db = MiniDB.getDB();
 
-        Address AddressOK = TestDataManager.getAddress(false, false);
-        Customer CustomerOK = TestDataManager.getCustomer(false);
-        Order OrderOK = TestDataManager.getOrder(false, false, false, false);
-        Order OrderWithMissingProduct = TestDataManager.getOrder(true, false, false, false);
+//        Address AddressOK = TestDataManager.getAddress(false, false);
+//        Customer CustomerOK = TestDataManager.getCustomer(false);
+        Order OrderOK = TestDataManager.getOrder(false, true, false, false);
+        Order OrderWithMissingProduct = TestDataManager.getOrder(true, true, false, false);
 
-        db.store(CustomerOK);
+//        db.store(CustomerOK);
         db.store(OrderOK);
-        db.store(AddressOK);
+//        db.store(AddressOK);
         db.store(OrderWithMissingProduct);
         db.commit();
     }
 
+    */
     public static void resetRunningDB()
     {
         MiniDB.mdb().resetRunningDB();

@@ -61,8 +61,9 @@ public class Main {
      */
     public static void generateTestdata() {
         TestDataManager.resetRunningDB();
-        TestDataManager.saveTestDataShippingService();
-        TestDataManager.saveTestDataCustomerService();
+        TestDataManager.populate();
+        //TestDataManager.saveTestDataShippingService();
+        //TestDataManager.saveTestDataCustomerService();
     }
 
     public static void startCustomerManagementService() {
