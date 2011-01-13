@@ -64,7 +64,7 @@
                         <to>$Start_processOut.part1/ns0:orderResult/ns0:comment</to>
                     </copy>
                     <copy>
-                        <from>0</from>
+                        <from>-1</from>
                         <to>$Start_processOut.part1/ns0:orderResult/ns0:orderid</to>
                     </copy>
                 </assign>
@@ -131,8 +131,21 @@
                                         <from>$Get_customerOut.parameters/return</from>
                                             <to>$NotifyFaultIn.parameters/customer</to>
                                     </copy>
+                                <copy>
+                                    <from>false()</from>
+                                    <to>$Start_processOut.part1/ns0:orderResult/ns0:success</to>
+                                </copy>
+                                <copy>
+                                    <from>-1</from>
+                                    <to>$Start_processOut.part1/ns0:orderResult/ns0:orderid</to>
+                                </copy>
+                                <copy>
+                                    <from variable="UnknownProduct" part="UnknownProductException"/>
+                                    <to>$Start_processOut.part1/ns0:orderResult/ns0:comment</to>
+                                </copy>
                             </assign>
                             <invoke name="NotifyCustomer" partnerLink="CustomerService" operation="notify" portType="ns2:CustomerService" inputVariable="NotifyFaultIn" outputVariable="NotifyFaultOut"/>
+                            <reply name="ReplyFault2" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
                         </sequence>
                     </catch>
                 </faultHandlers>
@@ -231,8 +244,21 @@
                                 <from variable="UnknownAddressException" part="UnknownAddressException"/>
                                 <to>$NotifyIn.parameters/message</to>
                             </copy>
+                            <copy>
+                                <from variable="UnknownAddressException" part="UnknownAddressException"/>
+                                <to>$Start_processOut.part1/ns0:orderResult/ns0:comment</to>
+                            </copy>
+                            <copy>
+                                <from>false()</from>
+                                <to>$Start_processOut.part1/ns0:orderResult/ns0:success</to>
+                            </copy>
+                            <copy>
+                                <from>-1</from>
+                                <to>$Start_processOut.part1/ns0:orderResult/ns0:orderid</to>
+                            </copy>
                         </assign>
                         <invoke name="NotifyUnknownAddress" partnerLink="CustomerService" operation="notify" portType="ns2:CustomerService" inputVariable="NotifyIn" outputVariable="NotifyOut"/>
+                        <reply name="ReplyFault3" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
                     </sequence>
                 </catch>
                 <catch faultMessageType="ns4:UnknownProductException" faultName="ns4:UnknownProductException" faultVariable="UnknownProductException">
@@ -246,8 +272,21 @@
                                 <from variable="UnknownProductException" part="UnknownProductException"/>
                                 <to>$NotifyIn.parameters/message</to>
                             </copy>
+                            <copy>
+                                <from variable="UnknownProductException" part="UnknownProductException"/>
+                                <to>$Start_processOut.part1/ns0:orderResult/ns0:comment</to>
+                            </copy>
+                            <copy>
+                                <from>false()</from>
+                                <to>$Start_processOut.part1/ns0:orderResult/ns0:success</to>
+                            </copy>
+                            <copy>
+                                <from>-1</from>
+                                <to>$Start_processOut.part1/ns0:orderResult/ns0:orderid</to>
+                            </copy>
                         </assign>
                         <invoke name="NotifyUnknownProduct" partnerLink="CustomerService" operation="notify" portType="ns2:CustomerService" inputVariable="NotifyIn" outputVariable="NotifyOut"/>
+                        <reply name="ReplyFault4" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
                     </sequence>
                 </catch>
             </faultHandlers>
@@ -305,9 +344,24 @@
                 </sequence>
             </flow>
         </scope>
-        <reply name="Reply1" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
+        <assign name="AssignSuccess">
+            <copy>
+                <from>true()</from>
+                <to>$Start_processOut.part1/ns0:orderResult/ns0:success</to>
+            </copy>
+            <copy>
+                <from variable="Ship_itemsOut" part="return"/>
+                <to>$Start_processOut.part1/ns0:orderResult/ns0:orderid</to>
+            </copy>
+            <copy>
+                <from>'Order was a sucess!'</from>
+                <to>$Start_processOut.part1/ns0:orderResult/ns0:comment</to>
+            </copy>
+        </assign>
+        <reply name="ReplySuccess" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
     </sequence>
 </process>
+
 
 
 
