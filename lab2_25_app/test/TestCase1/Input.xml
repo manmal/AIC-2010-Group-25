@@ -6,8 +6,6 @@
       <ord:orderParts>
         <ord:product_id>8</ord:product_id>
         <ord:amount>1</ord:amount>
-        <ord:product_id>9</ord:product_id>
-        <ord:amount>3</ord:amount>
       </ord:orderParts>
     </ord:parameters>
   </soapenv:Body>

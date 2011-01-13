@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="1" hostname="wiki.sielog.com" name="org.netbeans.modules.compapp.catd.ConfiguredTest" tests="1" time="2.641" timestamp="2011-01-13T16:31:17">
+<testsuite errors="0" failures="1" hostname="wiki.sielog.com" name="org.netbeans.modules.compapp.catd.ConfiguredTest" tests="1" time="2.938" timestamp="2011-01-13T17:19:25">
   <properties>
     <property name="netbeans.autoupdate.country" value="DE" />
     <property name="com.sun.jbi.sa.internal.routing" value="true" />
@@ -357,8 +357,8 @@
     <property name="file.encoding" value="MacRoman" />
     <property name="awt.toolkit" value="apple.awt.CToolkit" />
   </properties>
-  <testcase classname="org.netbeans.modules.compapp.catd.ConfiguredTest" name="TestCase1" time="2.62">
-    <failure message="[13.01.2011 17:31:20] The response is not identical to the expected output." type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: [13.01.2011 17:31:20] The response is not identical to the expected output.
+  <testcase classname="org.netbeans.modules.compapp.catd.ConfiguredTest" name="TestCase1" time="2.909">
+    <failure message="[13.01.2011 18:19:28] The response is not identical to the expected output." type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: [13.01.2011 18:19:28] The response is not identical to the expected output.
 	at org.netbeans.modules.compapp.catd.ConfiguredTest.checkExpectedOutput(ConfiguredTest.java:2348)
 	at org.netbeans.modules.compapp.catd.ConfiguredTest.checkExpectedOutput(ConfiguredTest.java:2218)
 	at org.netbeans.modules.compapp.catd.ConfiguredTest.testConcurrentSOAPRequest(ConfiguredTest.java:862)
@@ -432,9 +432,9 @@ Test TestCase1\Concurrent.properties
   * Difference (Add): #text
  Failed. (Destination: http://localhost:9080/OrderProcessService/OrderProcessPort)
 ]]></system-out>
-  <system-err><![CDATA[13.01.2011 17:31:20 org.netbeans.modules.editor.settings.storage.keybindings.KeyMapsStorage$KeyMapsReader startElement
+  <system-err><![CDATA[13.01.2011 18:19:27 org.netbeans.modules.editor.settings.storage.keybindings.KeyMapsStorage$KeyMapsReader startElement
 WARNUNG: Duplicate shortcut 'D-SPACE' definition; rebound from 'all-completion-show' to 'completion-show' in (Editors/Keybindings/NetBeans/Defaults/org-netbeans-modules-editor-keybindings.xml).
-13.01.2011 17:31:20 org.netbeans.modules.csl.core.LanguageRegistry readSfs
+13.01.2011 18:19:27 org.netbeans.modules.csl.core.LanguageRegistry readSfs
 INFO: No CslPlugins folder
 ]]></system-err>
 </testsuite>

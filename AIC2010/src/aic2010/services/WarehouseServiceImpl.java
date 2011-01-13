@@ -10,6 +10,7 @@ import aic2010.exception.UnknownProductException;
 import aic2010.model.Product;
 import aic2010.model.ProductEntry;
 import aic2010.model.WarehouseAnswer;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import javax.jws.WebResult;
@@ -28,9 +29,11 @@ import javax.jws.soap.SOAPBinding;
 public class WarehouseServiceImpl extends SupplierServiceImpl implements WarehouseService{
 
     private Map<String, ProductEntry> products;
+    private Map<String, Product> actual_products;
 
     public WarehouseServiceImpl(){
             products = new HashMap<String, ProductEntry>();
+            actual_products = new HashMap<String, Product>();
             addProducts();
     }
 
@@ -49,6 +52,8 @@ public class WarehouseServiceImpl extends SupplierServiceImpl implements Warehou
 
         products.put(product1.getId(), entry1);
         products.put(product2.getId(), entry2);
+        actual_products.put(product1.getId(), product1);
+        actual_products.put(product2.getId(), product2);
     }
 
     @Override
@@ -74,6 +79,20 @@ public class WarehouseServiceImpl extends SupplierServiceImpl implements Warehou
         }
         else{
             throw new UnknownProductException("Could not find product", product.getName());
+        }
+    }
+
+    @Override
+    public BigDecimal order(Product product,
+                        Integer amount)
+    throws UnknownProductException{
+        if(actual_products.containsKey(product.getId())){
+            Product actual_product = actual_products.get(product.getId());
+            BigDecimal overallAmount = actual_product.getSingleUnitPrice().multiply(new BigDecimal(amount));
+            return overallAmount;
+        }
+        else{
+            throw new UnknownProductException("Could not find product", product.getId());
         }
     }
 }
