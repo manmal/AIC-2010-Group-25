@@ -58,11 +58,11 @@ public class RegistryServiceImpl implements RegistryService {
         AttributedURI service2Uri = new AttributedURI();
         String uri2 = Main.BASE_URL+Main.SUPPLIER_SERVICE2_URL;
         
-        Product product1 = TestDataManager.getProduct(false, false);
-        endpoints.put(product1.getName(), uri1);
-
-        Product product2 = TestDataManager.getProduct2();
-        endpoints.put(product2.getName(), uri2);
+//        Product product1 = TestDataManager.getProduct(false, false);
+//        endpoints.put(product1.getName(), uri1);
+//
+//        Product product2 = TestDataManager.getProduct2();
+//        endpoints.put(product2.getName(), uri2);
     }
 
 }

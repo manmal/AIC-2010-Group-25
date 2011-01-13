@@ -39,7 +39,6 @@ public class WarehouseServiceImpl extends SupplierServiceImpl implements Warehou
 
     private void addProducts(){
         System.out.println("Called addProducts...");
-        Product product1 = TestDataManager.getProduct(false, false);
         
         ProductEntry entry1 = new ProductEntry();
         entry1.setDeliveryTime(3);
