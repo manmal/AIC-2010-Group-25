@@ -27,14 +27,15 @@ import javax.jws.soap.SOAPBinding;
             portName="WarehousePT")
 public class WarehouseServiceImpl extends SupplierServiceImpl implements WarehouseService{
 
-    private Map<Product, ProductEntry> products;
+    private Map<String, ProductEntry> products;
 
     public WarehouseServiceImpl(){
-            products = new HashMap<Product, ProductEntry>();
+            products = new HashMap<String, ProductEntry>();
             addProducts();
     }
 
     private void addProducts(){
+        System.out.println("Called addProducts...");
         Product product1 = TestDataManager.getProduct(false, false);
         
         ProductEntry entry1 = new ProductEntry();
@@ -46,16 +47,21 @@ public class WarehouseServiceImpl extends SupplierServiceImpl implements Warehou
         entry2.setDeliveryTime(2);
         entry2.setAvailableAmount(1);
 
-        products.put(product1, entry1);
-        products.put(product2, entry2);
+        products.put(product1.getId(), entry1);
+        products.put(product2.getId(), entry2);
     }
 
     @Override
     public WarehouseAnswer check_availability(Product product, int amount)
     throws UnknownProductException{
-        if(products.containsKey(product)){
+        if (product != null)
+            System.out.println("Called check_availability with product id: " + product.getId());
+        else
+            System.out.println("Called check_availability with NULL product");
+        if(products.containsKey(product.getId())){
 
-            ProductEntry entry = products.get(product);
+            ProductEntry entry = products.get(product.getId());
+
             WarehouseAnswer answer = new WarehouseAnswer();
             answer.setDeliveryTime(entry.getDeliveryTime());
 

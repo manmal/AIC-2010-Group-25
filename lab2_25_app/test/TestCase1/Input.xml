@@ -4,9 +4,9 @@
       <ord:customer>1</ord:customer>
       <!--1 or more repetitions:-->
       <ord:orderParts>
-        <ord:product_id>1</ord:product_id>
+        <ord:product_id>8</ord:product_id>
         <ord:amount>1</ord:amount>
-        <ord:product_id>2</ord:product_id>
+        <ord:product_id>9</ord:product_id>
         <ord:amount>3</ord:amount>
       </ord:orderParts>
     </ord:parameters>
