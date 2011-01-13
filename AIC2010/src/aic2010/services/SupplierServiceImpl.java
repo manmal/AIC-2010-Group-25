@@ -6,13 +6,15 @@
 package aic2010.services;
 
 import aic2010.TestDataManager;
+import aic2010.datastore.MiniDB;
 import aic2010.exception.UnknownProductException;
 import aic2010.model.Product;
+import com.db4o.EmbeddedObjectContainer;
+import com.db4o.ObjectSet;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 
 /**
  *
@@ -25,11 +27,11 @@ import javax.jws.soap.SOAPBinding;
             portName="SupplierPT")
 public class SupplierServiceImpl implements SupplierService {
 
-    private Map<Product, Integer> products;
+    private Map<String, Integer> products;
 
 
     public SupplierServiceImpl(){
-        products = new HashMap<Product, Integer>();
+        products = new HashMap<String, Integer>();
         addProducts();
     }
 
@@ -37,21 +39,29 @@ public class SupplierServiceImpl implements SupplierService {
     public BigDecimal order(Product product,
                         Integer amount)
     throws UnknownProductException{
-        if(products.containsKey(product)){
-            BigDecimal overallAmount = product.getSingleUnitPrice().multiply(new BigDecimal(amount));
-            return overallAmount;
+        EmbeddedObjectContainer db = MiniDB.getDB();
+        Product actualProduct = null;
+
+        if(products.containsKey(product.getId())){
+           ObjectSet<Product> result = db.queryByExample(product);
+           if(result.hasNext()){
+               actualProduct = result.next();
+           }
+           else{
+               throw new UnknownProductException("Could not find product", product.getId());
+           }
         }
         else{
-            throw new UnknownProductException("Could not find product", product.getName());
+            throw new UnknownProductException("Could not find product", product.getId());
         }
+
+        BigDecimal overallAmount = actualProduct.getSingleUnitPrice().multiply(new BigDecimal(amount));
+        return overallAmount;
     }
 
     private void addProducts(){
-        Product product1 = TestDataManager.getProduct(false, false);
-        Product product2 = TestDataManager.getProduct2();
-
-        products.put(product1, 23);
-        products.put(product2, 33);
+        products.put("1", 23);
+        products.put("2", 33);
     }
 
 }
