@@ -97,7 +97,7 @@
                             <to variable="Check_availabilityIn" part="amount"/>
                         </copy>
                     </assign>
-                    <invoke name="CheckAvailability" partnerLink="Warehouse" operation="check_availability" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" portType="tns:WarehouseService" inputVariable="Check_availabilityIn" outputVariable="Check_availabilityOut"/>
+                    <invoke name="CheckAvailability" partnerLink="Warehouse" operation="check_availability" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" portType="tns:WarehouseService" inputVariable="Check_availabilityIn" outputVariable="Check_availabilityOut"></invoke>
                     <if name="IfAvailable">
                         <condition>$Check_availabilityOut.return/isAvailable</condition>
                         <sequence name="Sequence1">
