@@ -362,12 +362,12 @@
                 <to>$Start_processOut.part1/ns0:orderResult/ns0:success</to>
             </copy>
             <copy>
-                <from variable="Ship_itemsOut" part="return"/>
-                <to>$Start_processOut.part1/ns0:orderResult/ns0:orderid</to>
-            </copy>
-            <copy>
                 <from>'Order was a sucess!'</from>
                 <to>$Start_processOut.part1/ns0:orderResult/ns0:comment</to>
+            </copy>
+            <copy>
+                <from>1</from>
+                <to>$Start_processOut.part1/ns0:orderResult/ns0:orderid</to>
             </copy>
         </assign>
         <reply name="ReplySuccess" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
