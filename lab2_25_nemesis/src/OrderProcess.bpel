@@ -48,7 +48,9 @@
     </variables>
     <faultHandlers>
         <catch faultName="sxeh:systemFault" faultMessageType="sxeh:faultMessage" faultVariable="FaultMessage">
-            <reply name="ReplyUnknownUserFault" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" faultName="sxeh:systemFault" variable="UnknownUserMessage"/>
+            <sequence name="Sequence7">
+                <reply name="ReplyFault" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" faultName="sxeh:systemFault" variable="UnknownUserMessage"/>
+            </sequence>
         </catch>
     </faultHandlers>
     <sequence>
@@ -67,13 +69,13 @@
         </assign>
         <invoke name="GetCustomer" partnerLink="CustomerService" operation="get_customer" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" portType="tns:CustomerService" inputVariable="Get_customerIn" outputVariable="Get_customerOut"/>
         <if name="IfCustomerIsNull">
-            <condition>$Get_customerOut.parameters/return</condition>
+            <condition>-boolean($Get_customerOut.parameters/return)</condition>
             <sequence name="Sequence4">
                 <assign name="AssignUnknownUserMessage">
                     <copy>
-                        <from>concat('User with id ', $parts.part1/ns0:customer, ' not found!')</from>
-                        <to variable="UnknownUserMessage" part="fault"/>
-                    </copy>
+                            <from>concat('User with id ', $parts.part1/ns0:customer, ' not found!')</from>
+                                <to variable="UnknownUserMessage" part="fault"/>
+                        </copy>
                 </assign>
                 <throw name="ThrowUnknownCustomer" faultName="sxeh:systemFault" faultVariable="UnknownUserMessage"/>
             </sequence>
@@ -278,6 +280,8 @@
         </scope>
     </sequence>
 </process>
+
+
 
 
 
