@@ -8,7 +8,7 @@
     xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
     xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
     xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor"
-    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:sxed2="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2" xmlns:ns0="http://infosys.tuwien.ac.at/aic10/ass2/OrderProcessSchema" xmlns:ns1="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" xmlns:ns2="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" xmlns:ns3="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:sxxf="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/XPathFunctions">
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:sxed2="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2" xmlns:ns0="http://infosys.tuwien.ac.at/aic10/ass2/OrderProcessSchema" xmlns:ns1="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" xmlns:ns2="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" xmlns:ns3="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:sxxf="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/XPathFunctions" xmlns:ns4="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping">
     <import namespace="http://enterprise.netbeans.org/bpel/warehouseWrapper" location="warehouseWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" location="http://localhost:8088/warehouse?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://enterprise.netbeans.org/bpel/customerserviceWrapper" location="customerserviceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
@@ -29,6 +29,7 @@
         <partnerLink name="Warehouse" xmlns:tns="http://enterprise.netbeans.org/bpel/warehouseWrapper" partnerLinkType="tns:WarehouseServiceLinkType" partnerRole="WarehouseServiceRole"/>
     </partnerLinks>
     <variables>
+        <variable name="UnknownUserMessage" messageType="sxeh:faultMessage"/>
         <variable name="OrderProcessCallbackOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" messageType="tns:callback_response"/>
         <variable name="NotifyOut" messageType="ns2:notifyResponse"/>
         <variable name="NotifyIn" messageType="ns2:notify"/>
@@ -45,6 +46,11 @@
             </sxed2:editor>
         </variable>
     </variables>
+    <faultHandlers>
+        <catch faultName="sxeh:systemFault" faultMessageType="sxeh:faultMessage" faultVariable="FaultMessage">
+            <reply name="ReplyUnknownUserFault" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" faultName="sxeh:systemFault" variable="UnknownUserMessage"/>
+        </catch>
+    </faultHandlers>
     <sequence>
         <receive name="ReceiveStart" createInstance="yes" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="parts"/>
         <assign name="InitializeOverallPrice">
@@ -60,11 +66,25 @@
             </copy>
         </assign>
         <invoke name="GetCustomer" partnerLink="CustomerService" operation="get_customer" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" portType="tns:CustomerService" inputVariable="Get_customerIn" outputVariable="Get_customerOut"/>
+        <if name="IfCustomerIsNull">
+            <condition>$Get_customerOut.parameters/return</condition>
+            <sequence name="Sequence4">
+                <assign name="AssignUnknownUserMessage">
+                    <copy>
+                        <from>concat('User with id ', $parts.part1/ns0:customer, ' not found!')</from>
+                        <to variable="UnknownUserMessage" part="fault"/>
+                    </copy>
+                </assign>
+                <throw name="ThrowUnknownCustomer" faultName="sxeh:systemFault" faultVariable="UnknownUserMessage"/>
+            </sequence>
+        </if>
         <forEach name="ForEachOrder" parallel="no" counterName="ForEach1Counter">
             <startCounterValue>1</startCounterValue>
             <finalCounterValue>count($parts.part1/ns0:orderParts)</finalCounterValue>
             <scope name="OrderScope">
                 <variables>
+                    <variable name="NotifyFaultOut" messageType="ns2:notifyResponse"/>
+                    <variable name="NotifyFaultIn" messageType="ns2:notify"/>
                     <variable name="NotifyOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:notifyResponse"/>
                     <variable name="NotifyIn" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:notify"/>
                     <variable name="Update_accountOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:update_accountResponse"/>
@@ -78,24 +98,41 @@
                     <variable name="OrderOutWarehouse" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" messageType="tns:orderResponse"/>
                     <variable name="OrderInWarehouse" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" messageType="tns:order"/>
                 </variables>
+                <faultHandlers>
+                    <catch xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" faultMessageType="tns:UnknownProductException" faultName="tns:UnknownProductException" faultVariable="UnknownProduct">
+                        <sequence name="Sequence3">
+                            <assign name="AssignErrorMessage">
+                                <copy>
+                                    <from variable="UnknownProduct" part="UnknownProductException"/>
+                                    <to>$NotifyFaultIn.parameters/message</to>
+                                </copy>
+                                    <copy>
+                                        <from>$Get_customerOut.parameters/return</from>
+                                            <to>$NotifyFaultIn.parameters/customer</to>
+                                    </copy>
+                            </assign>
+                            <invoke name="NotifyCustomer" partnerLink="CustomerService" operation="notify" portType="ns2:CustomerService" inputVariable="NotifyFaultIn" outputVariable="NotifyFaultOut"/>
+                        </sequence>
+                    </catch>
+                </faultHandlers>
                 <sequence name="OrderSequence">
                     <assign name="AssignCheck">
                         <copy>
-                            <from>$parts.part1/ns0:orderParts[$ForEach1Counter]/ns0:product_id
+                                <from>$parts.part1/ns0:orderParts[$ForEach1Counter]/ns0:product_id
                                 <sxed2:editor>
-                                    <sxed2:predicate path="$parts.part1/ns0:orderParts[$ForEach1Counter]" source="from"/>
-                                </sxed2:editor>
-                            </from>
-                            <to>$Check_availabilityIn.product/@id</to>
-                        </copy>
-                        <copy>
-                            <from>$parts.part1/ns0:orderParts[$ForEach1Counter]/ns0:amount
+                                                <sxed2:predicate path="$parts.part1/ns0:orderParts[$ForEach1Counter]" source="from"/>
+                                            </sxed2:editor>
+                                    </from>
+                                    <to>$Check_availabilityIn.product/@id</to>
+                            </copy>
+                            <copy>
+                                <from>$parts.part1/ns0:orderParts[$ForEach1Counter]/ns0:amount
                                 <sxed2:editor>
-                                    <sxed2:predicate path="$parts.part1/ns0:orderParts[$ForEach1Counter]" source="from"/>
-                                </sxed2:editor>
-                            </from>
-                            <to variable="Check_availabilityIn" part="amount"/>
-                        </copy>
+                                                <sxed2:predicate path="$parts.part1/ns0:orderParts[$ForEach1Counter]" source="from"/>
+                                            </sxed2:editor>
+                                    </from>
+                                    <to variable="Check_availabilityIn" part="amount"/>
+                            </copy>
                     </assign>
                     <invoke name="CheckAvailability" partnerLink="Warehouse" operation="check_availability" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" portType="tns:WarehouseService" inputVariable="Check_availabilityIn" outputVariable="Check_availabilityOut"></invoke>
                     <if name="IfAvailable">
@@ -160,8 +197,41 @@
                 </sequence>
             </scope>
         </forEach>
-        <flow name="Flow1" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping">
-            <sequence name="FlowSequence">
+        <scope name="ShippingScope">
+            <faultHandlers>
+                <catch faultMessageType="ns4:UnknownAddressException" faultName="ns4:UnknownAddressException" faultVariable="UnknownAddressException">
+                    <sequence name="Sequence5">
+                        <assign name="AssignUnknownAddress">
+                            <copy>
+                                <from>$Get_customerOut.parameters/return</from>
+                                <to>$NotifyIn.parameters/customer</to>
+                            </copy>
+                            <copy>
+                                <from variable="UnknownAddressException" part="UnknownAddressException"/>
+                                <to>$NotifyIn.parameters/message</to>
+                            </copy>
+                        </assign>
+                        <invoke name="NotifyUnknownAddress" partnerLink="CustomerService" operation="notify" portType="ns2:CustomerService" inputVariable="NotifyIn" outputVariable="NotifyOut"/>
+                    </sequence>
+                </catch>
+                <catch faultMessageType="ns4:UnknownProductException" faultName="ns4:UnknownProductException" faultVariable="UnknownProductException">
+                    <sequence name="Sequence6">
+                        <assign name="AssignUnknownProduct">
+                            <copy>
+                                <from>$Get_customerOut.parameters/return</from>
+                                <to>$NotifyIn.parameters/customer</to>
+                            </copy>
+                            <copy>
+                                <from variable="UnknownProductException" part="UnknownProductException"/>
+                                <to>$NotifyIn.parameters/message</to>
+                            </copy>
+                        </assign>
+                        <invoke name="NotifyUnknownProduct" partnerLink="CustomerService" operation="notify" portType="ns2:CustomerService" inputVariable="NotifyIn" outputVariable="NotifyOut"/>
+                    </sequence>
+                </catch>
+            </faultHandlers>
+            <flow name="Parallelflow">
+                <sequence name="FlowSequence">
                     <assign name="AssignShipment">
                         <copy>
                             <from>$Get_customerOut.parameters/return</from>
@@ -176,9 +246,9 @@
                             <to>$Ship_itemsIn.items/item/product/@id</to>
                         </copy>
                     </assign>
-                        <invoke name="ShipItems" partnerLink="ShippingService" operation="ship_items" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping" portType="tns:ShippingService" inputVariable="Ship_itemsIn" outputVariable="Ship_itemsOut"/>
+                        <invoke name="ShipItems" partnerLink="ShippingService" operation="ship_items" portType="ns4:ShippingService" inputVariable="Ship_itemsIn" outputVariable="Ship_itemsOut"/>
                 </sequence>
-                <sequence name="FlowSequence1">
+                    <sequence name="FlowSequence1">
                     <assign name="AssignUpdatedValues">
                         <copy>
                             <from>$Get_customerOut.parameters/return</from>
@@ -191,7 +261,7 @@
                     </assign>
                         <invoke name="UpdateCustomerAccount" partnerLink="CustomerService" operation="update_account" portType="ns2:CustomerService" inputVariable="Update_accountIn" outputVariable="Update_accountOut"/>
                 </sequence>
-                <sequence name="FlowSequence2">
+                    <sequence name="FlowSequence2">
                     <assign name="AssignNotification">
                         <copy>
                             <from>$Get_customerOut.parameters/return</from>
@@ -204,7 +274,8 @@
                     </assign>
                         <invoke name="NotifyCustomer" partnerLink="CustomerService" operation="notify" portType="ns2:CustomerService" inputVariable="NotifyIn" outputVariable="NotifyOut"/>
                 </sequence>
-        </flow>
+            </flow>
+        </scope>
     </sequence>
 </process>
 
