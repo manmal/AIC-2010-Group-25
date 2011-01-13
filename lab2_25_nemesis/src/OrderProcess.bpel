@@ -38,7 +38,11 @@
         <variable name="Update_accountOut" messageType="ns2:update_accountResponse"/>
         <variable name="Update_accountIn" messageType="ns2:update_account"/>
         <variable name="OverallPrice" type="xs:decimal"/>
-        <variable name="Get_customerOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:get_customerResponse"/>
+        <variable name="Get_customerOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:get_customerResponse">
+            <sxed2:editor>
+                <sxed2:predicate path="$Get_customerOut.parameters/return/addresses[1]" source="from"/>
+            </sxed2:editor>
+        </variable>
         <variable name="Get_customerIn" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:get_customer"/>
         <variable name="parts" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" messageType="tns:start_process_request">
             <sxed2:editor>
@@ -246,6 +250,14 @@
                         <copy>
                             <from>$parts.part1/ns0:orderParts/ns0:product_id</from>
                             <to>$Ship_itemsIn.items/item/product/@id</to>
+                        </copy>
+                        <copy>
+                            <from>$Get_customerOut.parameters/return/addresses[1]
+                                <sxed2:editor>
+                                    <sxed2:predicate path="$Get_customerOut.parameters/return/addresses[1]" source="from"/>
+                                </sxed2:editor>
+                            </from>
+                            <to variable="Ship_itemsIn" part="address"/>
                         </copy>
                     </assign>
                         <invoke name="ShipItems" partnerLink="ShippingService" operation="ship_items" portType="ns4:ShippingService" inputVariable="Ship_itemsIn" outputVariable="Ship_itemsOut"/>
