@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Body>
+    <SOAP-ENV:Fault>
+      <faultcode>SOAP-ENV:Server</faultcode>
+      <faultstring>BPCOR-6135: A fault was not handled in the process scope; Fault Name is {http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse}UnknownProductException; Fault Data is &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&amp;lt;jbi:message xmlns:msgns=&amp;quot;http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse&amp;quot; name=&amp;quot;UnknownProductException&amp;quot; type=&amp;quot;msgns:UnknownProductException&amp;quot; version=&amp;quot;1.0&amp;quot; xmlns:jbi=&amp;quot;http://java.sun.com/xml/ns/jbi/wsdl-11-wrapper&amp;quot;&amp;gt;&amp;lt;jbi:part&amp;gt;&amp;lt;ns2:UnknownProductFault xmlns:ns2=&amp;quot;http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse&amp;quot;&amp;gt;Unknown Product: null&amp;lt;/ns2:UnknownProductFault&amp;gt;&amp;lt;/jbi:part&amp;gt;&amp;lt;/jbi:message&amp;gt;. Sending errors for the pending requests in the process scope before terminating the process instance</faultstring>
+      <faultactor>sun-bpel-engine</faultactor>
+      <detail>
+        <detailText>BPCOR-6135: A fault was not handled in the process scope; Fault Name is {http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse}UnknownProductException; Fault Data is &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&amp;lt;jbi:message xmlns:msgns=&amp;quot;http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse&amp;quot; name=&amp;quot;UnknownProductException&amp;quot; type=&amp;quot;msgns:UnknownProductException&amp;quot; version=&amp;quot;1.0&amp;quot; xmlns:jbi=&amp;quot;http://java.sun.com/xml/ns/jbi/wsdl-11-wrapper&amp;quot;&amp;gt;&amp;lt;jbi:part&amp;gt;&amp;lt;ns2:UnknownProductFault xmlns:ns2=&amp;quot;http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse&amp;quot;&amp;gt;Unknown Product: null&amp;lt;/ns2:UnknownProductFault&amp;gt;&amp;lt;/jbi:part&amp;gt;&amp;lt;/jbi:message&amp;gt;. Sending errors for the pending requests in the process scope before terminating the process instance</detailText>
+      </detail>
+    </SOAP-ENV:Fault>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

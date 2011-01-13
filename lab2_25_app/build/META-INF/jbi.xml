@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" xmlns:ns1="http://enterprise.netbeans.org/bpel/lab2_25_nemesis/lab2_25_nemesis" xmlns:ns2="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" xmlns:ns3="http://infosys.tuwien.ac.at/aic10/ass2/process" xmlns:ns4="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" xmlns:ns5="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping" xmlns:ns6="http://infosys.tuwien.ac.at/aic10/ass1/dto/registry" xmlns:ns7="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/jbi ./jbi.xsd">
+    <service-assembly>
+        <identification>
+            <name>lab2_25_app</name>
+            <description>Represents the Service Assembly of lab2_25_app</description>
+        </identification>
+        <service-unit>
+            <identification>
+                <name>lab2_25_app-lab2_25_nemesis</name>
+                <description>Represents this Service Unit</description>
+            </identification>
+            <target>
+                <artifacts-zip>lab2_25_nemesis.jar</artifacts-zip>
+                <component-name>sun-bpel-engine</component-name>
+            </target>
+        </service-unit>
+        <service-unit>
+            <identification>
+                <name>lab2_25_app-sun-http-binding</name>
+                <description>Represents this Service Unit</description>
+            </identification>
+            <target>
+                <artifacts-zip>sun-http-binding.jar</artifacts-zip>
+                <component-name>sun-http-binding</component-name>
+            </target>
+        </service-unit>
+        <connections>
+            <connection>
+                <consumer endpoint-name="CustomerServiceRole_partnerRole" service-name="ns1:CustomerService"/>
+                <provider endpoint-name="CustomerPT" service-name="ns2:CustomerService"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="OrderProcessPort" service-name="ns3:OrderProcessService"/>
+                <provider endpoint-name="OrderProcessProvider_myRole" service-name="ns1:OrderProcess"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="WarehouseServiceRole_partnerRole" service-name="ns1:Warehouse"/>
+                <provider endpoint-name="WarehousePT" service-name="ns4:WarehouseService"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="ShippingServiceRole_partnerRole" service-name="ns1:ShippingService"/>
+                <provider endpoint-name="ShippingPT" service-name="ns5:ShippingService"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="RegistryServiceRole_partnerRole" service-name="ns1:Registry"/>
+                <provider endpoint-name="RegistryPT" service-name="ns6:RegistryService"/>
+            </connection>
+            <connection>
+                <consumer endpoint-name="SupplierServiceRole_partnerRole" service-name="ns1:Supplier2"/>
+                <provider endpoint-name="SupplierPT" service-name="ns7:SupplierService"/>
+            </connection>
+        </connections>
+    </service-assembly>
+</jbi>

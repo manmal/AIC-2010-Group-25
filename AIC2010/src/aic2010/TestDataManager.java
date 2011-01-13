@@ -54,6 +54,7 @@ public class TestDataManager {
     }
     
     public static Customer getCustomer(boolean nullifyID) {
+        nullifyID = false;
         Customer customer = Factory.createCustomer("Any Andy", BigDecimal.ZERO, null, null);
         if(nullifyID)
             customer.setId(null);
@@ -86,6 +87,8 @@ public class TestDataManager {
 
     public static List<Customer> getCustomers(boolean nullify)
     {
+        nullify = false;
+        
         List<Customer> customers = new ArrayList<Customer>();
         List<Address> list;
 
@@ -147,6 +150,7 @@ public class TestDataManager {
         Order OrderOK = TestDataManager.getOrder(false, false, false, false);
         Order OrderWithMissingProduct = TestDataManager.getOrder(true, false, false, false);
 
+        db.store(CustomerOK);
         db.store(OrderOK);
         db.store(AddressOK);
         db.store(OrderWithMissingProduct);

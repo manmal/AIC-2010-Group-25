@@ -12,23 +12,27 @@ import java.util.UUID;
 
 public class Factory {
 
-    static Integer product_id = 0;
-    static Integer address_id = 0;
-    static Integer order_id = 0;
+    private static Integer product_id = 0;
+    private static Integer customer_id = 0;
+    private static Integer address_id = 0;
+    private static Integer order_id = 0;
 
-    public static Customer createCustomer(String name, BigDecimal openBalance, List<Address> addresses, List<Order> orders)
+    public synchronized static Customer createCustomer(String name, BigDecimal openBalance, List<Address> addresses, List<Order> orders)
     {
+
         Customer customer = new Customer();
-        customer.setId(UUID.randomUUID().toString());
+        customer_id += 1;
+        customer.setId(customer_id.toString());
         customer.setName(name);
         customer.setOpenBalance(openBalance);
         customer.setAddresses(addresses);
         customer.setOrders(orders);
 
+        System.out.println("Customer with ID " + customer_id);
         return customer;
     }
 
-    public static Order createOrder(Customer customer, List<Item> items, Date orderDate) {
+    public synchronized static Order createOrder(Customer customer, List<Item> items, Date orderDate) {
         Order order = new Order();
         //order.setId(UUID.randomUUID().toString());
         order_id +=1;
@@ -36,18 +40,21 @@ public class Factory {
         order.setCustomer(customer);
         order.setItems(items);
         order.setOrderDate(orderDate);
+
+        System.out.println("Order with ID " + order_id);
         return order;
     }
 
-    public static Item createItem(Order order, Product product, int quantity) {
+    public synchronized static Item createItem(Order order, Product product, int quantity) {
         Item item = new Item();
         item.setOrder(order);
         item.setProduct(product);
         item.setQuantity(quantity);
+
         return item;
     }
 
-    public static Product createProduct(List<Item> items, String name, BigDecimal unitPrice) {
+    public synchronized static Product createProduct(List<Item> items, String name, BigDecimal unitPrice) {
         Product product = new Product();
         product_id+=1;
         //product.setId(UUID.randomUUID().toString());
@@ -55,10 +62,12 @@ public class Factory {
         product.setItems(items);
         product.setName(name);
         product.setSingleUnitPrice(unitPrice);
+
+        System.out.println("Product with ID " + product_id);
         return product;
     }
 
-    public static Address createAddress(String city, String zipCode, String street, int door, int house, boolean billing, boolean shipping, boolean other)
+    public synchronized static Address createAddress(String city, String zipCode, String street, int door, int house, boolean billing, boolean shipping, boolean other)
     {
         Address address = new Address();
         address_id+=1;
@@ -75,6 +84,8 @@ public class Factory {
         address.setBilling(billing);
         address.setShipping(shipping);
         address.setOther(other);
+
+        System.out.println("Address with ID " + address_id);
 
         return address;
     }
