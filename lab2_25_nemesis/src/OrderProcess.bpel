@@ -62,11 +62,7 @@
         <invoke name="GetCustomer" partnerLink="CustomerService" operation="get_customer" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" portType="tns:CustomerService" inputVariable="Get_customerIn" outputVariable="Get_customerOut"/>
         <forEach name="ForEachOrder" parallel="no" counterName="ForEach1Counter">
             <startCounterValue>1</startCounterValue>
-            <finalCounterValue>count($parts.part1/ns0:orderParts[$ForEach1Counter])
-                <sxed2:editor>
-                    <sxed2:predicate path="$parts.part1/ns0:orderParts[$ForEach1Counter]" source="from"/>
-                </sxed2:editor>
-            </finalCounterValue>
+            <finalCounterValue>count($parts.part1/ns0:orderParts)</finalCounterValue>
             <scope name="OrderScope">
                 <variables>
                     <variable name="NotifyOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:notifyResponse"/>
@@ -101,7 +97,7 @@
                             <to variable="Check_availabilityIn" part="amount"/>
                         </copy>
                     </assign>
-                    <invoke name="CheckAvailability" partnerLink="Warehouse" operation="check_availability" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" portType="tns:WarehouseService" inputVariable="Check_availabilityIn" outputVariable="Check_availabilityOut"/>
+                    <invoke name="CheckAvailability" partnerLink="Warehouse" operation="check_availability" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" portType="tns:WarehouseService" inputVariable="Check_availabilityIn" outputVariable="Check_availabilityOut"></invoke>
                     <if name="IfAvailable">
                         <condition>$Check_availabilityOut.return/isAvailable</condition>
                         <sequence name="Sequence1">
@@ -211,6 +207,7 @@
         </flow>
     </sequence>
 </process>
+
 
 
 
