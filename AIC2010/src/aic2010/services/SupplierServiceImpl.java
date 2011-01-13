@@ -40,7 +40,7 @@ public class SupplierServiceImpl implements SupplierService {
     public BigDecimal order(Product product,
                         Integer amount)
     throws UnknownProductException{
-        log.info("starting order product");
+        log.info("starting order product Supplier");
         EmbeddedObjectContainer db = MiniDB.getDB();
         Product actualProduct = null;
 
