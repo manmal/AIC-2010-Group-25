@@ -5,7 +5,6 @@
 
 package aic2010.services;
 
-import aic2010.TestDataManager;
 import aic2010.datastore.MiniDB;
 import aic2010.exception.UnknownProductException;
 import aic2010.model.Product;
@@ -17,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import javax.jws.WebService;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -30,6 +30,7 @@ import javax.jws.WebService;
 public class WarehouseServiceImpl extends SupplierServiceImpl implements WarehouseService{
 
     private Map<String, ProductEntry> products;
+    private Logger log = Logger.getLogger(WarehouseServiceImpl.class);
 
     public WarehouseServiceImpl(){
             products = new HashMap<String, ProductEntry>();
@@ -55,10 +56,11 @@ public class WarehouseServiceImpl extends SupplierServiceImpl implements Warehou
     @Override
     public WarehouseAnswer check_availability(Product product, int amount)
     throws UnknownProductException{
+        log.info("starting check_availability");
         if (product != null)
-            System.out.println("Called check_availability with product id: " + product.getId());
+            log.info("Called check_availability with product id: " + product.getId());
         else
-            System.out.println("Called check_availability with NULL product");
+            log.info("Called check_availability with NULL product");
         if(products.containsKey(product.getId())){
 
             ProductEntry entry = products.get(product.getId());
@@ -71,9 +73,12 @@ public class WarehouseServiceImpl extends SupplierServiceImpl implements Warehou
             else
                 answer.setIsAvailable(false);
 
+
+            log.info("product with id " + product.getId() + " in amount " + amount + " is available!");
             return answer;
         }
         else{
+            log.info("product with id " + product.getId() + " not found");
             throw new UnknownProductException("Could not find product", product.getName());
         }
     }
@@ -82,6 +87,7 @@ public class WarehouseServiceImpl extends SupplierServiceImpl implements Warehou
     public BigDecimal order(Product product,
                         Integer amount)
     throws UnknownProductException{
+        log.info("starting order product");
         EmbeddedObjectContainer db = MiniDB.getDB();
         Product actualProduct = null;
 
@@ -91,14 +97,18 @@ public class WarehouseServiceImpl extends SupplierServiceImpl implements Warehou
                actualProduct = result.next();
            }
            else{
+               log.info("product with id " + product.getId() + " not found");
                throw new UnknownProductException("Could not find product", product.getId());
            }
         }
         else{
+            log.info("product with id " + product.getId() + " not found");
             throw new UnknownProductException("Could not find product", product.getId());
         }
 
         BigDecimal overallAmount = actualProduct.getSingleUnitPrice().multiply(new BigDecimal(amount));
+        
+        log.info("product with id " + product.getId() + " in amount " + amount + " is available and costs " + overallAmount);
         return overallAmount;
     }
 }
