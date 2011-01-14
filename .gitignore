@@ -3,3 +3,4 @@ AIC2010/dist/**/*
 AIC2010/resources/testdb
 /**/.DS_Store
 lab2_25_nemesis/build/**/*
+lab2_25_nemesis/build/
