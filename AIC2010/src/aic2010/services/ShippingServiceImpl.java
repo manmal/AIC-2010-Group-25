@@ -1,5 +1,6 @@
 package aic2010.services;
 
+import aic2010.CallbackThread;
 import aic2010.datastore.MiniDB;
 import aic2010.exception.UnknownAddressException;
 import aic2010.exception.UnknownProductException;
@@ -9,6 +10,7 @@ import com.db4o.EmbeddedObjectContainer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Timer;
 import java.util.UUID;
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -48,8 +50,14 @@ public class ShippingServiceImpl implements ShippingService {
 
         log.info(sb.toString());
         log.info(address.toString());
-        
-        return UUID.randomUUID().toString();
+
+        UUID uuid = UUID.randomUUID();
+
+        //init callback in 10s
+        Timer timer = new Timer();
+        timer.schedule(new CallbackThread(uuid.toString()), 10000);
+
+        return uuid.toString();
     }
 
 }
