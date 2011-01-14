@@ -3,10 +3,10 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns4="http://infosys.tuwie
 <!-- NewItem variable set by WS-BPEL process;
 defaults to empty item -->
     <xsl:param name="NewItem">
-        <ns4:item />
+        <item />
     </xsl:param>
 
-    <xsl:template match="ns4:item"> <!-- line 1 -->
+    <xsl:template match="item"> <!-- line 1 -->
         <xsl:copy-of select="." /> <!-- line 2 -->
         <xsl:if test="position()=last()"> <!-- line 3 -->
             <xsl:copy-of select="$NewItem" /> <!-- line 4 -->
