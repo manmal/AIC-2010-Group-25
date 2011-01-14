@@ -5,7 +5,6 @@
 
 package aic2010.services;
 
-import aic2010.TestDataManager;
 import aic2010.datastore.MiniDB;
 import aic2010.exception.UnknownProductException;
 import aic2010.model.Product;
@@ -17,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import javax.jws.WebService;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -29,10 +29,11 @@ import javax.jws.WebService;
             portName="WarehousePT")
 public class WarehouseServiceImpl extends SupplierServiceImpl implements WarehouseService{
 
-    private Map<String, ProductEntry> products;
+    private Map<String, ProductEntry> warehouseProducts;
+    private Logger log = Logger.getLogger(WarehouseServiceImpl.class);
 
     public WarehouseServiceImpl(){
-            products = new HashMap<String, ProductEntry>();
+            warehouseProducts = new HashMap<String, ProductEntry>();
 //            actual_products = new HashMap<String, Product>();
             addProducts();
     }
@@ -45,35 +46,42 @@ public class WarehouseServiceImpl extends SupplierServiceImpl implements Warehou
         entry1.setAvailableAmount(3);
 
         ProductEntry entry2 = new ProductEntry();
-        entry1.setDeliveryTime(3);
-        entry1.setAvailableAmount(0);
+        entry2.setDeliveryTime(3);
+        entry2.setAvailableAmount(0);
 
-        products.put("1", entry1);
-        products.put("2", entry2);
+        warehouseProducts.put("1", entry1);
+        warehouseProducts.put("2", entry2);
     }
 
     @Override
     public WarehouseAnswer check_availability(Product product, int amount)
     throws UnknownProductException{
+        log.info("starting check_availability Warehouse");
         if (product != null)
-            System.out.println("Called check_availability with product id: " + product.getId());
+            log.info("Called check_availability with product id: " + product.getId());
         else
-            System.out.println("Called check_availability with NULL product");
-        if(products.containsKey(product.getId())){
+            log.info("Called check_availability with NULL product");
+        if(warehouseProducts.containsKey(product.getId())){
 
-            ProductEntry entry = products.get(product.getId());
+            ProductEntry entry = warehouseProducts.get(product.getId());
 
             WarehouseAnswer answer = new WarehouseAnswer();
             answer.setDeliveryTime(entry.getDeliveryTime());
 
-            if(amount<=entry.getAvailableAmount())
+            log.info("available amount is " + entry.getAvailableAmount());
+            if(amount<=entry.getAvailableAmount()){
                 answer.setIsAvailable(true);
-            else
+            }
+            else{
                 answer.setIsAvailable(false);
+            }
 
+
+            log.info("product with id " + product.getId() + " in amount " + amount + " is available: " + answer.isIsAvailable());
             return answer;
         }
         else{
+            log.info("product with id " + product.getId() + " not found");
             throw new UnknownProductException("Could not find product", product.getName());
         }
     }
@@ -82,23 +90,37 @@ public class WarehouseServiceImpl extends SupplierServiceImpl implements Warehou
     public BigDecimal order(Product product,
                         Integer amount)
     throws UnknownProductException{
+        log.info("starting order product");
         EmbeddedObjectContainer db = MiniDB.getDB();
         Product actualProduct = null;
 
-        if(products.containsKey(product.getId())){
+        if(warehouseProducts.containsKey(product.getId())){
            ObjectSet<Product> result = db.queryByExample(product);
            if(result.hasNext()){
                actualProduct = result.next();
            }
            else{
+               log.info("product with id " + product.getId() + " not found");
                throw new UnknownProductException("Could not find product", product.getId());
            }
         }
         else{
+            log.info("product with id " + product.getId() + " not found");
             throw new UnknownProductException("Could not find product", product.getId());
         }
 
-        BigDecimal overallAmount = actualProduct.getSingleUnitPrice().multiply(new BigDecimal(amount));
-        return overallAmount;
+        ProductEntry entry = warehouseProducts.get(product.getId());
+        if(amount<=entry.getAvailableAmount()){
+            entry.setAvailableAmount(entry.getAvailableAmount() - amount);
+            warehouseProducts.put(product.getId(), entry);
+        }
+        else{
+            log.info("warehouse doesn't contain " + amount + " products with id " + product.getId());
+        }
+
+        BigDecimal overallPrice = actualProduct.getSingleUnitPrice().multiply(new BigDecimal(amount));
+        
+        log.info("product with id " + product.getId() + " in amount " + amount + " is available and costs " + overallPrice);
+        return overallPrice;
     }
 }

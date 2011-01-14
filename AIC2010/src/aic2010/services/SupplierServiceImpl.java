@@ -5,7 +5,6 @@
 
 package aic2010.services;
 
-import aic2010.TestDataManager;
 import aic2010.datastore.MiniDB;
 import aic2010.exception.UnknownProductException;
 import aic2010.model.Product;
@@ -15,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import javax.jws.WebService;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -28,6 +28,7 @@ import javax.jws.WebService;
 public class SupplierServiceImpl implements SupplierService {
 
     private Map<String, Integer> products;
+    private Logger log = Logger.getLogger(SupplierServiceImpl.class);
 
 
     public SupplierServiceImpl(){
@@ -39,6 +40,7 @@ public class SupplierServiceImpl implements SupplierService {
     public BigDecimal order(Product product,
                         Integer amount)
     throws UnknownProductException{
+        log.info("starting order product Supplier");
         EmbeddedObjectContainer db = MiniDB.getDB();
         Product actualProduct = null;
 
@@ -48,14 +50,18 @@ public class SupplierServiceImpl implements SupplierService {
                actualProduct = result.next();
            }
            else{
+               log.info("product with id " + product.getId() + " not found");
                throw new UnknownProductException("Could not find product", product.getId());
            }
         }
         else{
+            log.info("product with id " + product.getId() + " not found");
             throw new UnknownProductException("Could not find product", product.getId());
         }
 
         BigDecimal overallAmount = actualProduct.getSingleUnitPrice().multiply(new BigDecimal(amount));
+
+        log.info("product with id " + product.getId() + " in amount " + amount + " is available and costs " + overallAmount);
         return overallAmount;
     }
 
