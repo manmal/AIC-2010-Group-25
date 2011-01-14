@@ -48,6 +48,7 @@
         <variable name="parts" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" messageType="tns:start_process_request">
             <sxed2:editor>
                 <sxed2:predicate path="$parts.part1/ns0:orderParts[$ForEach1Counter]" source="from"/>
+                <sxed2:predicate path="$parts.part1/ns0:orderParts[.]" source="from"/>
             </sxed2:editor>
         </variable>
     </variables>
@@ -101,9 +102,17 @@
         </if>
         <forEach name="ForEachOrder" parallel="no" counterName="ForEach1Counter">
             <startCounterValue>1</startCounterValue>
-            <finalCounterValue>count($parts.part1/ns0:orderParts)</finalCounterValue>
+            <finalCounterValue>count($parts.part1/ns0:orderParts[.])
+                <sxed2:editor>
+                    <sxed2:predicate path="$parts.part1/ns0:orderParts[.]" source="from"/>
+                </sxed2:editor>
+            </finalCounterValue>
             <completionCondition>
-                <branches/>
+                <branches>count($parts.part1/ns0:orderParts[.])
+                    <sxed2:editor>
+                        <sxed2:predicate path="$parts.part1/ns0:orderParts[.]" source="from"/>
+                    </sxed2:editor>
+                </branches>
             </completionCondition>
             <scope name="OrderScope">
                 <variables>
@@ -114,7 +123,6 @@
                     <variable name="NotifyIn" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:notify"/>
                     <variable name="Update_accountOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:update_accountResponse"/>
                     <variable name="Update_accountIn" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:update_account"/>
-                    <variable name="Ship_itemsOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping" messageType="tns:ship_itemsResponse"/>
                     <variable name="Check_availabilityOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" messageType="tns:check_availabilityResponse"/>
                     <variable name="Check_availabilityIn" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" messageType="tns:check_availability"/>
                     <variable name="OrderOutSupplier2" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" messageType="tns:orderResponse"/>
@@ -383,7 +391,6 @@
         <reply name="ReplySuccess" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
     </sequence>
 </process>
-
 
 
 
