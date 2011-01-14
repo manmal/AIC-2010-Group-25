@@ -205,9 +205,9 @@
                         <else>
                             <assign name="AssignItemToItems">
                                 <copy>
-                                        <from>ns3:doXslTransform('urn:stylesheets:SimpleTransform.xsl', $Ship_itemsIn.items, 'NewItem', $Item)</from>
-                                            <to variable="Ship_itemsIn" part="items"/>
-                                    </copy>
+                                    <from>ns3:doXslTransform('urn:stylesheets:SimpleTransform.xsl', $Ship_itemsIn.items, 'NewItemProductID', $Item/product/@id, 'NewItemQuantity', $Item/quantity)</from>
+                                    <to variable="Ship_itemsIn" part="items"/>
+                                </copy>
                             </assign>
                         </else>
                     </if>
@@ -416,6 +416,7 @@
         <reply name="ReplySuccess" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
     </sequence>
 </process>
+
 
 
 

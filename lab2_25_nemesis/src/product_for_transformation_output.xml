@@ -2,5 +2,5 @@
     <item>
       <quantity>1</quantity>
       <product xmlns:msgns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" id="1"/>
-    </item>
+    </item><item xmlns:ns4="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping"><quantity>Y</quantity><product id="X" xmlns:msgns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse"/></item>
 </jbi:part>
