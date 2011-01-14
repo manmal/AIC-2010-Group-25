@@ -123,8 +123,6 @@
                     <variable name="NotifyIn" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:notify"/>
                     <variable name="Update_accountOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:update_accountResponse"/>
                     <variable name="Update_accountIn" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:update_account"/>
-                    <variable name="Ship_itemsOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping" messageType="tns:ship_itemsResponse"/>
-                    <variable name="Ship_itemsIn" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping" messageType="tns:ship_items"/>
                     <variable name="Check_availabilityOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" messageType="tns:check_availabilityResponse"/>
                     <variable name="Check_availabilityIn" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" messageType="tns:check_availability"/>
                     <variable name="OrderOutSupplier2" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" messageType="tns:orderResponse"/>
@@ -393,6 +391,7 @@
         <reply name="ReplySuccess" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
     </sequence>
 </process>
+
 
 
 

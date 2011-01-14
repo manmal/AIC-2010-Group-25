@@ -1,4 +1,0 @@
-Bundle-Name: lab2_25_app
-Bundle-SymbolicName: lab2_25_app
-Bundle-ManifestVersion: 2
-Bundle-Version: 1.0.0
