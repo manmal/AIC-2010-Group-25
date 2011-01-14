@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-    <item xmlns:jbi="http://java.sun.com/xml/ns/jbi/wsdl-11-wrapper">
+<?xml version="1.0" encoding="UTF-8"?><jbi:part xmlns:jbi="http://java.sun.com/xml/ns/jbi/wsdl-11-wrapper">
+    <item>
       <quantity>1</quantity>
       <product xmlns:msgns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" id="1"/>
     </item>
+</jbi:part>
