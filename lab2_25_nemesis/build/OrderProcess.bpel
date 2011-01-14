@@ -191,12 +191,23 @@
                             <to>$Item/quantity</to>
                         </copy>
                     </assign>
-                    <assign name="AssignItemToItems">
-                        <copy>
-                            <from>ns3:doXslTransform('urn:stylesheets:SimpleTransform.xsl', $Ship_itemsIn.items, 'NewItem', $Item)</from>
-                            <to variable="Ship_itemsIn" part="items"/>
-                        </copy>
-                    </assign>
+                    <if name="If1">
+                        <condition>1 = $ForEach1Counter</condition>
+                        <assign name="Assign5">
+                            <copy>
+                                <from variable="Item"/>
+                                <to>$Ship_itemsIn.items/item</to>
+                            </copy>
+                        </assign>
+                        <else>
+                            <assign name="AssignItemToItems">
+                                <copy>
+                                        <from>ns3:doXslTransform('urn:stylesheets:SimpleTransform.xsl', $Ship_itemsIn.items, 'NewItem', $Item)</from>
+                                            <to variable="Ship_itemsIn" part="items"/>
+                                    </copy>
+                            </assign>
+                        </else>
+                    </if>
                     <invoke name="CheckAvailability" partnerLink="Warehouse" operation="check_availability" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" portType="tns:WarehouseService" inputVariable="Check_availabilityIn" outputVariable="Check_availabilityOut"></invoke>
                     <if name="IfAvailable">
                         <condition>$Check_availabilityOut.return/isAvailable</condition>
