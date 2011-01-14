@@ -116,6 +116,7 @@
             </completionCondition>
             <scope name="OrderScope">
                 <variables>
+                    <variable name="Item" type="ns4:item"/>
                     <variable name="NotifyFaultOut" messageType="ns2:notifyResponse"/>
                     <variable name="NotifyFaultIn" messageType="ns2:notify"/>
                     <variable name="NotifyOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:notifyResponse"/>
@@ -179,6 +180,22 @@
                                     </from>
                                     <to variable="Check_availabilityIn" part="amount"/>
                             </copy>
+                    </assign>
+                    <assign name="AssignItem">
+                        <copy>
+                            <from variable="Check_availabilityIn" part="product"/>
+                            <to>$Item/product</to>
+                        </copy>
+                        <copy>
+                            <from variable="Check_availabilityIn" part="amount"/>
+                            <to>$Item/quantity</to>
+                        </copy>
+                    </assign>
+                    <assign name="AssignItemToItems">
+                        <copy>
+                            <from>ns3:doXslTransform('urn:stylesheets:SimpleTransform.xsl', $Ship_itemsIn.items, 'NewItem', $Item)</from>
+                            <to variable="Ship_itemsIn" part="items"/>
+                        </copy>
                     </assign>
                     <invoke name="CheckAvailability" partnerLink="Warehouse" operation="check_availability" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" portType="tns:WarehouseService" inputVariable="Check_availabilityIn" outputVariable="Check_availabilityOut"></invoke>
                     <if name="IfAvailable">
@@ -310,14 +327,6 @@
                             <to>$Ship_itemsIn.items/item/order/customer</to>
                         </copy>
                         <copy>
-                            <from>$parts.part1/ns0:orderParts/ns0:amount</from>
-                            <to>$Ship_itemsIn.items/item/quantity</to>
-                        </copy>
-                        <copy>
-                            <from>$parts.part1/ns0:orderParts/ns0:product_id</from>
-                            <to>$Ship_itemsIn.items/item/product/@id</to>
-                        </copy>
-                        <copy>
                             <from>$Get_customerOut.parameters/return/addresses[1]
                                 <sxed2:editor>
                                     <sxed2:predicate path="$Get_customerOut.parameters/return/addresses[1]" source="from"/>
@@ -373,6 +382,8 @@
         <reply name="ReplySuccess" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
     </sequence>
 </process>
+
+
 
 
 
