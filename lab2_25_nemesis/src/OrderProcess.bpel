@@ -37,7 +37,11 @@
         <variable name="NotifyOut" messageType="ns2:notifyResponse"/>
         <variable name="NotifyIn" messageType="ns2:notify"/>
         <variable name="Ship_itemsOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping" messageType="tns:ship_itemsResponse"/>
-        <variable name="Ship_itemsIn" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping" messageType="tns:ship_items"/>
+        <variable name="Ship_itemsIn" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping" messageType="tns:ship_items">
+            <sxed2:editor>
+                <sxed2:predicate path="$Ship_itemsIn.items/item[$ForEach1Counter]" source="to"/>
+            </sxed2:editor>
+        </variable>
         <variable name="Update_accountOut" messageType="ns2:update_accountResponse"/>
         <variable name="Update_accountIn" messageType="ns2:update_account"/>
         <variable name="OverallPrice" type="xs:decimal"/>
@@ -121,7 +125,6 @@
             </completionCondition>
             <scope name="OrderScope">
                 <variables>
-                    <variable name="Item" type="ns4:item"/>
                     <variable name="NotifyFaultOut" messageType="ns2:notifyResponse"/>
                     <variable name="NotifyFaultIn" messageType="ns2:notify"/>
                     <variable name="NotifyOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:notifyResponse"/>
@@ -186,31 +189,38 @@
                     </assign>
                     <assign name="AssignItem">
                         <copy>
-                            <from variable="Check_availabilityIn" part="product"/>
-                            <to>$Item/product</to>
+                            <from>$parts.part1/ns0:orderParts[$ForEach1Counter]/ns0:product_id
+                                <sxed2:editor>
+                                    <sxed2:predicate path="$parts.part1/ns0:orderParts[$ForEach1Counter]" source="from"/>
+                                </sxed2:editor>
+                            </from>
+                            <to>$Ship_itemsIn.items/item[$ForEach1Counter]/product/@id
+                                <sxed2:editor>
+                                    <sxed2:predicate path="$Ship_itemsIn.items/item[$ForEach1Counter]" source="to"/>
+                                </sxed2:editor>
+                            </to>
                         </copy>
                         <copy>
-                            <from variable="Check_availabilityIn" part="amount"/>
-                            <to>$Item/quantity</to>
+                            <from>$parts.part1/ns0:orderParts[$ForEach1Counter]/ns0:amount
+                                <sxed2:editor>
+                                    <sxed2:predicate path="$parts.part1/ns0:orderParts[$ForEach1Counter]" source="from"/>
+                                </sxed2:editor>
+                            </from>
+                            <to>$Ship_itemsIn.items/item[$ForEach1Counter]/quantity
+                                <sxed2:editor>
+                                    <sxed2:predicate path="$Ship_itemsIn.items/item[$ForEach1Counter]" source="to"/>
+                                </sxed2:editor>
+                            </to>
+                        </copy>
+                        <copy>
+                            <from>$Get_customerOut.parameters/return</from>
+                            <to>$Ship_itemsIn.items/item[$ForEach1Counter]/order/customer
+                                <sxed2:editor>
+                                    <sxed2:predicate path="$Ship_itemsIn.items/item[$ForEach1Counter]" source="to"/>
+                                </sxed2:editor>
+                            </to>
                         </copy>
                     </assign>
-                    <if name="If1">
-                        <condition>1 = $ForEach1Counter</condition>
-                        <assign name="AssignItemFirstTime">
-                            <copy>
-                                <from variable="Item"/>
-                                <to>$Ship_itemsIn.items/item</to>
-                            </copy>
-                        </assign>
-                        <else>
-                            <assign name="AssignItemToItems">
-                                <copy>
-                                    <from>ns3:doXslTransform('urn:stylesheets:SimpleTransform.xsl', $Ship_itemsIn.items, 'NewItemProductID', $Item/product/@id, 'NewItemQuantity', $Item/quantity)</from>
-                                    <to variable="Ship_itemsIn" part="items"/>
-                                </copy>
-                            </assign>
-                        </else>
-                    </if>
                     <invoke name="CheckAvailability" partnerLink="Warehouse" operation="check_availability" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" portType="tns:WarehouseService" inputVariable="Check_availabilityIn" outputVariable="Check_availabilityOut"></invoke>
                     <if name="IfAvailable">
                         <condition>$Check_availabilityOut.return/isAvailable</condition>
@@ -416,6 +426,8 @@
         <reply name="ReplySuccess" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
     </sequence>
 </process>
+
+
 
 
 

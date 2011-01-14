@@ -6,7 +6,7 @@
     <result xmlns="http://infosys.tuwien.ac.at/aic10/ass2/OrderProcessSchema" xmlns:msgns="http://infosys.tuwien.ac.at/aic10/ass2/process">
       <orderResult>
         <comment>Order was a sucess!</comment>
-        <orderid>?string?</orderid>
+        <orderid>1</orderid>
         <success>true</success>
       </orderResult>
     </result>
