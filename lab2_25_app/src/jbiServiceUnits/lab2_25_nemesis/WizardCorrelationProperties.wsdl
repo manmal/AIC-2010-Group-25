@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="WizardCorrelationProperties.wsdl" targetNamespace="http://enterprise.netbeans.org/bpel/WizardCorrelationProperties" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" xmlns:ns="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping" xmlns:ns1="http://infosys.tuwien.ac.at/aic10/ass2/process" xmlns:ns0="http://infosys.tuwien.ac.at/aic10/ass2/OrderProcessSchema" xmlns:tns="http://enterprise.netbeans.org/bpel/WizardCorrelationProperties">
+    <import namespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping" location="localhost_8088/shippingservice.wsdl"/>
+    <import namespace="http://infosys.tuwien.ac.at/aic10/ass2/process" location="OrderProcess.wsdl"/>
+    <types>
+        <xsd:schema targetNamespace="http://enterprise.netbeans.org/bpel/WizardCorrelationProperties">
+            <xsd:import namespace="http://infosys.tuwien.ac.at/aic10/ass2/OrderProcessSchema" schemaLocation="OrderProcess.xsd"/>
+        </xsd:schema>
+    </types>
+    <vprop:property name="wzrd_prop_string_shipping_id" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="tns:wzrd_prop_string_shipping_id" messageType="ns:ship_itemsResponse" part="return"/>
+    <vprop:propertyAlias propertyName="tns:wzrd_prop_string_shipping_id" messageType="ns1:callback" part="part1">
+        <vprop:query>/ns0:parameters_callback/ns0:shipping_id</vprop:query>
+    </vprop:propertyAlias>
+</definitions>
+
+
