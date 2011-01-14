@@ -116,6 +116,7 @@
             </completionCondition>
             <scope name="OrderScope">
                 <variables>
+                    <variable name="Item" type="ns4:item"/>
                     <variable name="NotifyFaultOut" messageType="ns2:notifyResponse"/>
                     <variable name="NotifyFaultIn" messageType="ns2:notify"/>
                     <variable name="NotifyOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" messageType="tns:notifyResponse"/>
@@ -162,6 +163,30 @@
                     </catch>
                 </faultHandlers>
                 <sequence name="OrderSequence">
+                    <assign name="AssignItem">
+                        <copy>
+                            <from>$parts.part1/ns0:orderParts[$ForEach1Counter]/ns0:product_id
+                                <sxed2:editor>
+                                    <sxed2:predicate path="$parts.part1/ns0:orderParts[$ForEach1Counter]" source="from"/>
+                                </sxed2:editor>
+                            </from>
+                            <to>$Item/product/@id</to>
+                        </copy>
+                        <copy>
+                            <from>$parts.part1/ns0:orderParts[$ForEach1Counter]/ns0:amount
+                                <sxed2:editor>
+                                    <sxed2:predicate path="$parts.part1/ns0:orderParts[$ForEach1Counter]" source="from"/>
+                                </sxed2:editor>
+                            </from>
+                            <to>$Item/quantity</to>
+                        </copy>
+                    </assign>
+                    <assign name="AssignItemToItems">
+                        <copy>
+                            <from>ns3:doXslTransform('urn:stylesheets:SimpleTransform.xsl', $Ship_itemsIn.items, 'NewItem', $Item)</from>
+                            <to variable="Ship_itemsIn" part="items"/>
+                        </copy>
+                    </assign>
                     <assign name="AssignCheck">
                         <copy>
                                 <from>$parts.part1/ns0:orderParts[$ForEach1Counter]/ns0:product_id
@@ -373,6 +398,8 @@
         <reply name="ReplySuccess" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
     </sequence>
 </process>
+
+
 
 
 
