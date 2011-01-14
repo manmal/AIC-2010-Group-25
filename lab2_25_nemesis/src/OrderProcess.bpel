@@ -48,7 +48,6 @@
         <variable name="parts" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" messageType="tns:start_process_request">
             <sxed2:editor>
                 <sxed2:predicate path="$parts.part1/ns0:orderParts[$ForEach1Counter]" source="from"/>
-                <sxed2:predicate path="$parts.part1/ns0:orderParts[.]" source="from"/>
             </sxed2:editor>
         </variable>
     </variables>
@@ -102,17 +101,9 @@
         </if>
         <forEach name="ForEachOrder" parallel="no" counterName="ForEach1Counter">
             <startCounterValue>1</startCounterValue>
-            <finalCounterValue>count($parts.part1/ns0:orderParts[.])
-                <sxed2:editor>
-                    <sxed2:predicate path="$parts.part1/ns0:orderParts[.]" source="from"/>
-                </sxed2:editor>
-            </finalCounterValue>
+            <finalCounterValue>count($parts.part1/ns0:orderParts)</finalCounterValue>
             <completionCondition>
-                <branches>count($parts.part1/ns0:orderParts[.])
-                    <sxed2:editor>
-                        <sxed2:predicate path="$parts.part1/ns0:orderParts[.]" source="from"/>
-                    </sxed2:editor>
-                </branches>
+                <branches/>
             </completionCondition>
             <scope name="OrderScope">
                 <variables>
@@ -392,6 +383,7 @@
         <reply name="ReplySuccess" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
     </sequence>
 </process>
+
 
 
 
