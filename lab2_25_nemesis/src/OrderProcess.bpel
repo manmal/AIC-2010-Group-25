@@ -8,7 +8,7 @@
     xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
     xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
     xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor"
-    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:sxed2="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2" xmlns:ns0="http://infosys.tuwien.ac.at/aic10/ass2/OrderProcessSchema" xmlns:ns1="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" xmlns:ns2="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" xmlns:ns3="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:sxxf="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/XPathFunctions" xmlns:ns4="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping">
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:sxed2="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2" xmlns:ns0="http://infosys.tuwien.ac.at/aic10/ass2/OrderProcessSchema" xmlns:ns1="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" xmlns:ns2="http://infosys.tuwien.ac.at/aic10/ass1/dto/customer" xmlns:ns3="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:sxxf="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/XPathFunctions" xmlns:ns4="http://infosys.tuwien.ac.at/aic10/ass1/dto/shipping" xmlns:ns5="http://enterprise.netbeans.org/bpel/WizardCorrelationProperties">
     <import namespace="http://enterprise.netbeans.org/bpel/warehouseWrapper" location="warehouseWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/warehouse" location="http://localhost:8088/warehouse?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://enterprise.netbeans.org/bpel/customerserviceWrapper" location="customerserviceWrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
@@ -20,6 +20,7 @@
     <import namespace="http://enterprise.netbeans.org/bpel/supplier2Wrapper" location="supplier2Wrapper.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://infosys.tuwien.ac.at/aic10/ass1/dto/supplier" location="http://localhost:8088/supplier2?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="http://infosys.tuwien.ac.at/aic10/ass2/process" location="OrderProcess.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="http://enterprise.netbeans.org/bpel/WizardCorrelationProperties" location="WizardCorrelationProperties.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="OrderProcess" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" partnerLinkType="tns:OrderProcessLinkType" myRole="OrderProcessProvider"/>
         <partnerLink name="CustomerService" xmlns:tns="http://enterprise.netbeans.org/bpel/customerserviceWrapper" partnerLinkType="tns:CustomerServiceLinkType" partnerRole="CustomerServiceRole"/>
@@ -29,6 +30,7 @@
         <partnerLink name="Warehouse" xmlns:tns="http://enterprise.netbeans.org/bpel/warehouseWrapper" partnerLinkType="tns:WarehouseServiceLinkType" partnerRole="WarehouseServiceRole"/>
     </partnerLinks>
     <variables>
+        <variable name="CallbackIn" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" messageType="tns:callback"/>
         <variable name="Start_processOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" messageType="tns:start_process_response"/>
         <variable name="UnknownUserMessage" messageType="sxeh:faultMessage"/>
         <variable name="OrderProcessCallbackOut" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" messageType="tns:callback_response"/>
@@ -52,6 +54,9 @@
             </sxed2:editor>
         </variable>
     </variables>
+    <correlationSets>
+        <correlationSet name="wzrd_set_ShipItems_OnMessage_Pick1_callback" properties="ns5:wzrd_prop_string_shipping_id"/>
+    </correlationSets>
     <faultHandlers>
         <catch faultName="sxeh:systemFault" faultMessageType="sxeh:faultMessage" faultVariable="FaultMessage">
             <sequence name="Sequence7">
@@ -72,6 +77,25 @@
                 <reply name="ReplyFault" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
             </sequence>
         </catch>
+        <catchAll>
+            <sequence name="Sequence9">
+                <assign name="AssignGenericFault">
+                    <copy>
+                        <from>'Generic Fault occured'</from>
+                        <to>$Start_processOut.part1/ns0:orderResult/ns0:comment</to>
+                    </copy>
+                    <copy>
+                        <from>-1</from>
+                        <to>$Start_processOut.part1/ns0:orderResult/ns0:orderid</to>
+                    </copy>
+                    <copy>
+                        <from>false()</from>
+                        <to>$Start_processOut.part1/ns0:orderResult/ns0:success</to>
+                    </copy>
+                </assign>
+                <reply name="ReplyGenericFault" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
+            </sequence>
+        </catchAll>
     </faultHandlers>
     <sequence>
         <receive name="ReceiveStart" createInstance="yes" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="parts"/>
@@ -344,7 +368,11 @@
                             <to variable="Ship_itemsIn" part="address"/>
                         </copy>
                     </assign>
-                        <invoke name="ShipItems" partnerLink="ShippingService" operation="ship_items" portType="ns4:ShippingService" inputVariable="Ship_itemsIn" outputVariable="Ship_itemsOut"/>
+                        <invoke name="ShipItems" partnerLink="ShippingService" operation="ship_items" portType="ns4:ShippingService" inputVariable="Ship_itemsIn" outputVariable="Ship_itemsOut">
+                            <correlations>
+                                <correlation set="wzrd_set_ShipItems_OnMessage_Pick1_callback" initiate="yes" pattern="response"/>
+                            </correlations>
+                        </invoke>
                 </sequence>
                     <sequence name="FlowSequence1">
                     <assign name="AssignUpdatedValues">
@@ -374,6 +402,22 @@
                 </sequence>
             </flow>
         </scope>
+        <pick name="Pick1">
+            <onMessage partnerLink="OrderProcess" operation="callback" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="CallbackIn">
+                <correlations>
+                    <correlation set="wzrd_set_ShipItems_OnMessage_Pick1_callback" initiate="no"/>
+                </correlations>
+                <sequence name="Sequence8">
+                    <assign name="AssignCallbackReply">
+                        <copy>
+                            <from>$CallbackIn.part1/ns0:shipping_id</from>
+                            <to>$OrderProcessCallbackOut.part1/ns0:shipping_id</to>
+                        </copy>
+                    </assign>
+                    <reply name="ReplyCallback" partnerLink="OrderProcess" operation="callback" portType="tns:OrderProcessPortType" variable="OrderProcessCallbackOut"/>
+                </sequence>
+            </onMessage>
+        </pick>
         <assign name="AssignSuccess">
             <copy>
                 <from>true()</from>
@@ -391,6 +435,8 @@
         <reply name="ReplySuccess" partnerLink="OrderProcess" operation="start_process" xmlns:tns="http://infosys.tuwien.ac.at/aic10/ass2/process" portType="tns:OrderProcessPortType" variable="Start_processOut"/>
     </sequence>
 </process>
+
+
 
 
 
